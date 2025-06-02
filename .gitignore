@@ -33,6 +33,10 @@ migrate_working_dir/
 .pub/
 /build/
 
+
+# Web related (if generated code isn't checked in)
+# lib/generated_plugin_registrant.dart
+
 # Symbolication related
 app.*.symbols
 
@@ -40,6 +44,66 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+/android/app/build/
+/android/captures/
+/android/gradlew # If you prefer everyone to use their system's gradle wrapper
+/android/gradlew.bat # If you prefer everyone to use their system's gradle wrapper
+/android/local.properties
+/android/.gradle/
+*.jks
+*.keystore
+
+# iOS related
+/ios/Pods/
+/ios/DerivedData/
+/ios/.symlinks/
+/ios/Flutter/App.framework
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_assets/
+/ios/Runner.xcworkspace/xcuserdata/
+/ios/Runner.xcodeproj/project.xcworkspace/
+/ios/Runner.xcodeproj/xcuserdata/
+# If you use Flutter <= 3.3.x, add these lines for Podfile.lock and Pods directory
+# Podfile.lock
+# Pods/
+# However, for Flutter >= 3.7.x, it's generally recommended to commit Podfile.lock
+# and not ignore the Pods/ directory if your team prefers consistent CocoaPods versions.
+# Check the official Flutter recommendations for your specific version.
+
+# macOS specific
+/macos/Flutter/ephemeral/
+/macos/Pods/
+/macos/.symlinks/
+*.xcuserdatad
+
+# Linux specific
+/linux/flutter/ephemeral/
+
+# Windows specific
+/windows/flutter/ephemeral/
+
+# Sensitive files - BE VERY CAREFUL WITH THESE
+# Add any files that contain secrets or API keys
+secrets.json
+.env
+*.pem
+google-services.json # If it contains sensitive data and you manage it per environment
+key.properties
+
+# If you are building an application, commit the pubspec.lock file.
+# If you are building a package, do not commit pubspec.lock.
+# For applications:
+# !pubspec.lock # Uncomment if you are building a library/package instead
+
+# If you use build_runner and want to ignore generated files (e.g. *.g.dart, *.freezed.dart)
+# (This is a common practice, as they can be regenerated)
+# *.g.dart
+# *.freezed.dart
+# *.gen.dart
+
+# Test related
+coverage/
