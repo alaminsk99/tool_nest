@@ -22,6 +22,9 @@ dependencies:
   #Icon Management
   flutter_svg: ^2.1.0
 
+  #State Managements Packages
+  flutter_bloc: ^9.1.1
+
   #Utility Packages
   flutter_native_splash: ^2.4.6
   fluttertoast: ^8.2.12
@@ -44,3 +47,25 @@ flutter:
     - assets/icons/
     - assets/animations/
     - assets/images/
+    - assets/fonts/
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto_Condensed-Light.ttf
+          weight: 300
+          style: normal
+        - asset: assets/fonts/Roboto_Condensed-Bold.ttf
+          weight: 700
+          style: normal
+        - asset: assets/fonts/Roboto_Condensed-SemiBold.ttf
+          weight: 600
+          style: normal
+        - asset: assets/fonts/Roboto_Condensed-Medium.ttf
+          weight: 500
+          style: normal
+        - asset: assets/fonts/Roboto_Condensed-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Roboto_Condensed-Regular.ttf
+          weight: 400
+          style: normal

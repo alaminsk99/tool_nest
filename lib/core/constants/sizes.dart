@@ -61,4 +61,6 @@ class TNSizes {
 
   /// Grid View
   static const double gridViewSpacing = 16.0;
+
+  //
 }

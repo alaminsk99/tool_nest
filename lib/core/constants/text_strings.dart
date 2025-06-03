@@ -61,4 +61,11 @@ class TNTextStrings {
   static const String feedbackTitle = "Your Feedback";
   static const String feedbackHint = "Tell us what you think...";
   static const String sendFeedback = "Send Feedback";
+
+
+
+
+
+  /// Configuration String
+  static const String fontFamily = "Roboto";
 }
