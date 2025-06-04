@@ -10,6 +10,7 @@ import 'package:tool_nest/presentation/pages/tools/tools_pages.dart';
 import 'package:tool_nest/presentation/widgets/bottom_nav_bar.dart';
 import 'package:tool_nest/test/test.dart';
 
+import '../../test/todos/views/todo_page.dart';
 import '../../test/weather/view/weather_page.dart';
 
 class MainNavigationPage extends StatelessWidget {
@@ -26,7 +27,8 @@ class MainNavigationPage extends StatelessWidget {
               const HomePage(),
               WeatherPage(),
               //SearchPages(),
-              const Test(),
+              TodoPage(),
+              //const Test(),
               // ToolsPages(),
               const ProfilePage(),
             ],

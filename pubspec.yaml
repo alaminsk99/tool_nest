@@ -24,6 +24,7 @@ dependencies:
 
   #State Managements Packages
   flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
 
   #Utility Packages
   flutter_native_splash: ^2.4.6
