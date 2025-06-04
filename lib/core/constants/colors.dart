@@ -7,9 +7,12 @@ class TNColors {
 
   /// App Basic Color
   // Changed to match the prominent blue-purple in buttons and icons
+  // Uses Color
   static const Color primary = Color(0xff1877F2);
   // Light grey, suitable for secondary button backgrounds or subtle UI elements
+  // Uses Color
   static const Color secondary = Color(0xffF2F2F5);
+  // Uses Color
   static const Color black = Color(0xff1E1E1E); // Darkest text/icon color
 
   // Updated MaterialColor to be based on the new primary color

@@ -15,6 +15,7 @@ class TNSizes {
   static const double iconSizeXS = 12.0;
   static const double iconSizeSM = 16.0;
   static const double iconSizeMD = 24.0;
+  static const double iconSizeMDForBottoms = 28.0;
   static const double iconSizeLG = 32.0;
 
   /// Padding Sizes

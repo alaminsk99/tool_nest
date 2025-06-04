@@ -13,7 +13,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        title: Text(TNTextStrings.appName,style: TextStyle().copyWith(color: TNColors.primary,fontSize: TNSizes.fontSizeXXL,fontWeight: FontWeight.bold),),
+        title: Text(TNTextStrings.appName,style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: TNColors.primary,fontWeight: FontWeight.w600),),
         actions: [IconButton(onPressed: (){},icon:  Icon(LucideIcons.settings),),]
     );
   }

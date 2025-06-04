@@ -19,9 +19,9 @@ class BottomNavBar extends StatelessWidget {
           
 
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home" ),
+            BottomNavigationBarItem(icon: Icon(LucideIcons.house),label: "Home" ),
             BottomNavigationBarItem(icon: Icon(LucideIcons.search), label: "Search" ),
-            BottomNavigationBarItem(icon: Icon(LucideIcons.penTool), label: "Tools"),
+            BottomNavigationBarItem(icon: Icon(LucideIcons.wrench), label: "Tools"),
             BottomNavigationBarItem(icon: Icon(LucideIcons.user),label: "Profile"),
           ],
         );
