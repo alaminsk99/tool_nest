@@ -7,7 +7,7 @@ class TNColors {
 
   /// App Basic Color
   // Changed to match the prominent blue-purple in buttons and icons
-  static const Color primary = Color(0xff4B68FF);
+  static const Color primary = Color(0xff1877F2);
   // Light grey, suitable for secondary button backgrounds or subtle UI elements
   static const Color secondary = Color(0xffF2F2F5);
   static const Color black = Color(0xff1E1E1E); // Darkest text/icon color
@@ -30,7 +30,7 @@ class TNColors {
   );
 
   // Updated _primaryValue to the new primary color hex
-  static const int _primaryValue = 0xff4B68FF;
+  static const int _primaryValue = 0xff1877F2;
 
   /// Terms and Condition Color
   // Changed to primary color for consistency, as the original teal was not observed

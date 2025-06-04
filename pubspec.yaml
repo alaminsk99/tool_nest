@@ -21,7 +21,11 @@ dependencies:
 
   #Icon Management
   flutter_svg: ^2.1.0
+  #Routing packages
+  go_router: ^15.1.2
 
+  #Scaping Management
+  gap: ^3.0.1
   #State Managements Packages
   flutter_bloc: ^9.1.1
   equatable: ^2.0.7

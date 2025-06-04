@@ -17,10 +17,19 @@ class TNSizes {
   static const double iconSizeMD = 24.0;
   static const double iconSizeLG = 32.0;
 
+  /// Padding Sizes
+  static const double paddingXS = 4.0;
+  static const double paddingSM = 8.0;
+  static const double paddingMD = 16.0;
+  static const double paddingLG = 24.0;
+
+
   /// Font Sizes
   static const double fontSizeSM = 14.0;
   static const double fontSizeMD = 16.0;
   static const double fontSizeLG = 18.0;
+  static const double fontSizeXL = 20.0;
+  static const double fontSizeXXL = 24.0;
 
   /// Button Sizes
   static const double buttonHeight = 48.0;

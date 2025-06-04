@@ -6,12 +6,7 @@ import 'package:tool_nest/presentation/pages/home/home_page.dart';
 import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
 import 'package:tool_nest/presentation/pages/search/search_pages.dart';
 import 'package:tool_nest/presentation/pages/tools/tools_pages.dart';
-
 import 'package:tool_nest/presentation/widgets/bottom_nav_bar.dart';
-import 'package:tool_nest/test/test.dart';
-
-import '../../test/todos/views/todo_page.dart';
-import '../../test/weather/view/weather_page.dart';
 
 class MainNavigationPage extends StatelessWidget {
   const MainNavigationPage({super.key});
@@ -25,11 +20,10 @@ class MainNavigationPage extends StatelessWidget {
             index: state.selectedIndex,
             children: [
               const HomePage(),
-              WeatherPage(),
-              //SearchPages(),
-              TodoPage(),
-              //const Test(),
-              // ToolsPages(),
+
+              SearchPages(),
+
+              ToolsPages(),
               const ProfilePage(),
             ],
           ),

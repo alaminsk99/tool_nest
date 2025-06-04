@@ -68,4 +68,44 @@ class TNTextStrings {
 
   /// Configuration String
   static const String fontFamily = "Roboto";
+
+
+  /// Screens names
+static const String toolScreenName = "Tools";
+
+
+
+/// Tools Sections Name:
+static const String imageTools = "Image Tools";
+static const String pdfTools = "PDF Tools";
+static const String textTools = "Text Tools";
+
+
+/// Tools Names
+static const String compressImage = "Compress Image";
+static const String imageResizer = "Image Resizer";
+static const String imageToPDF = "Image to PDF";
+static const String formatConverter = "Format Converter";
+static const String imageRotator = "Image Rotator";
+static const String pdfToImage = "PDF to Image";
+static const String mergePDFs = "Merge PDFs";
+static const String splitPDF = "Split PDF";
+static const String compressPDF = "Compress PDF";
+static const String textExtractor = "Text Extractor";
+static const String textSummarizer = "Text Summarizer";
+
+/// Tools SubTitle
+  static const String compressImageSubTitle = "Reduce image file size without losing quality.";
+  static const String imageResizerSubTitle = "Resize images to custom dimensions easily.";
+  static const String imageToPDFSubTitle = "Convert images into high-quality PDF files.";
+  static const String formatConverterSubTitle = "Convert image formats like JPG, PNG, and more.";
+  static const String imageRotatorSubTitle = "Rotate or flip images as needed.";
+  static const String pdfToImageSubTitle = "Convert PDF pages into high-resolution images.";
+  static const String mergePDFsSubTitle = "Combine multiple PDFs into a single file.";
+  static const String splitPDFSubTitle = "Split one PDF into multiple files.";
+  static const String compressPDFSubTitle = "Reduce PDF size while maintaining quality.";
+  static const String textExtractorSubTitle = "Extract text from images or scanned documents.";
+  static const String textSummarizerSubTitle = "Summarize long text into key points.";
+
+
 }

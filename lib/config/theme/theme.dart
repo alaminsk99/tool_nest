@@ -21,5 +21,8 @@ class TNTheme{
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
     hoverColor: Colors.transparent,
+
+
+
   );
 }
