@@ -29,6 +29,9 @@ dependencies:
   flutter_native_splash: ^2.4.6
   fluttertoast: ^8.2.12
 
+  #Networking package
+  http: ^1.4.0
+
 #Delopent dependencies is here
 dev_dependencies:
   flutter_test:
