@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
@@ -24,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: isLeadingIcon,
       title: Text(
         title,
-        style: textColorTheme  ?? Theme.of(context).textTheme.headlineLarge!.copyWith(color:Theme.of(context).colorScheme.primary),
+        style: textColorTheme  ?? Theme.of(context).textTheme.headlineLarge!.copyWith(color:TNColors.primary),
       ),
       backgroundColor: backgroundColor,
       elevation: 0,

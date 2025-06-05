@@ -108,4 +108,24 @@ static const String textSummarizer = "Text Summarizer";
   static const String textSummarizerSubTitle = "Summarize long text into key points.";
 
 
+  /// Tools processing
+ static const String uploadFiles = "Upload Files";
+ static const String processFile = "Process File";
+ static const String browseFiles = "Browse Files";
+ static const String dragAndDrop = "Drag and drop or browse to upload your files";
+ static const String pdfSettings = "PDF Settings";
+ static const String textSettings = "Text Settings";
+ static const String pageSize = "Page Size";
+ static const String orientation = "Orientation";
+ static const String pageMargin = "Page Margin";
+ static const String selectPageSize = "Select Page Size";
+ static const String selectOrientation = "Select Orientation";
+ static const String defaultText = "Default";
+ static const String custom = "Custom";
+
+
+
+
+
+
 }

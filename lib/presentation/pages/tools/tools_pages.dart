@@ -5,7 +5,7 @@ import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/presentation/widgets/list_tile/list_tile_for_tools.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
 import 'package:tool_nest/presentation/widgets/section_style/section_style.dart';
 
 class ToolsPages extends StatelessWidget {
@@ -14,7 +14,7 @@ class ToolsPages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarForMainSections(title: TNTextStrings.toolScreenName),
+      appBar: AppbarForMainSections(title: TNTextStrings.toolScreenName,isLeadingIcon: false,),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: TNPaddingStyle.allPadding,

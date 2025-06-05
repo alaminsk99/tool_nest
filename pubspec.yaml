@@ -24,6 +24,21 @@ dependencies:
   #Routing packages
   go_router: ^15.1.2
 
+  #To Get Images
+  image_picker: ^1.1.2
+
+  #For PDF Creation
+  pdf: ^3.11.3
+
+  #File save and share
+  printing: ^5.14.2
+
+  #Get device storage paths
+  path_provider: ^2.1.5
+
+  #Share PDF files for file sharing
+  share_plus: ^11.0.0
+
   #Scaping Management
   gap: ^3.0.1
   #State Managements Packages
