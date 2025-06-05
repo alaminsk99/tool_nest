@@ -34,7 +34,7 @@ class PageSizeSection extends StatelessWidget {
           title: Text(selectedPageSize),
           trailing: const Icon(Icons.keyboard_arrow_down),
           onTap: () => ItemsSelectionBottomSheet.show(context: context,
-              title: selectedPageSize,
+              title: TNTextStrings.selectPageSize,
               options: pageSizes, selectedValue: selectedPageSize,
               onSelect: onSelect),
         ),

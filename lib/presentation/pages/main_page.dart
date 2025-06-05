@@ -7,6 +7,7 @@ import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
 import 'package:tool_nest/presentation/pages/search/search_pages.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/image_preview_card.dart';
 import 'package:tool_nest/presentation/pages/tools/tools_pages.dart';
 import 'package:tool_nest/presentation/widgets/bottom_nav_bar.dart';
 
@@ -23,7 +24,7 @@ class MainNavigationPage extends StatelessWidget {
             children: [
               const HomePage(),
 
-              ImageToPdfSettings(),
+              ImageToPdfPreview(),
 
               ToolsPages(),
               const ProfilePage(),

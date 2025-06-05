@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 
-class TNElevatedButtonTheme {
-  TNElevatedButtonTheme._();
+class TNOutlineButtonTheme {
+  TNOutlineButtonTheme._();
 
-  static final ElevatedButtonThemeData lightElevatedButtonTheme = ElevatedButtonThemeData(
+  static final OutlinedButtonThemeData lightOutlinedButtonTheme =
+  OutlinedButtonThemeData(
     style: ButtonStyle(
       elevation: WidgetStateProperty.all(0),
       shadowColor: WidgetStateProperty.all(Colors.transparent),
@@ -15,7 +16,7 @@ class TNElevatedButtonTheme {
           if (states.contains(WidgetState.disabled)) {
             return TNColors.buttonDisabled;
           }
-          return TNColors.primary;
+          return Colors.transparent;
         },
       ),
       foregroundColor: WidgetStateProperty.resolveWith<Color>(
@@ -26,14 +27,24 @@ class TNElevatedButtonTheme {
           return TNColors.black;
         },
       ),
-      shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
-          side: const BorderSide(color: TNColors.primary),
-        ),
+      side: WidgetStateProperty.resolveWith<BorderSide>(
+            (states) {
+          if (states.contains(WidgetState.disabled)) {
+            return const BorderSide(color: TNColors.borderPrimary);
+          }
+          return const BorderSide(color: TNColors.borderPrimary);
+        },
       ),
       textStyle: WidgetStateProperty.all(
         const TextStyle(fontSize: TNSizes.fontSizeSM),
+      ),
+      padding: WidgetStateProperty.all(
+        const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+      ),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+        ),
       ),
       overlayColor: WidgetStateProperty.all(Colors.transparent),
     ),

@@ -122,6 +122,11 @@ static const String textSummarizer = "Text Summarizer";
  static const String selectOrientation = "Select Orientation";
  static const String defaultText = "Default";
  static const String custom = "Custom";
+ /// Image to Pdf
+ static const String previewPDFScreen = "Preview PDF";
+ static const String yourPDFPreview = "Your PDF Preview";
+ static const String pDFPreviewAppearHere = "PDF Preview will appear here.";
+ static const String addPagesGeneratePreview = "Add pages or images to generate preview.";
 
 
 
