@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tool_nest/core/constants/colors.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 
 class IconWithOutlineButton extends StatelessWidget {
   const IconWithOutlineButton({
@@ -26,6 +27,7 @@ class IconWithOutlineButton extends StatelessWidget {
           shadowColor: WidgetStateProperty.all(TNColors.transparent),
           backgroundColor: WidgetStateProperty.all(TNColors.transparent),
           foregroundColor: WidgetStateProperty.all(TNColors.black),
+          padding: WidgetStateProperty.all(EdgeInsetsGeometry.symmetric(vertical: 10))
         ),
           label: Text(title),
           icon: Icon(icon),

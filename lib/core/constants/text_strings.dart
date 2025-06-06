@@ -30,6 +30,9 @@ class TNTextStrings {
 
   /// General Labels
   static const String ok = "OK";
+  static const String save = "Save";
+  static const String share = "Share";
+  static const String open = "Open";
   static const String cancel = "Cancel";
   static const String next = "Next";
   static const String back = "Back";
@@ -127,6 +130,9 @@ static const String textSummarizer = "Text Summarizer";
  static const String yourPDFPreview = "Your PDF Preview";
  static const String pDFPreviewAppearHere = "PDF Preview will appear here.";
  static const String addPagesGeneratePreview = "Add pages or images to generate preview.";
+ static const String resultPDFScreen = "PDF Result";
+ static const String generatedPDF = "Your Generated PDF";
+
 
 
 

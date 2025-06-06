@@ -10,7 +10,7 @@ import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_butto
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 import 'package:tool_nest/presentation/widgets/card/preview_card.dart';
 
-import 'buttons/action_buttons.dart';
+import 'buttons/action_button_for_preview_card.dart';
 
 class ImageToPdfPreview extends StatelessWidget {
   const ImageToPdfPreview({super.key});
@@ -37,7 +37,7 @@ class ImageToPdfPreview extends StatelessWidget {
             const Gap(TNSizes.spaceXL),
 
             /// Action Buttons
-            ActionButtons()
+            ActionButtonForPreviewCard(),
           ],
         ),
       ),

@@ -12,6 +12,7 @@ class TNColors {
   // Light grey, suitable for secondary button backgrounds or subtle UI elements
   // Uses Color
   static const Color secondary = Color(0xffF2F2F5);
+  static const Color thirdColor = materialPrimaryColor;
   // Uses Color
   static const Color black = Color(0xff1E1E1E); // Darkest text/icon color
 
