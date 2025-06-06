@@ -133,6 +133,10 @@ static const String textSummarizer = "Text Summarizer";
  static const String resultPDFScreen = "PDF Result";
  static const String generatedPDF = "Your Generated PDF";
 
+  static const String processingPDF = 'Generating your PDF...';
+  static const String pleaseWaitWhileProcessing = 'Please wait while we process your file.';
+  static const String shareWithOthers = "Share With Others";
+
 
 
 
