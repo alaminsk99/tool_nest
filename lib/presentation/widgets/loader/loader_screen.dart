@@ -5,6 +5,57 @@ import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 
+
+
+
+
+import 'package:flutter/material.dart';
+import 'package:tool_nest/core/constants/colors.dart';
+import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:gap/gap.dart';
+
+class LoaderScreen extends StatelessWidget {
+  const LoaderScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: TNColors.primaryBackground,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(
+              color: TNColors.primary,
+              strokeWidth: 3,
+            ),
+            const Gap(20),
+            Text(
+              TNTextStrings.loading,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: TNColors.black),
+            ),
+            const Gap(10),
+            Text(
+              TNTextStrings.pleaseWait,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: TNColors.textSecondary),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
 class ProcessingScreen extends StatelessWidget {
   const ProcessingScreen({super.key, required this.title, required this.warningMessage});
 

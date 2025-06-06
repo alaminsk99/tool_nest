@@ -136,6 +136,8 @@ static const String textSummarizer = "Text Summarizer";
   static const String processingPDF = 'Generating your PDF...';
   static const String pleaseWaitWhileProcessing = 'Please wait while we process your file.';
   static const String shareWithOthers = "Share With Others";
+  static const String loading = "Loading...";
+  static const String pleaseWait = "Please wait while we process your request.";
 
 
 

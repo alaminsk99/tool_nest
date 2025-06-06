@@ -5,6 +5,8 @@ import 'package:tool_nest/config/theme/theme.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 
+import 'config/router/app_router.dart';
+
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -16,11 +18,11 @@ class App extends StatelessWidget {
         BlocProvider<NavBloc>(create: (_) => NavBloc(),),
 
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: TNTextStrings.appName,
         debugShowCheckedModeBanner: false,
         theme: TNTheme.lightTheme,
-        home:const MainNavigationPage(),
+        routerConfig: appRouter,
 
       ),
     );

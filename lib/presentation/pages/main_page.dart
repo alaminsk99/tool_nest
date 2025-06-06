@@ -12,8 +12,8 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widg
 import 'package:tool_nest/presentation/pages/tools/tools_pages.dart';
 import 'package:tool_nest/presentation/widgets/bottom_nav_bar.dart';
 
-class MainNavigationPage extends StatelessWidget {
-  const MainNavigationPage({super.key});
+class MainPage extends StatelessWidget {
+  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,7 @@ class MainNavigationPage extends StatelessWidget {
             index: state.selectedIndex,
             children: [
               const HomePage(),
-
-              ImageToPdfResultScreen(),
-
+              SearchPages(),
               ToolsPages(),
               const ProfilePage(),
             ],

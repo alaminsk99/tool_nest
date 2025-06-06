@@ -11,6 +11,8 @@ import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar
 import 'package:tool_nest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
 import 'package:tool_nest/presentation/widgets/section_style/section_style.dart';
 
+import 'image_tools/image_tools_page.dart';
+
 class ToolsPages extends StatelessWidget {
   const ToolsPages({super.key});
 
