@@ -16,7 +16,11 @@ class AppbarForMainSections extends StatelessWidget implements PreferredSizeWidg
     return CustomAppBar(
       title: title,isLeadingIcon: isLeadingIcon,
       isCenterTitle: false,
-      backgroundColor: TNColors.primary, textColorTheme: const TextStyle().copyWith(fontSize: TNSizes.fontSizeXXL,fontWeight: FontWeight.w600,color: TNColors.secondary),);
+      backgroundColor: TNColors.primary, textColorTheme: const TextStyle().copyWith(fontSize: TNSizes.fontSizeXXL,fontWeight: FontWeight.w600,color: TNColors.secondary),
+      // leadingTitleSpacing: 0,
+      // iconThemeData: IconThemeData(size: TNSizes.iconSizeSM),
+    );
+
 
   }
   @override

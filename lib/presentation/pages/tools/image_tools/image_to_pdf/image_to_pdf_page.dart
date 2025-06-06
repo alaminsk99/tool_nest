@@ -15,7 +15,7 @@ class ImageToPdfPage extends StatelessWidget {
     return Scaffold(
       appBar: AppbarForMainSections(
         title: TNTextStrings.imageToPDF,
-        isLeadingIcon: false,
+        isLeadingIcon: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(TNSizes.spaceMD),

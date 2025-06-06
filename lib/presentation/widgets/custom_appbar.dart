@@ -1,16 +1,17 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar(
-      {super.key, required this.title,
-        this.backgroundColor = Colors.transparent,
-        this.isCenterTitle = true,
-        this.isLeadingIcon = false,
-        this.textColorTheme, this.iconThemeData,
-      });
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    this.backgroundColor = Colors.transparent,
+    this.isCenterTitle = true,
+    this.isLeadingIcon = false,
+    this.textColorTheme,
+    this.iconThemeData,
+    this.leadingTitleSpacing,
+  });
 
   final String title;
   final Color backgroundColor;
@@ -18,6 +19,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isCenterTitle;
   final TextStyle? textColorTheme;
   final bool isLeadingIcon;
+  final double? leadingTitleSpacing;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -25,12 +28,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: isLeadingIcon,
       title: Text(
         title,
-        style: textColorTheme  ?? Theme.of(context).textTheme.headlineLarge!.copyWith(color:TNColors.primary),
+        style: textColorTheme ??
+            Theme.of(context).textTheme.headlineLarge!.copyWith(
+              color: TNColors.primary,
+            ),
       ),
       backgroundColor: backgroundColor,
       elevation: 0,
       iconTheme: iconThemeData,
-
+      titleSpacing: leadingTitleSpacing,
     );
   }
 
