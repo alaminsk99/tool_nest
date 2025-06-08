@@ -1,20 +1,21 @@
 class AppRoutes {
   AppRoutes._();
 
-  static const String main = '/main';
+  static const main = '/main';
 
-  // Relative nested paths
-  static const String tools = 'tools';
-  static const String imageToPdf = 'image-to-pdf';
-  static const String imageToPdfSettings = 'settings';
-  static const String imageToPdfPreview = 'preview';
-  static const String loader = 'loader';
-  static const String imageToPdfResult = 'result';
+  // Paths under main
+  static const imageToPdfPath = 'image-to-pdf';
+  static const settingsPath = 'settings';
+  static const previewPath = 'preview';
+  static const loaderPath = 'loader';
+  static const resultPath = 'result';
+  static const processFinishedForImgToPdfPath = 'process-finished-image-to-pdf';
 
-  // Names (for goNamed)
-  static const String imageToPdfName = 'imageToPdf';
-  static const String imageToPdfSettingsName = 'imageToPdfSettings';
-  static const String imageToPdfPreviewName = 'imageToPdfPreview';
-  static const String loaderName = 'loader';
-  static const String imageToPdfResultName = 'imageToPdfResult';
+  // Route Names
+  static const imageToPdf = 'imageToPdf';
+  static const settings = 'imageToPdfSettings';
+  static const preview = 'imageToPdfPreview';
+  static const loader = 'loader';
+  static const result = 'imageToPdfResult';
+  static const processFinishedForImgToPdf = 'processFinishedForImGToPdf';
 }

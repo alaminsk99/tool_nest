@@ -7,4 +7,5 @@ class TNImageStrings{
 
 
   /// Animation Icon
+  static const loadingAnimation = "assets/animations/loading.json";
 }

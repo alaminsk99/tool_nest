@@ -1,0 +1,128 @@
+import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
+import 'image_to_pdf_event.dart';
+import 'image_to_pdf_state.dart';
+import 'package:pdf/pdf.dart' as pdf;
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
+
+class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
+  List<File> selectedImages = [];
+  String pageSize = 'A4';
+  String orientation = 'Portrait';
+  double margin = 10.0;
+
+  ImageToPdfBloc() : super(ImageToPdfInitial()) {
+    on<SelectImagesEvent>(_onSelectImages);
+    on<UpdateSettingsEvent>(_onUpdateSettings);
+    on<ConvertToPdfEvent>(_onConvertToPdf);
+    on<ClearSelectedImagesEvent>(_onClearSelectedImages);
+  }
+
+  Future<void> _onSelectImages(SelectImagesEvent event, Emitter emit) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png'],
+        allowMultiple: true,
+      );
+
+      if (result != null && result.files.isNotEmpty) {
+        selectedImages = result.paths.map((path) => File(path!)).toList();
+        emit(ImageSelectionSuccess(selectedImages.map((e) => e.path).toList()));
+      } else {
+        emit(ImageToPdfError(TNTextStrings.noImageSelected));
+      }
+    } catch (e) {
+      emit(ImageToPdfError('${TNTextStrings.errorPickingImages}: ${e.toString()}'));
+    }
+  }
+
+  void _onClearSelectedImages(ClearSelectedImagesEvent event, Emitter emit) {
+    selectedImages.clear();
+    emit(ImageToPdfInitial());
+  }
+
+  void _onUpdateSettings(UpdateSettingsEvent event, Emitter emit) {
+    pageSize = event.pageSize;
+    orientation = event.orientation;
+    margin = event.margin;
+    emit(SettingsUpdated(pageSize, orientation, margin));
+  }
+
+  Future<void> _onConvertToPdf(ConvertToPdfEvent event, Emitter emit) async {
+    emit(PdfConversionInProgress());
+
+    try {
+      final doc = pw.Document();
+
+      for (var image in selectedImages) {
+        final imageBytes = await image.readAsBytes();
+        final compressed = await FlutterImageCompress.compressWithList(imageBytes);
+        final pdfImage = pw.MemoryImage(compressed);
+
+        // If user chose "Original" as page size, match image dimensions
+        late pdf.PdfPageFormat pageFormat;
+        if (pageSize == 'Original') {
+          final decodedImage = await decodeImageFromList(compressed);
+          pageFormat = pdf.PdfPageFormat(
+            decodedImage.width.toDouble(),
+            decodedImage.height.toDouble(),
+          );
+        } else {
+          pageFormat = _getPageFormat(pageSize, orientation);
+        }
+
+        doc.addPage(
+          pw.Page(
+            pageFormat: pageFormat,
+            margin: pw.EdgeInsets.all(pageSize == 'Original' ? 0 : margin),
+            build: (context) => pw.Container(
+              color: PdfColors.white,
+              alignment: pw.Alignment.center,
+              child: pw.Image(
+                pdfImage,
+                fit: pageSize == 'Original' ? pw.BoxFit.fill : pw.BoxFit.contain,
+              ),
+            ),
+          ),
+        );
+      }
+
+      final dir = await getTemporaryDirectory();
+      final formattedDate = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+      final pdfPath = '${dir.path}/${TNTextStrings.converted}$formattedDate.pdf';
+      final file = File(pdfPath);
+      await file.writeAsBytes(await doc.save());
+
+      emit(PdfConversionSuccess(pdfPath));
+    } catch (e) {
+      emit(ImageToPdfError('${TNTextStrings.pdfConvFailed}: ${e.toString()}'));
+    }
+  }
+
+
+
+  pdf.PdfPageFormat _getPageFormat(String size, String orientation) {
+    pdf.PdfPageFormat format;
+
+    switch (size) {
+      case 'Letter':
+        format = pdf.PdfPageFormat.letter;
+        break;
+      case 'Legal':
+        format = pdf.PdfPageFormat.legal;
+        break;
+      default:
+        format = pdf.PdfPageFormat.a4;
+    }
+
+    return orientation == 'Landscape' ? format.landscape : format;
+  }
+}

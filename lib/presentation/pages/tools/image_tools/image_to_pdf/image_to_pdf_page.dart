@@ -1,14 +1,35 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_to_pdf/image_to_pdf_bloc.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_to_pdf/image_to_pdf_event.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_to_pdf/image_to_pdf_state.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-
+import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
+import 'package:tool_nest/presentation/widgets/grid_views/image_grid_view.dart';
+import '../../image_tools/image_to_pdf/image_to_pdf_settings.dart';
 import '../../widgets/buttons/process_button.dart';
 import '../../widgets/container/upload_image_container.dart';
 
-class ImageToPdfPage extends StatelessWidget {
+class ImageToPdfPage extends StatefulWidget {
   const ImageToPdfPage({super.key});
+
+  @override
+  State<ImageToPdfPage> createState() => _ImageToPdfPageState();
+}
+
+class _ImageToPdfPageState extends State<ImageToPdfPage> {
+  late ImageToPdfBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = context.read<ImageToPdfBloc>();
+    bloc.add(ClearSelectedImagesEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +42,44 @@ class ImageToPdfPage extends StatelessWidget {
         padding: const EdgeInsets.all(TNSizes.spaceMD),
         child: Column(
           children: [
-            ///  Upload Image container
-            UploadImageContainer(),
-
+            Expanded(
+              child: BlocConsumer<ImageToPdfBloc, ImageToPdfState>(
+                listener: (context, state) {
+                  if (state is ImageToPdfError) {
+                    DialogOptions().showModernErrorDialog(context, state.message);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ImageSelectionSuccess && state.imagePaths.isNotEmpty) {
+                    return ImageGridView(imagePaths: state.imagePaths);
+                  }
+                  return UploadImageContainer(
+                    onPressed: () => bloc.add(SelectImagesEvent()),
+                  );
+                },
+              ),
+            ),
             const Gap(TNSizes.spaceMD),
-
-            ///  Process Button
-            ProcessButton(),
+            BlocBuilder<ImageToPdfBloc, ImageToPdfState>(
+              builder: (context, state) {
+                return ProcessButton(
+                  onPressed: () {
+                    if (state is ImageSelectionSuccess && state.imagePaths.isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ImageToPdfSettings()),
+                      );
+                    } else {
+                      DialogOptions().showModernErrorDialog(context, TNTextStrings.pleSelLeaImg);
+                    }
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
 

@@ -5,33 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class TNHelperFunctions{
 
-  // static Color? getColor(String value){
-  //   /// Define your product specific color here and it will match the  attribute colors and show specific
-  //
-  //   if(value == "Green"){
-  //     return Colors.green;
-  //   }else if(value == "Red"){
-  //     return Colors.red;
-  //   }else if(value == "Blue"){
-  //     return Colors.blue;
-  //   }else if(value == "Pink"){
-  //     return Colors.pink;
-  //   }else if(value == "Grey"){
-  //     return Colors.grey;
-  //   }else if(value == "Purple"){
-  //     return Colors.purple;
-  //   }else if(value == "Black"){
-  //     return Colors.black;
-  //   }else if(value == "White"){
-  //     return Colors.white;
-  //   }else if(value == "Teal"){
-  //     return Colors.teal;
-  //   }else if(value == "Indigo"){
-  //     return Colors.indigo;
-  //   }else{
-  //     return null;
-  //   }
-  // }
 
   static void showSnackBar(String message, {Color? bgColor, Color? textColor}) {
     Fluttertoast.showToast(
@@ -60,6 +33,9 @@ class TNHelperFunctions{
       },
     );
   }
+
+
+
 
 
   static void navigateToScreen(BuildContext context, Widget screen) {

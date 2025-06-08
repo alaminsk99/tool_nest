@@ -5,9 +5,10 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 
 class ProcessButton extends StatelessWidget {
   const ProcessButton({
-    super.key, this.onPressed,
+    super.key, this.onPressed, this.text=TNTextStrings.processFile,
   });
  final VoidCallback? onPressed;
+ final String? text;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -21,7 +22,7 @@ class ProcessButton extends StatelessWidget {
           backgroundColor: WidgetStateProperty.all(TNColors.primary),
           foregroundColor: WidgetStateProperty.all(TNColors.black),
         ),
-        child: const Text(TNTextStrings.processFile),
+        child:  Text(text!),
       ),
     );
   }

@@ -115,7 +115,7 @@ static const String textSummarizer = "Text Summarizer";
  static const String uploadFiles = "Upload Files";
  static const String processFile = "Process File";
  static const String browseFiles = "Browse Files";
- static const String dragAndDrop = "Drag and drop or browse to upload your files";
+ static const String dragAndDrop = "Drag and drop or browse to upload your image files (JPG,JPEG & PNG)";
  static const String pdfSettings = "PDF Settings";
  static const String textSettings = "Text Settings";
  static const String pageSize = "Page Size";
@@ -138,6 +138,38 @@ static const String textSummarizer = "Text Summarizer";
   static const String shareWithOthers = "Share With Others";
   static const String loading = "Loading...";
   static const String pleaseWait = "Please wait while we process your request.";
+
+
+
+  /// Comments Want
+ static const String somThingWrong = 'Something Went Wrong!';
+ static const String pleSelLeaImg = "Please select at least one image first.";
+ static const String pdfFileNotFound = "PDF file not found";
+ static const String savedToDownloads = "Saved to Downloads";
+ static const String failToSaveFile = "Failed to save file";
+ static const String hereYourGeneraPDF = "Here is your generated PDF!";
+ static const String noImageSelected = "No images selected";
+ static const String errorPickingImages = "Error picking images";
+ static const String pdfConvFailed = "PDF conversion failed";
+ static const String failToShare = "Fail To Share";
+ static const String successMessage = 'Success!';
+  static const processFinished = 'Process finished';
+  static const useAnotherTool = 'Use Another Tool';
+
+
+
+
+  /// This Internal Directory
+
+  static const String converted = "Tool Nest_";/// This is name also of the generated file
+  static const String downloadDirectory = "/storage/emulated/0/Download";
+  static const String storagePermissionDenied = "Storage permission denied";
+  static const String cannotFindStorage = "Cannot find storage";
+
+
+
+
+  //--------------------------------------------//
 
 
 

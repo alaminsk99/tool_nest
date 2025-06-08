@@ -8,8 +8,12 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 
 class UploadImageSection extends StatelessWidget {
   const UploadImageSection({
-    super.key,
+    super.key, required this.title, required this.subTitle, this.onPressed, required this.buttonTitle,
   });
+  final String title;
+  final String subTitle;
+  final VoidCallback? onPressed;
+  final String buttonTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +23,20 @@ class UploadImageSection extends StatelessWidget {
         const Icon(LucideIcons.cloudUpload, size: 60, color: TNColors.darkGrey),
         const Gap(12),
         Text(
-          TNTextStrings.uploadFiles,
+          title,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         Text(
-          TNTextStrings.dragAndDrop,
+          subTitle,
           style: Theme.of(context).textTheme.bodySmall,
-          overflow: TextOverflow.ellipsis,
+          // overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
         ),
         const Gap(16),
 
         ///  Browse Files Button
         ElevatedButton(
-          onPressed: () async {
-            // TODO: File picker logic here
-          },
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: TNColors.buttonDisabled,
             elevation: 0,
@@ -42,7 +45,7 @@ class UploadImageSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
             ),
           ),
-          child: const Text(TNTextStrings.browseFiles),
+          child:  Text(buttonTitle),
         ),
       ],
     );

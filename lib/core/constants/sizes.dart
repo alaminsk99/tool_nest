@@ -6,6 +6,7 @@ class TNSizes {
   static const double spaceSM = 8.0;
   static const double spaceMD = 16.0;
   static const double spaceLG = 24.0;
+  static const double spaceXXL = 40.0;
   static const double spaceXL = 32.0;
   static const double defaultSpace = 24.0;
   static const double spaceBetweenItems = 16.0;
