@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
@@ -34,10 +35,14 @@ class OrientationSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
           ),
           title: Text(selectedOrientation),
-          trailing: const Icon(Icons.keyboard_arrow_down),
+          trailing: const Icon(LucideIcons.chevronDown),
           onTap: () => ItemsSelectionBottomSheet.show(
               context: context,
-              title: TNTextStrings.selectOrientation, options: orientations, selectedValue: selectedOrientation, onSelect: onSelect),
+              title: TNTextStrings.selectOrientation,
+              options: orientations,
+              selectedValue: selectedOrientation,
+              onSelect: onSelect,
+          ),
         ),
       ],
     );

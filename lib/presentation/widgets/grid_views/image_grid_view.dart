@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/container/selected_image_container_with_image_path.dart';
 
 class ImageGridView extends StatelessWidget {
   final List<String> imagePaths;
@@ -10,11 +12,7 @@ class ImageGridView extends StatelessWidget {
   const ImageGridView({super.key, required this.imagePaths});
 
 
-  Future<Size> _getImageSize(String path) async {
-    final bytes = await File(path).readAsBytes();
-    final image = await decodeImageFromList(bytes);
-    return Size(image.width.toDouble(), image.height.toDouble());
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,7 @@ class ImageGridView extends StatelessWidget {
             itemBuilder: (context, index) {
               final imagePath = imagePaths[index];
               return FutureBuilder<Size>(
-                future: _getImageSize(imagePath),
+                future: getImageSize(imagePath),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
@@ -51,17 +49,7 @@ class ImageGridView extends StatelessWidget {
                   final height =  width / aspectRatio;
 
 
-                  return ClipRRect(
-
-                    borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
-                    child: SizedBox(
-                      height: height,
-                      child: Image.file(
-                        File(imagePath),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  );
+                  return SelectedImageContainerWithPath(height: height, imagePath: imagePath);
                 },
               );
             },
@@ -72,3 +60,4 @@ class ImageGridView extends StatelessWidget {
     );
   }
 }
+

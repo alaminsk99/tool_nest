@@ -17,7 +17,7 @@ class ImageTools extends StatelessWidget {
           icon: LucideIcons.image,
           title: TNTextStrings.compressImage,
           subTitle: TNTextStrings.compressImageSubTitle,
-          onPressed: () {}, // Placeholder
+          onPressed: () => context.goNamed(AppRoutes.imageCompressor), // Placeholder
         ),
         ListTileForTools(
           icon: LucideIcons.minimize,

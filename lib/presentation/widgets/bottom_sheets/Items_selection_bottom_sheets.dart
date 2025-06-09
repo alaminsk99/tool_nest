@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 
@@ -31,7 +32,7 @@ class ItemsSelectionBottomSheet {
                 return ListTile(
                   title: Text(option),
                   trailing: isSelected
-                      ? const Icon(Icons.check, color: TNColors.primary)
+                      ? const Icon(LucideIcons.check, color: TNColors.primary)
                       : null,
                   onTap: () {
                     Navigator.pop(context);

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_page.dart';
@@ -6,10 +6,10 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/imag
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/image_preview_card.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/process_finished_for_image_to_pdf.dart';
-import 'package:tool_nest/presentation/pages/tools/tools_pages.dart';
-import 'package:tool_nest/presentation/widgets/card/process_finished_card.dart';
-import 'package:tool_nest/presentation/widgets/loader/loader_screen.dart';
 
+
+import '../../presentation/pages/tools/image_tools/image_compressor/image_compress_page.dart';
+import '../../presentation/pages/tools/image_tools/image_compressor/image_compress_settings.dart';
 import 'route_paths.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -35,11 +35,6 @@ final GoRouter appRouter = GoRouter(
               builder: (context, state) => const ImageToPdfPreview(),
             ),
             GoRoute(
-              path: AppRoutes.loaderPath,
-              name: AppRoutes.loader,
-              builder: (context, state) => const LoaderScreen(),
-            ),
-            GoRoute(
               path: AppRoutes.resultPath,
               name: AppRoutes.result,
               builder: (context, state) {
@@ -59,6 +54,19 @@ final GoRouter appRouter = GoRouter(
 
           ],
         ),
+        GoRoute(
+          path: AppRoutes.imageCompressorPath,
+          name: AppRoutes.imageCompressor,
+          builder: (context, state) => const ImageCompressPage(),
+          routes: [
+            GoRoute(
+              path: AppRoutes.imageCompressorSettingsPath,
+              name: AppRoutes.imageCompressorSettings,
+              builder: (context, state) => const ImageCompressorSettings(),
+            ),
+          ]
+
+        )
       ],
     ),
   ],

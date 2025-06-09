@@ -5,12 +5,12 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 
 class IconWithProcess extends StatelessWidget {
   const IconWithProcess({
-    super.key, this.onPressed, required this.title, required this.icon,
+    super.key, this.onPressed, required this.title, this.icon,
   });
 
   final VoidCallback? onPressed;
   final String title;
-  final IconData icon;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class IconWithProcess extends StatelessWidget {
           backgroundColor: WidgetStateProperty.all(TNColors.primary),
           foregroundColor: WidgetStateProperty.all(TNColors.black),
         ),
-        icon: Icon(icon),
+        icon: icon != null? Icon(icon): null,
         label:  Text(title),
       ),
     );

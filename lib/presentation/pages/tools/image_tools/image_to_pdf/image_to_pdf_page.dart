@@ -50,10 +50,12 @@ class _ImageToPdfPageState extends State<ImageToPdfPage> {
                   }
                 },
                 builder: (context, state) {
-                  if (state is ImageSelectionSuccess && state.imagePaths.isNotEmpty) {
-                    return ImageGridView(imagePaths: state.imagePaths);
+                  if (state is ImageSelectionSuccess && state.selectedImages.isNotEmpty) {
+                    return ImageGridView(imagePaths: state.selectedImages.map((file) => file.path).toList());
                   }
                   return UploadImageContainer(
+                    title: TNTextStrings.uploadFiles,
+                    subTitle: TNTextStrings.dragAndDrop,
                     onPressed: () => bloc.add(SelectImagesEvent()),
                   );
                 },
@@ -64,7 +66,7 @@ class _ImageToPdfPageState extends State<ImageToPdfPage> {
               builder: (context, state) {
                 return ProcessButton(
                   onPressed: () {
-                    if (state is ImageSelectionSuccess && state.imagePaths.isNotEmpty) {
+                    if (state is ImageSelectionSuccess && state.selectedImages.isNotEmpty) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => const ImageToPdfSettings()),

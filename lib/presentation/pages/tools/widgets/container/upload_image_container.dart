@@ -8,10 +8,12 @@ import '../../image_tools/image_to_pdf/widgets/upload_image_section.dart';
 
 class UploadImageContainer extends StatelessWidget {
   const UploadImageContainer({
-    super.key, this.onPressed,
+    super.key, this.onPressed,required this.title, required this.subTitle,
   });
 
   final VoidCallback? onPressed;
+  final String title;
+  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class UploadImageContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
         border: Border.all(color: TNColors.borderPrimary),
       ),
-      child: UploadImageSection(title: TNTextStrings.uploadFiles,subTitle: TNTextStrings.dragAndDrop,onPressed: onPressed,buttonTitle: TNTextStrings.browseFiles,),
+      child: UploadImageSection(title: title,subTitle: subTitle,onPressed: onPressed,buttonTitle: TNTextStrings.browseFiles,),
     );
   }
 }

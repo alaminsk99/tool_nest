@@ -13,14 +13,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 
 class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
-  List<File> selectedImages = [];
-  String pageSize = 'A4';
-  String orientation = 'Portrait';
-  double margin = 10.0;
-
   ImageToPdfBloc() : super(ImageToPdfInitial()) {
     on<SelectImagesEvent>(_onSelectImages);
     on<UpdateSettingsEvent>(_onUpdateSettings);
+    on<ToggleMarginTypeEvent>(_onToggleMarginType);
+    on<UpdateMarginValueEvent>(_onUpdateMarginValue);
     on<ConvertToPdfEvent>(_onConvertToPdf);
     on<ClearSelectedImagesEvent>(_onClearSelectedImages);
   }
@@ -34,61 +31,108 @@ class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
       );
 
       if (result != null && result.files.isNotEmpty) {
-        selectedImages = result.paths.map((path) => File(path!)).toList();
-        emit(ImageSelectionSuccess(selectedImages.map((e) => e.path).toList()));
+        final selectedImages = result.paths.map((path) => File(path!)).toList();
+        emit(ImageSelectionSuccess(
+          selectedImages: selectedImages,
+          pageSize: state.pageSize,
+          orientation: state.orientation,
+          margin: state.margin,
+          isCustomMargin: state.isCustomMargin,
+        ));
       } else {
-        emit(ImageToPdfError(TNTextStrings.noImageSelected));
+        emit(ImageToPdfError(
+          selectedImages: state.selectedImages,
+          pageSize: state.pageSize,
+          orientation: state.orientation,
+          margin: state.margin,
+          isCustomMargin: state.isCustomMargin,
+          message: TNTextStrings.noImageSelected,
+        ));
       }
     } catch (e) {
-      emit(ImageToPdfError('${TNTextStrings.errorPickingImages}: ${e.toString()}'));
+      emit(ImageToPdfError(
+        selectedImages: state.selectedImages,
+        pageSize: state.pageSize,
+        orientation: state.orientation,
+        margin: state.margin,
+        isCustomMargin: state.isCustomMargin,
+        message: '${TNTextStrings.errorPickingImages}: ${e.toString()}',
+      ));
     }
   }
 
+  void _onUpdateSettings(UpdateSettingsEvent event, Emitter emit) {
+    emit(SettingsUpdated(
+      selectedImages: state.selectedImages,
+      pageSize: event.pageSize,
+      orientation: event.orientation,
+      margin: event.margin,
+      isCustomMargin: event.isCustomMargin,
+    ));
+  }
+
+  void _onToggleMarginType(ToggleMarginTypeEvent event, Emitter emit) {
+    emit(SettingsUpdated(
+      selectedImages: state.selectedImages,
+      pageSize: state.pageSize,
+      orientation: state.orientation,
+      margin: state.margin,
+      isCustomMargin: event.isCustom,
+    ));
+  }
+
+  void _onUpdateMarginValue(UpdateMarginValueEvent event, Emitter emit) {
+    emit(SettingsUpdated(
+      selectedImages: state.selectedImages,
+      pageSize: state.pageSize,
+      orientation: state.orientation,
+      margin: event.margin,
+      isCustomMargin: state.isCustomMargin,
+    ));
+  }
+
   void _onClearSelectedImages(ClearSelectedImagesEvent event, Emitter emit) {
-    selectedImages.clear();
     emit(ImageToPdfInitial());
   }
 
-  void _onUpdateSettings(UpdateSettingsEvent event, Emitter emit) {
-    pageSize = event.pageSize;
-    orientation = event.orientation;
-    margin = event.margin;
-    emit(SettingsUpdated(pageSize, orientation, margin));
-  }
-
   Future<void> _onConvertToPdf(ConvertToPdfEvent event, Emitter emit) async {
-    emit(PdfConversionInProgress());
+    emit(PdfConversionInProgress(
+      selectedImages: state.selectedImages,
+      pageSize: state.pageSize,
+      orientation: state.orientation,
+      margin: state.margin,
+      isCustomMargin: state.isCustomMargin,
+    ));
 
     try {
       final doc = pw.Document();
 
-      for (var image in selectedImages) {
+      for (var image in state.selectedImages) {
         final imageBytes = await image.readAsBytes();
         final compressed = await FlutterImageCompress.compressWithList(imageBytes);
         final pdfImage = pw.MemoryImage(compressed);
 
-        // If user chose "Original" as page size, match image dimensions
         late pdf.PdfPageFormat pageFormat;
-        if (pageSize == 'Original') {
+        if (state.pageSize == 'Original') {
           final decodedImage = await decodeImageFromList(compressed);
           pageFormat = pdf.PdfPageFormat(
             decodedImage.width.toDouble(),
             decodedImage.height.toDouble(),
           );
         } else {
-          pageFormat = _getPageFormat(pageSize, orientation);
+          pageFormat = _getPageFormat(state.pageSize, state.orientation);
         }
 
         doc.addPage(
           pw.Page(
             pageFormat: pageFormat,
-            margin: pw.EdgeInsets.all(pageSize == 'Original' ? 0 : margin),
+            margin: pw.EdgeInsets.all(state.pageSize == 'Original' ? 0 : state.margin),
             build: (context) => pw.Container(
               color: PdfColors.white,
               alignment: pw.Alignment.center,
               child: pw.Image(
                 pdfImage,
-                fit: pageSize == 'Original' ? pw.BoxFit.fill : pw.BoxFit.contain,
+                fit: state.pageSize == 'Original' ? pw.BoxFit.fill : pw.BoxFit.contain,
               ),
             ),
           ),
@@ -101,13 +145,25 @@ class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
       final file = File(pdfPath);
       await file.writeAsBytes(await doc.save());
 
-      emit(PdfConversionSuccess(pdfPath));
+      emit(PdfConversionSuccess(
+        selectedImages: state.selectedImages,
+        pageSize: state.pageSize,
+        orientation: state.orientation,
+        margin: state.margin,
+        isCustomMargin: state.isCustomMargin,
+        pdfPath: pdfPath,
+      ));
     } catch (e) {
-      emit(ImageToPdfError('${TNTextStrings.pdfConvFailed}: ${e.toString()}'));
+      emit(ImageToPdfError(
+        selectedImages: state.selectedImages,
+        pageSize: state.pageSize,
+        orientation: state.orientation,
+        margin: state.margin,
+        isCustomMargin: state.isCustomMargin,
+        message: '${TNTextStrings.pdfConvFailed}: ${e.toString()}',
+      ));
     }
   }
-
-
 
   pdf.PdfPageFormat _getPageFormat(String size, String orientation) {
     pdf.PdfPageFormat format;

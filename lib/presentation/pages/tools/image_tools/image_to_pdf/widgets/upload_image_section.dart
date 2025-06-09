@@ -26,11 +26,15 @@ class UploadImageSection extends StatelessWidget {
           title,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        Text(
-          subTitle,
-          style: Theme.of(context).textTheme.bodySmall,
-          // overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
+        Gap(TNSizes.spaceXS),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal:  TNSizes.paddingSM),
+          child: Text(
+            subTitle,
+            style: Theme.of(context).textTheme.bodySmall,
+            // overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
         ),
         const Gap(16),
 

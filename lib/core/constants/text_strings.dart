@@ -98,7 +98,7 @@ static const String textExtractor = "Text Extractor";
 static const String textSummarizer = "Text Summarizer";
 
 /// Tools SubTitle
-  static const String compressImageSubTitle = "Reduce image file size without losing quality.";
+
   static const String imageResizerSubTitle = "Resize images to custom dimensions easily.";
   static const String imageToPDFSubTitle = "Convert images into high-quality PDF files.";
   static const String formatConverterSubTitle = "Convert image formats like JPG, PNG, and more.";
@@ -170,6 +170,26 @@ static const String textSummarizer = "Text Summarizer";
 
 
   //--------------------------------------------//
+
+
+/// For image Compressor
+ static const String imageCompressor = "Image Compressor";
+ static const String imageCompressorSettings = "Compression Settings";
+ static const String selectImageToCom = "Upload Images";
+ static const String compressImageSubTitle = "Reduce image file size without losing quality";
+ static const String compressNowButtonTit = "Compress Now";
+ static const String restButton = "Rest";
+ static const String saveAsTitle = "Save As";
+ static const String selectImgFormat = "Select Image Format";
+ static const String resolution = "Resolution";
+ static const String selectImgResolution = "Select Image Resolution";
+ static const String compressionQuality = "Compression Quality";
+ static const String compressionResult = "Compression Results";
+ static const String compressionFiled = "Compression failed";
+ static const String compressionPageSubTitle = "Reduce image file size without losing quality (JPG,JPEG & PNG)";
+
+
+
 
 
 

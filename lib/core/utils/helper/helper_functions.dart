@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 // import 'package:get/get.dart';
 // import 'package:intl/intl.dart';
 
@@ -70,6 +71,10 @@ class TNHelperFunctions{
   }
   static double screenWidth(BuildContext context){
     return MediaQuery.of(context).size.width;
+  }
+
+  void  showToastMessage(String message){
+    Fluttertoast.showToast(msg: message,backgroundColor: TNColors.primary,textColor: TNColors.white);
   }
 
   // static String getFormattedDate(DateTime date,{String format = 'dd MM yyyy'}){
