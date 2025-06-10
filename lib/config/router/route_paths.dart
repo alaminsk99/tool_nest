@@ -11,6 +11,7 @@ class AppRoutes {
   static const processFinishedForImgToPdfPath = 'process-finished-image-to-pdf';
   static const imageCompressorPath = 'image-compressor';
   static const imageCompressorSettingsPath = 'image-compressor-settings';
+  static const imageCompressorResultPath = 'image-compressor-result';
 
   // Route Names
   static const imageToPdf = 'imageToPdf';
@@ -20,4 +21,5 @@ class AppRoutes {
   static const processFinishedForImgToPdf = 'processFinishedForImGToPdf';
   static const imageCompressor = 'imageCompressor';
   static const imageCompressorSettings = 'imageCompressorSettings';
+  static const imageCompressorResult = 'imageCompressorResult';
 }

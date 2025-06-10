@@ -26,4 +26,4 @@ class UpdateCompressionSettings extends ImageCompressorEvent {
   });
 }
 class CompressImageNow extends ImageCompressorEvent {}
-class ClearSelectedImagesEventForImageCompressor extends ImageCompressorEvent {}
+class ClearSelectedImagesForImageCompressor extends ImageCompressorEvent {}

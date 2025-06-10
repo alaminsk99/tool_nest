@@ -1,29 +1,28 @@
-
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_event.dart';
-import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
+import 'image_compressor_event.dart';
+import 'image_compressor_state.dart';
 
 class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorState> {
-  File? _selectedImage;
-  double _quality = 70;
-  String _format = 'jpeg';
-  String _resolution = 'original';
-
   ImageCompressorBloc() : super(ImageCompressorInitial()) {
     on<SelectImageForCompression>(_onSelectImage);
     on<UpdateCompressionSettings>(_onUpdateSettings);
     on<ResetCompressionSettings>(_onResetSettings);
     on<CompressImageNow>(_onCompressImage);
-    on<ClearSelectedImagesEventForImageCompressor>(_onClearSelectedImagesForImageCompressor);
+    on<ClearSelectedImagesForImageCompressor>(_onClearSelectedImages);
   }
 
-  Future<void> _onSelectImage(SelectImageForCompression event, Emitter emit) async {
+  Future<void> _onSelectImage(
+      SelectImageForCompression event,
+      Emitter<ImageCompressorState> emit,
+      ) async {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -32,85 +31,163 @@ class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorStat
       );
 
       if (result != null && result.files.isNotEmpty) {
-        _selectedImage = File(result.files.first.path!);
-        emit(ImageCompressorSelected(_selectedImage!.path));
+        final selectedImage = File(result.files.first.path!);
+        emit(ImageCompressorSelected(
+          selectedImage: selectedImage,
+          quality: state.quality,
+          format: state.format,
+          resolution: state.resolution,
+        ));
       } else {
-        emit(ImageCompressorError(TNTextStrings.noImageSelected));
+        emit(ImageCompressorError(
+          selectedImage: state.selectedImage,
+          quality: state.quality,
+          format: state.format,
+          resolution: state.resolution,
+          message: TNTextStrings.noImageSelected,
+        ));
       }
     } catch (e) {
-      emit(ImageCompressorError(TNTextStrings.errorPickingImages));
+      emit(ImageCompressorError(
+        selectedImage: state.selectedImage,
+        quality: state.quality,
+        format: state.format,
+        resolution: state.resolution,
+        message: '${TNTextStrings.errorPickingImages}: ${e.toString()}',
+      ));
     }
   }
-  void _onClearSelectedImagesForImageCompressor(ClearSelectedImagesEventForImageCompressor event, Emitter emit) {
-    _selectedImage = null;
-    emit(ImageCompressorInitial());
-  }
 
-  void _onUpdateSettings(UpdateCompressionSettings event, Emitter emit) {
-    _quality = event.quality;
-    _format = event.format;
-    _resolution = event.resolution;
+  void _onUpdateSettings(
+      UpdateCompressionSettings event,
+      Emitter<ImageCompressorState> emit,
+      ) {
     emit(ImageCompressionSettingsUpdated(
-      quality: _quality,
-      format: _format,
-      resolution: _resolution,
+      selectedImage: state.selectedImage,
+      quality: event.quality,
+      format: event.format,
+      resolution: event.resolution,
     ));
   }
 
-  void _onResetSettings(ResetCompressionSettings event, Emitter emit) {
-    _quality = 70;
-    _format = 'jpeg';
-    _resolution = 'original';
+  void _onResetSettings(
+      ResetCompressionSettings event,
+      Emitter<ImageCompressorState> emit,
+      ) {
     emit(ImageCompressionSettingsUpdated(
-      quality: _quality,
-      format: _format,
-      resolution: _resolution,
+      selectedImage: state.selectedImage,
+      quality: 70,
+      format: 'JPEG',
+      resolution: 'Original',
     ));
   }
 
-  Future<void> _onCompressImage(CompressImageNow event, Emitter emit) async {
-    if (_selectedImage == null) {
-      emit(ImageCompressorError("No image selected"));
+  Future<void> _onCompressImage(
+      CompressImageNow event,
+      Emitter<ImageCompressorState> emit,
+      ) async {
+    if (state.selectedImage == null) {
+      emit(ImageCompressorError(
+        selectedImage: state.selectedImage,
+        quality: state.quality,
+        format: state.format,
+        resolution: state.resolution,
+        message: TNTextStrings.noImageSelected,
+      ));
       return;
     }
 
-    emit(ImageCompressorLoading());
+    emit(ImageCompressionInProgress(
+      selectedImage: state.selectedImage,
+      quality: state.quality,
+      format: state.format,
+      resolution: state.resolution,
+    ));
 
     try {
-      final compressedPath = await _compressImage(
-        filePath: _selectedImage!.path,
-        quality: _quality,
-        format: _format,
-        resolution: _resolution,
+      final compressedFile = await _compressImage(
+        file: state.selectedImage!,
+        quality: state.quality,
+        format: state.format,
+        resolution: state.resolution,
       );
-      emit(ImageCompressionSuccess(compressedPath));
+
+      emit(ImageCompressionSuccess(
+        selectedImage: state.selectedImage,
+        quality: state.quality,
+        format: state.format,
+        resolution: state.resolution,
+        compressedFile: compressedFile, // Now passing File instead of path
+      ));
     } catch (e) {
-      emit(ImageCompressorError("Compression failed: ${e.toString()}"));
+      emit(ImageCompressorError(
+        selectedImage: state.selectedImage,
+        quality: state.quality,
+        format: state.format,
+        resolution: state.resolution,
+        message: '${TNTextStrings.compressionFiled}: ${e.toString()}',
+      ));
+      debugPrint("FAiled comp ${e.toString()}");
     }
   }
 
-  Future<String> _compressImage({
-    required String filePath,
+
+  void _onClearSelectedImages(
+      ClearSelectedImagesForImageCompressor event,
+      Emitter<ImageCompressorState> emit,
+      ) {
+    emit(ImageCompressorInitial());
+  }
+
+  Future<File> _compressImage({
+    required File file,
     required double quality,
     required String format,
     required String resolution,
   }) async {
+    final bytes = await file.readAsBytes();
     final dir = await getTemporaryDirectory();
     final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    final extension = format == 'png' ? 'png' : 'jpg';
-    final targetPath = '${dir.path}/compressed_$timestamp.$extension';
 
-    final formatEnum = format == 'png' ? CompressFormat.png : CompressFormat.jpeg;
+    // Handle different formats
+    final formatEnum = format == 'PNG'
+        ? CompressFormat.png
+        : CompressFormat.jpeg;
 
-    final result = await FlutterImageCompress.compressAndGetFile(
-      filePath,
+    final extension = format == 'PNG' ? 'png' : 'jpg';
+    final targetPath = '${dir.path}/${TNTextStrings.appNameDirectory}$timestamp.$extension';
+
+    // Handle resolution
+    int? width, height;
+    if (resolution != 'Original') {
+      final img = await decodeImageFromList(bytes);
+      final ratio = resolution == 'High' ? 0.75 :
+      resolution == 'Medium' ? 0.5 : 0.25;
+      width = (img.width * ratio).round();
+      height = (img.height * ratio).round();
+    }
+
+    final result = (width != null && height != null)
+        ? await FlutterImageCompress.compressAndGetFile(
+      file.path,
       targetPath,
       quality: quality.toInt(),
       format: formatEnum,
+      minWidth: width,
+      minHeight: height,
+      keepExif: true,
+    )
+        : await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      targetPath,
+      quality: quality.toInt(),
+      format: formatEnum,
+      keepExif: true,
     );
 
-    if (result == null) throw Exception(TNTextStrings.compressionFiled);
-    return result.path;
+    if (result == null){
+      throw Exception(TNTextStrings.compressionFiled);
+    }
+    return File(result.path);
   }
 }
-

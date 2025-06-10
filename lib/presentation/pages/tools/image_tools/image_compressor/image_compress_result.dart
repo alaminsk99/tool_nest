@@ -1,32 +1,204 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/widgets/buttons/action_button_for_compress_image.dart';
-import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 
+class ImageCompressResult extends StatefulWidget {
+  const ImageCompressResult({super.key, required this.state});
+  final ImageCompressionSuccess state;
 
-class ImageCompressResult extends StatelessWidget {
-  const ImageCompressResult({super.key});
+  @override
+  State<ImageCompressResult> createState() => _ImageCompressResultState();
+}
+
+class _ImageCompressResultState extends State<ImageCompressResult> {
+  bool _showOriginal = false;
+  bool _isSaving = false;
+
+  Future<void> _saveToGallery() async {
+    setState(() => _isSaving = true);
+    try {
+      final bytes = await widget.state.compressedFile.readAsBytes();
+
+      final result = await ImageGallerySaverPlus.saveImage(
+        bytes,
+        name: "${TNTextStrings.appNameDirectory}${DateTime.now().millisecondsSinceEpoch}",
+      );
+
+      if (result['isSuccess'] == true || result['filePath'] != null) {
+        SnackbarHelper.showSuccess(context, TNTextStrings.save);
+      } else {
+        throw Exception('Saving failed');
+      }
+    } catch (e) {
+      SnackbarHelper.showError(context, '${TNTextStrings.failedToSave}: $e');
+    } finally {
+      setState(() => _isSaving = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final currentFile = _showOriginal
+        ? widget.state.selectedImage!
+        : widget.state.compressedFile;
+
+    final currentSize = _showOriginal
+        ? widget.state.originalSize
+        : widget.state.compressedSize;
+
     return Scaffold(
-      appBar: AppbarForMainSections(title: TNTextStrings.compressionResult, isLeadingIcon: true),
-      body: SafeArea(
-        child: Padding(
-          padding: TNPaddingStyle.allPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Here is Preview Option in
-
-
-              // Here is buttons for Share the compressed image to other apps and Save button for saved the image
-              // ActionButtonForShareAndDownload(filePath: null),
-            ],
+      appBar: AppBar(
+        title: Text(TNTextStrings.compressionResult),
+     automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save_alt),
+            onPressed: _isSaving ? null : _saveToGallery,
           ),
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Preview Section
+            Expanded(
+              child: Stack(
+                children: [
+                  PhotoView(
+                    imageProvider: FileImage(currentFile),
+                    minScale: PhotoViewComputedScale.contained,
+                    maxScale: PhotoViewComputedScale.covered * 2,
+                  ),
+
+                  // Size Indicator
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        currentSize,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Comparison Controls
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: Theme.of(context).cardColor,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      icon: Icon(_showOriginal
+                          ? Icons.toggle_on
+                          : Icons.toggle_off),
+                      label: Text(TNTextStrings.showOriginal),
+                      onPressed: () => setState(() => _showOriginal = true),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: _showOriginal
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      icon: Icon(!_showOriginal
+                          ? Icons.toggle_on
+                          : Icons.toggle_off),
+                      label: Text(TNTextStrings.showCompressed),
+                      onPressed: () => setState(() => _showOriginal = false),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: !_showOriginal
+                            ? Theme.of(context).primaryColor
+                            : null,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Info Panel
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                  ),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Text(TNTextStrings.original,
+                          style:
+                          Theme.of(context).textTheme.labelSmall),
+                      Text(widget.state.originalSize,
+                          style:
+                          Theme.of(context).textTheme.titleMedium),
+                    ],
+                  ),
+                  const Icon(Icons.arrow_right_alt, size: 36),
+                  Column(
+                    children: [
+                      Text(TNTextStrings.compressed,
+                          style:
+                          Theme.of(context).textTheme.labelSmall),
+                      Text(widget.state.compressedSize,
+                          style:
+                          Theme.of(context).textTheme.titleMedium),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(TNTextStrings.reduction,
+                          style:
+                          Theme.of(context).textTheme.labelSmall),
+                      Text(
+                        _calculateReduction(
+                          widget.state.selectedImage!.lengthSync(),
+                          widget.state.compressedFile.lengthSync(),
+                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(color: Colors.green),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  String _calculateReduction(int original, int compressed) {
+    final reduction = ((original - compressed) / original * 100).round();
+    return '$reduction%';
   }
 }

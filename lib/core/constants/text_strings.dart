@@ -161,7 +161,7 @@ static const String textSummarizer = "Text Summarizer";
 
   /// This Internal Directory
 
-  static const String converted = "Tool Nest_";/// This is name also of the generated file
+  static const String appNameDirectory = "Tool Nest_";/// This is name also of the generated file
   static const String downloadDirectory = "/storage/emulated/0/Download";
   static const String storagePermissionDenied = "Storage permission denied";
   static const String cannotFindStorage = "Cannot find storage";
@@ -186,6 +186,12 @@ static const String textSummarizer = "Text Summarizer";
  static const String compressionQuality = "Compression Quality";
  static const String compressionResult = "Compression Results";
  static const String compressionFiled = "Compression failed";
+ static const String original = "Original";
+ static const String compressed = "Compressed";
+ static const String reduction = "Reduction";
+ static const String showCompressed = "Show Compressed";
+ static const String showOriginal = "Show Original";
+ static const String failedToSave = "Failed To Save";
  static const String compressionPageSubTitle = "Reduce image file size without losing quality (JPG,JPEG & PNG)";
 
 

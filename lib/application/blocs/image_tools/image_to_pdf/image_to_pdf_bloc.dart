@@ -141,7 +141,7 @@ class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
 
       final dir = await getTemporaryDirectory();
       final formattedDate = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-      final pdfPath = '${dir.path}/${TNTextStrings.converted}$formattedDate.pdf';
+      final pdfPath = '${dir.path}/${TNTextStrings.appNameDirectory}$formattedDate.pdf';
       final file = File(pdfPath);
       await file.writeAsBytes(await doc.save());
 

@@ -1,6 +1,8 @@
 
 import 'package:go_router/go_router.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_result.dart';
@@ -63,6 +65,15 @@ final GoRouter appRouter = GoRouter(
               path: AppRoutes.imageCompressorSettingsPath,
               name: AppRoutes.imageCompressorSettings,
               builder: (context, state) => const ImageCompressorSettings(),
+            ),
+            GoRoute(
+              path: AppRoutes.imageCompressorResultPath,
+              name: AppRoutes.imageCompressorResult,
+
+              builder: (context, state) {
+                final resultState  = state.extra as ImageCompressionSuccess;
+                return ImageCompressResult(state: resultState ,);
+              }
             ),
           ]
 

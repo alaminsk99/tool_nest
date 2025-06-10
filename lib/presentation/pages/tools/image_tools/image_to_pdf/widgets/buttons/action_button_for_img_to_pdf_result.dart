@@ -47,8 +47,6 @@ class ActionButtonForImgToPdfResult extends StatelessWidget {
 
 
   void _savePdf(BuildContext context) async {
-    final file = File(pdfPath);
-    final fileName = pdfPath.split('/').last;
 
     try {
       final hasPermission = await requestStoragePermission();
@@ -57,7 +55,7 @@ class ActionButtonForImgToPdfResult extends StatelessWidget {
         return;
       }
 
-      final path = await FileServices().saveToDownloads(file, fileName);
+      final path = await FileServices().saveToDownloads(pdfPath);
       if (path != null) {
         // Show success snackbar
         SnackbarHelper.showSuccess(

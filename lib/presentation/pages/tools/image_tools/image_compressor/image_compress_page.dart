@@ -26,24 +26,20 @@ class ImageCompressPage extends StatefulWidget {
   State<ImageCompressPage> createState() => _ImageCompressPageState();
 }
 
-
 class _ImageCompressPageState extends State<ImageCompressPage> {
-
   late ImageCompressorBloc bloc;
 
   @override
   void initState() {
     super.initState();
     bloc = context.read<ImageCompressorBloc>();
-    bloc.add(ClearSelectedImagesEventForImageCompressor());
+    bloc.add(ClearSelectedImagesForImageCompressor());
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // ... (appbar and other elements)
       appBar: AppbarForMainSections(title: TNTextStrings.imageCompressor, isLeadingIcon: true),
       body: SafeArea(
         child: Padding(
@@ -51,43 +47,44 @@ class _ImageCompressPageState extends State<ImageCompressPage> {
           child: Column(
             children: [
               Expanded(
-                child: BlocConsumer<ImageCompressorBloc,ImageCompressorState>(
+                child: BlocConsumer<ImageCompressorBloc, ImageCompressorState>(
                   listener: (context, state) {
                     if (state is ImageCompressorError) {
                       DialogOptions().showModernErrorDialog(context, state.message);
                     }
-
-                  }, builder: (context, state) {
-                    if(state is ImageCompressorSelected && state.imagePath.isNotEmpty){
-                      return SingleImageViewContainer(imagePath: state.imagePath);
+                  },
+                  builder: (context, state) {
+                    if (state.selectedImage != null) {
+                      return SingleImageViewContainer(
+                        imagePath: state.selectedImage!.path,
+                      );
                     }
-
-                    return      UploadImageContainer(
-                  title: TNTextStrings.selectImageToCom,
-                  subTitle: TNTextStrings.compressionPageSubTitle,
-                  onPressed: () => bloc.add(SelectImageForCompression()),
-                  );
-                },
+                    return UploadImageContainer(
+                      title: TNTextStrings.selectImageToCom,
+                      subTitle: TNTextStrings.compressionPageSubTitle,
+                      onPressed: () =>bloc.add(SelectImageForCompression()),
+                    );
+                  },
                 ),
               ),
-
-
               const Gap(TNSizes.spaceMD),
-             BlocBuilder<ImageCompressorBloc,ImageCompressorState>(
-               builder: (context, state) {
-                 return  ProcessButton(
-                   text: TNTextStrings.continueText,
-                   onPressed: (){
-                     if(state is ImageCompressorSelected && state.imagePath.isNotEmpty){
-                       // Navigator.push(context, MaterialPageRoute(builder: (_)=> const ImageCompressorSettings()));
-                       context.pushNamed(AppRoutes.imageCompressorSettings);
-                     }else{
-                       DialogOptions().showModernErrorDialog(context, TNTextStrings.pleSelLeaImg);
-                     }
-                   },
-                 );
-               },
-             )
+              BlocBuilder<ImageCompressorBloc, ImageCompressorState>(
+                builder: (context, state) {
+                  return ProcessButton(
+                    text: TNTextStrings.continueText,
+                    onPressed: () {
+                      if (state.selectedImage != null) {
+                        context.pushNamed(AppRoutes.imageCompressorSettings);
+                      } else {
+                        DialogOptions().showModernErrorDialog(
+                          context,
+                          TNTextStrings.pleSelLeaImg,
+                        );
+                      }
+                    },
+                  );
+                },
+              )
             ],
           ),
         ),
