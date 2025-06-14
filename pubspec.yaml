@@ -27,9 +27,13 @@ dependencies:
   #To Get Images
   image_picker: ^1.1.2
   file_picker: ^10.1.9
+  image: ^4.5.4
+
+
   # Replaced gallery_saver with image_gallery_saver_plus for http compatibility
   image_gallery_saver_plus: ^4.0.1 # Updated to a compatible version
   photo_view: ^0.15.0
+
 
   #For PDF Creation
   pdf: ^3.11.3
@@ -65,6 +69,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   flutter_staggered_grid_view: ^0.7.0
   flutter_image_compress: ^2.4.0
+
 
   #Networking package
   http: ^1.4.0

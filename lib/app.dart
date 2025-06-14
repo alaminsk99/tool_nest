@@ -6,6 +6,7 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 
 import 'application/blocs/image_tools/image_compressor/image_compressor_bloc.dart';
+import 'application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'application/blocs/image_tools/image_to_pdf/image_to_pdf_bloc.dart';
 import 'config/router/app_router.dart';
 
@@ -20,6 +21,7 @@ class App extends StatelessWidget {
         BlocProvider<NavBloc>(create: (_) => NavBloc(),),
         BlocProvider<ImageToPdfBloc>(create: (_) => ImageToPdfBloc(),),
         BlocProvider<ImageCompressorBloc>(create: (_) => ImageCompressorBloc(),),
+        BlocProvider<ImageResizerBloc>(create: (_) => ImageResizerBloc(),),
 
       ],
       child: MaterialApp.router(

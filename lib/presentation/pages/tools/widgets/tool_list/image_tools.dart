@@ -17,13 +17,13 @@ class ImageTools extends StatelessWidget {
           icon: LucideIcons.image,
           title: TNTextStrings.compressImage,
           subTitle: TNTextStrings.compressImageSubTitle,
-          onPressed: () => context.goNamed(AppRoutes.imageCompressor), // Placeholder
+          onPressed: () => context.goNamed(AppRoutes.imageCompressor),
         ),
         ListTileForTools(
           icon: LucideIcons.minimize,
           title: TNTextStrings.imageResizer,
           subTitle: TNTextStrings.imageResizerSubTitle,
-          onPressed: () {}, // Placeholder
+          onPressed: () => context.goNamed(AppRoutes.imageResize),
         ),
         ListTileForTools(
           icon: LucideIcons.fileImage,

@@ -1,44 +1,60 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
 import 'package:tool_nest/core/utils/helper/helper_functions.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/container/select_image_container_with_image_code.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/container/selected_image_container_with_image_path.dart';
-import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
 
 class SingleImageViewContainer extends StatelessWidget {
-  const SingleImageViewContainer({super.key, required this.imagePath});
-  final String imagePath;
+  const SingleImageViewContainer({
+    super.key,
+    this.imagePath,
+    this.imageBytes,
+  });
+
+  final String? imagePath;
+  final Uint8List? imageBytes;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Use constraints directly instead of screen width
         final maxWidth = constraints.maxWidth;
         final maxHeight = constraints.maxHeight;
 
-        return FutureBuilder<Size>(
-          future: getImageSize(imagePath),
-          builder: (context, snapshot) {
+        // Case 1: show image from memory (bytes)
+        if (imagePath == null && imageBytes != null) {
+          return SelectImageContainerWithImageCode(imageBytes: imageBytes!);
+        }
 
-            if (snapshot.hasError || !File(imagePath).existsSync()) {
-              TNHelperFunctions().showToastMessage(TNTextStrings.errorPickingImages);
-              return SizedBox.shrink();
-            }
+        // Case 2: show image from file path
+        if (imagePath != null && File(imagePath!).existsSync()) {
+          return FutureBuilder<Size>(
+            future: getImageSize(imagePath!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(color: TNColors.primary),
+                );
+              }
 
-            // Handle loading state
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(color: TNColors.primary),
-              );
-            }
+              if (snapshot.hasError || !snapshot.hasData) {
+                TNHelperFunctions().showToastMessage(TNTextStrings.errorPickingImages);
+                return const SizedBox.shrink();
+              }
 
-            final size = snapshot.data!;
-            return _buildImageContainer(size, maxWidth, maxHeight);
-          },
-        );
+              final size = snapshot.data!;
+              return _buildImageContainer(size, maxWidth, maxHeight);
+            },
+          );
+        }
+
+        // Fallback
+        TNHelperFunctions().showToastMessage(TNTextStrings.errorPickingImages);
+        return const SizedBox.shrink();
       },
     );
   }
@@ -48,7 +64,6 @@ class SingleImageViewContainer extends StatelessWidget {
     double containerWidth = maxWidth;
     double containerHeight = maxWidth / aspectRatio;
 
-    // Adjust if calculated height exceeds available height
     if (containerHeight > maxHeight) {
       containerHeight = maxHeight;
       containerWidth = maxHeight * aspectRatio;
@@ -58,9 +73,11 @@ class SingleImageViewContainer extends StatelessWidget {
       child: SizedBox(
         width: containerWidth,
         height: containerHeight,
-        child: SelectedImageContainerWithPath(imagePath: imagePath, height: containerHeight,),
+        child: SelectedImageContainerWithPath(
+          imagePath: imagePath!,
+          height: containerHeight,
+        ),
       ),
     );
   }
-
 }

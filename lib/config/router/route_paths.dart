@@ -12,6 +12,9 @@ class AppRoutes {
   static const imageCompressorPath = 'image-compressor';
   static const imageCompressorSettingsPath = 'image-compressor-settings';
   static const imageCompressorResultPath = 'image-compressor-result';
+  static const imageResizePath = 'image-resize';
+  static const imageResizeSettingsPath = 'image-resize-settings';
+  static const imageResizeResultPath = 'image-resize-result';
 
   // Route Names
   static const imageToPdf = 'imageToPdf';
@@ -22,4 +25,10 @@ class AppRoutes {
   static const imageCompressor = 'imageCompressor';
   static const imageCompressorSettings = 'imageCompressorSettings';
   static const imageCompressorResult = 'imageCompressorResult';
+  static const imageResize = 'imageResize';
+  static const imageResizeSettings = 'imageResizeSettings';
+  static const imageResizeResult = 'imageResizeResult';
+
+
+
 }

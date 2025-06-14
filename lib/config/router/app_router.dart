@@ -8,6 +8,9 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/imag
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/image_preview_card.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/process_finished_for_image_to_pdf.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_page.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_result.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_settings.dart';
 
 
 import '../../presentation/pages/tools/image_tools/image_compressor/image_compress_page.dart';
@@ -77,6 +80,27 @@ final GoRouter appRouter = GoRouter(
               }
             ),
           ]
+
+        ),
+        GoRoute(
+            path: AppRoutes.imageResizePath,
+            name: AppRoutes.imageResize,
+            builder: (context, state) => const ImageResizePage(),
+            routes: [
+              GoRoute(
+                path: AppRoutes.imageResizeSettingsPath,
+                name: AppRoutes.imageResizeSettings,
+                builder: (context, state) => const ImageResizeSettingsPage(),
+              ),
+              GoRoute(
+                  path: AppRoutes.imageResizeResultPath,
+                  name: AppRoutes.imageResizeResult,
+
+                  builder: (context, state) {
+                    return ImageResizeResult();
+                  }
+              ),
+            ]
 
         )
       ],

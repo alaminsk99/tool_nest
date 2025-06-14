@@ -205,4 +205,12 @@ static const String savingFailed = "Saving failed";
 
 
 
+//// Image Resizer
+  static const String selectImageToResize = "Select Image to Resize";
+  static const String resizePageSubTitle = "Choose an image from your gallery to resize";
+  static const String pleaseSelectImage = "Please select an image first";
+  static const String resizeAndPreview = "Resize & Preview";
+  static const String saveToGallery = "Save to Gallery";
+
+
 }
