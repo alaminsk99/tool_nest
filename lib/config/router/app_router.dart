@@ -22,6 +22,14 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const MainPage(),
       routes: [
         GoRoute(
+          path: AppRoutes.processFinishedForImgToPdfPath,
+          name: AppRoutes.processFinishedForImgToPdf,
+          builder: (context, state) {
+            final path = state.extra as String;
+            return ProcessFinishedForImageToPdf(pdfPath: path);
+          },
+        ),
+        GoRoute(
           path: AppRoutes.imageToPdfPath,
           name: AppRoutes.imageToPdf,
           builder: (context, state) => const ImageToPdfPage(),
@@ -45,14 +53,7 @@ final GoRouter appRouter = GoRouter(
 
               },
             ),
-            GoRoute(
-              path: AppRoutes.processFinishedForImgToPdfPath,
-              name: AppRoutes.processFinishedForImgToPdf,
-              builder: (context, state) {
-                final path = state.extra as String;
-                return ProcessFinishedForImageToPdf(pdfPath: path);
-              },
-            ),
+
 
           ],
         ),

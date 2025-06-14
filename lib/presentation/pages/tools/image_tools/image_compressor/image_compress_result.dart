@@ -1,10 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/core/utils/file_services/file_services.dart';
 import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/buttons/icon_with_outline_button.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/buttons/icon_with_outline_button_with_bacground_color.dart' show IconWithOutlineButtonWithBackgroundColor;
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 
 class ImageCompressResult extends StatefulWidget {
@@ -19,27 +25,6 @@ class _ImageCompressResultState extends State<ImageCompressResult> {
   bool _showOriginal = false;
   bool _isSaving = false;
 
-  Future<void> _saveToGallery() async {
-    setState(() => _isSaving = true);
-    try {
-      final bytes = await widget.state.compressedFile.readAsBytes();
-
-      final result = await ImageGallerySaverPlus.saveImage(
-        bytes,
-        name: "${TNTextStrings.appNameDirectory}${DateTime.now().millisecondsSinceEpoch}",
-      );
-
-      if (result['isSuccess'] == true || result['filePath'] != null) {
-        SnackbarHelper.showSuccess(context, TNTextStrings.save);
-      } else {
-        throw Exception('Saving failed');
-      }
-    } catch (e) {
-      SnackbarHelper.showError(context, '${TNTextStrings.failedToSave}: $e');
-    } finally {
-      setState(() => _isSaving = false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +37,35 @@ class _ImageCompressResultState extends State<ImageCompressResult> {
         : widget.state.compressedSize;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(TNTextStrings.compressionResult),
-     automaticallyImplyLeading: true,
-        actions: [
-          IconButton(
+      appBar: AppbarForMainSections(title: TNTextStrings.compressionResult, isLeadingIcon: true,widgets: [
+        IconButton(
             icon: const Icon(Icons.save_alt),
-            onPressed: _isSaving ? null : _saveToGallery,
-          ),
-        ],
-      ),
+            onPressed: _isSaving ? null : () async{
+              try{
+                await FileServices.saveImageToGallery(
+                  context: context,
+                  imageFile: widget.state.compressedFile,
+                  fileName: "${TNTextStrings.appNameDirectory}${DateTime.now().millisecondsSinceEpoch}",
+                  onStart: () => setState(() => _isSaving = true),
+                  onComplete: () => setState(() => _isSaving = false),
+                );
+
+                /// If Save Successfull then Goto Other screen
+                Future.delayed(const Duration(seconds: 1), () {
+                  context.pushNamed(
+                    AppRoutes.processFinishedForImgToPdf,
+                    extra: 'null',
+                  );
+                });
+              }catch(e){
+                debugPrint("Save error: $e");
+              }
+
+
+            },
+          color: TNColors.white,
+          ),],),
+
       body: SafeArea(
         child: Column(
           children: [
@@ -105,33 +109,31 @@ class _ImageCompressResultState extends State<ImageCompressResult> {
               child: Row(
                 children: [
                   Expanded(
-                    child: OutlinedButton.icon(
-                      icon: Icon(_showOriginal
+                    child: IconWithOutlineButtonWithBackgroundColor(
+                      icon: _showOriginal
                           ? Icons.toggle_on
-                          : Icons.toggle_off),
-                      label: Text(TNTextStrings.showOriginal),
+                          : Icons.toggle_off,
+                      title: TNTextStrings.showOriginal,
                       onPressed: () => setState(() => _showOriginal = true),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: _showOriginal
-                            ? Theme.of(context).primaryColor
+                        color: _showOriginal
+                            ? TNColors.materialPrimaryColor[300]
                             : null,
-                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: OutlinedButton.icon(
-                      icon: Icon(!_showOriginal
-                          ? Icons.toggle_on
-                          : Icons.toggle_off),
-                      label: Text(TNTextStrings.showCompressed),
-                      onPressed: () => setState(() => _showOriginal = false),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: !_showOriginal
-                            ? Theme.of(context).primaryColor
-                            : null,
-                      ),
+
+                    child: IconWithOutlineButtonWithBackgroundColor(
+                      color: _showOriginal?null:TNColors.materialPrimaryColor[300],
+                        icon: !_showOriginal
+                              ? Icons.toggle_on
+                              : Icons.toggle_off,
+
+                        title:TNTextStrings.showCompressed,
+                       onPressed: () => setState(() => _showOriginal = false,
+                       ),
                     ),
+
                   ),
                 ],
               ),

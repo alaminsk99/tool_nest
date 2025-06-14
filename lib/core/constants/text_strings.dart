@@ -184,7 +184,7 @@ static const String textSummarizer = "Text Summarizer";
  static const String resolution = "Resolution";
  static const String selectImgResolution = "Select Image Resolution";
  static const String compressionQuality = "Compression Quality";
- static const String compressionResult = "Compression Results";
+ static const String compressionResult = "Compression Result";
  static const String compressionFiled = "Compression failed";
  static const String original = "Original";
  static const String compressed = "Compressed";
@@ -198,7 +198,9 @@ static const String textSummarizer = "Text Summarizer";
 
 
 
+//// Exception
 
+static const String savingFailed = "Saving failed";
 
 
 

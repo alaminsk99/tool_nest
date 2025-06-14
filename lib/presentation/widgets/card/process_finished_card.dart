@@ -54,7 +54,8 @@ class _ProcessFinishedCardState extends State<ProcessFinishedCard> with SingleTi
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               Gap(TNSizes.spaceXS),
-              Text(
+
+              if(widget.path != 'null')Text(
                 'Path: ${widget.path}',
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,

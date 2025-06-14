@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.textColorTheme,
     this.iconThemeData,
     this.leadingTitleSpacing,
+    this.widgets,
   });
 
   final String title;
@@ -20,6 +21,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextStyle? textColorTheme;
   final bool isLeadingIcon;
   final double? leadingTitleSpacing;
+  final List<Widget>? widgets;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       iconTheme: iconThemeData,
       titleSpacing: leadingTitleSpacing,
+      actions: widgets,
     );
   }
 

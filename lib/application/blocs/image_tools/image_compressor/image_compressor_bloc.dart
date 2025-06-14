@@ -117,7 +117,7 @@ class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorStat
         quality: state.quality,
         format: state.format,
         resolution: state.resolution,
-        compressedFile: compressedFile, // Now passing File instead of path
+        compressedFile: compressedFile,
       ));
     } catch (e) {
       emit(ImageCompressorError(
@@ -133,10 +133,8 @@ class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorStat
 
 
   void _onClearSelectedImages(
-      ClearSelectedImagesForImageCompressor event,
-      Emitter<ImageCompressorState> emit,
-      ) {
-    emit(ImageCompressorInitial());
+      ClearSelectedImagesForImageCompressor event, Emitter emit,) {
+      emit(ImageCompressorInitial());
   }
 
   Future<File> _compressImage({

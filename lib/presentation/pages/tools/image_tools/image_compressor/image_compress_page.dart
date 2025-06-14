@@ -39,7 +39,6 @@ class _ImageCompressPageState extends State<ImageCompressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ... (appbar and other elements)
       appBar: AppbarForMainSections(title: TNTextStrings.imageCompressor, isLeadingIcon: true),
       body: SafeArea(
         child: Padding(

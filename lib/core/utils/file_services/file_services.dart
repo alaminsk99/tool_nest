@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,4 +54,35 @@ class FileServices {
       SnackbarHelper.showError(context, "Failed to share: $e");
     }
   }
+
+
+  static Future<void> saveImageToGallery({
+    required BuildContext context,
+    required File imageFile,
+    String? fileName,
+    VoidCallback? onStart,
+    VoidCallback? onComplete,
+  }) async {
+    try {
+      onStart?.call();
+
+      final bytes = await imageFile.readAsBytes();
+
+      final result = await ImageGallerySaverPlus.saveImage(
+        bytes,
+        name: fileName ?? "${TNTextStrings.appNameDirectory}${DateTime.now().millisecondsSinceEpoch}",
+      );
+
+      if (result['isSuccess'] == true || result['filePath'] != null) {
+        SnackbarHelper.showSuccess(context, TNTextStrings.save);
+      } else {
+        throw Exception(TNTextStrings.savingFailed);
+      }
+    } catch (e) {
+      SnackbarHelper.showError(context, TNTextStrings.failedToSave);
+    } finally {
+      onComplete?.call();
+    }
+  }
+
 }

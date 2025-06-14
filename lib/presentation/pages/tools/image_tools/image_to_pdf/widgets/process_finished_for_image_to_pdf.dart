@@ -11,7 +11,9 @@ class ProcessFinishedForImageToPdf extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ProcessFinishedCard(onPressed:() => context.go(AppRoutes.main),path: pdfPath,),
+        child: ProcessFinishedCard(onPressed:() => context.go(AppRoutes.main),
+          path: pdfPath,
+        ),
       ),
     );
   }

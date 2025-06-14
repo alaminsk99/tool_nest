@@ -7,18 +7,18 @@ import 'package:tool_nest/core/utils/device/device_utility.dart';
 import 'package:tool_nest/presentation/widgets/custom_appbar.dart';
 
 class AppbarForMainSections extends StatelessWidget implements PreferredSizeWidget  {
-  const AppbarForMainSections({super.key, required this.title, required this.isLeadingIcon});
+  const AppbarForMainSections({super.key, required this.title, required this.isLeadingIcon, this.widgets});
 
   final String title;
   final bool isLeadingIcon;
+  final List<Widget>? widgets;
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
       title: title,isLeadingIcon: isLeadingIcon,
       isCenterTitle: false,
       backgroundColor: TNColors.primary, textColorTheme: const TextStyle().copyWith(fontSize: TNSizes.fontSizeXXL,fontWeight: FontWeight.w600,color: TNColors.secondary),
-      // leadingTitleSpacing: 0,
-      // iconThemeData: IconThemeData(size: TNSizes.iconSizeSM),
+      widgets: widgets,
     );
 
 
