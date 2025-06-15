@@ -1,165 +1,122 @@
-import 'package:flutter/material.dart' hide ResizeImage;
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
-import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_result.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_event.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_state.dart';
+import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
 
 
-class ImageResizeSettingsPage extends StatelessWidget {
-  const ImageResizeSettingsPage({super.key});
+class ImageResizeSettings extends StatelessWidget {
+  const ImageResizeSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController widthController = TextEditingController();
-    final TextEditingController heightController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Resize Settings'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
+      appBar: AppbarForMainSections(
+        title: TNTextStrings.imageResizeSettings,
+        isLeadingIcon: true,
       ),
-      body: BlocConsumer<ImageResizerBloc, ImageResizerState>(
-        listener: (context, state) {
-          if (state is ImageResizerError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          } else if (state is DimensionsSet) {
-            widthController.text = state.width.toString();
-            heightController.text = state.height.toString();
-          }
-        },
-        builder: (context, state) {
-          if (state is! ImageSelected && state is! DimensionsSet) {
-            context.read<ImageResizerBloc>().add(ResetState());
-            return const Center(child: Text('Please select an image first'));
-          }
+      body: SafeArea(
+        child: BlocConsumer<ImageResizeBloc, ImageResizeState>(
+          listener: (context, state) {
+            if (state is ImageResizeDone) {
+              context.pushNamed(AppRoutes.imageResizeResult, extra: {
+              'imageBytes': state.resizedBytes,
+              'width': state.width,
+              'height': state.height,
+              },);
+            }
+          },
+          builder: (context, state) {
+            if (state is ImageResizeLoaded) {
+              return Padding(
+                padding: TNPaddingStyle.allPadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(TNTextStrings.imageResizer, style: Theme.of(context).textTheme.bodyLarge),
+                    Gap(TNSizes.spaceMD),
 
-          final imageBytes = state is ImageSelected
-              ? state.imageBytes
-              : (state as DimensionsSet).imageBytes;
-
-          return Padding(
-            padding: const EdgeInsets.all(TNSizes.defaultSpace),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Image.memory(imageBytes, fit: BoxFit.contain),
-                        const Gap(TNSizes.spaceBetweenSections),
-                        Form(
-                          key: formKey,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  controller: widthController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Width (px)',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter width';
-                                    }
-                                    if (int.tryParse(value) == null || int.parse(value) <= 0) {
-                                      return 'Invalid width';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              const Gap(TNSizes.spaceBetweenItems),
-                              Expanded(
-                                child: TextFormField(
-                                  controller: heightController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Height (px)',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Enter height';
-                                    }
-                                    if (int.tryParse(value) == null || int.parse(value) <= 0) {
-                                      return 'Invalid height';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ],
+                    /// Width and Height Input
+                    Form(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: state.width.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(labelText: 'Width'),
+                              onChanged: (value) {
+                                final width = int.tryParse(value);
+                                if (width != null) {
+                                  context.read<ImageResizeBloc>().add(UpdateWidthEvent(width));
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                        const Gap(TNSizes.spaceBetweenItems),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  widthController.text = '800';
-                                  heightController.text = '600';
-                                  _updateDimensions(context, widthController, heightController);
-                                },
-                                child: const Text('800x600'),
-                              ),
+                          Gap(TNSizes.spaceBetweenInputFields),
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: state.height.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(labelText: 'Height'),
+                              onChanged: (value) {
+                                final height = int.tryParse(value);
+                                if (height != null) {
+                                  context.read<ImageResizeBloc>().add(UpdateHeightEvent(height));
+                                }
+                              },
                             ),
-                            const Gap(TNSizes.spaceBetweenItems),
-                            Expanded(
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  widthController.text = '1024';
-                                  heightController.text = '768';
-                                  _updateDimensions(context, widthController, heightController);
-                                },
-                                child: const Text('1024x768'),
-                              ),
-                            ),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    /// Lock Aspect Ratio
+                    Gap(TNSizes.spaceBetweenItems),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: state.lockAspectRatio,
+                          onChanged: (val) {
+                            context.read<ImageResizeBloc>().add(
+                              UpdateAspectRatioLockEvent(val ?? false),
+                            );
+                          },
                         ),
+                        Gap(TNSizes.spaceMD),
+                        Text(TNTextStrings.lockAspectRatio),
                       ],
                     ),
-                  ),
+
+                    Gap(TNSizes.spaceBetweenSections),
+
+                    /// Process Button
+                    ProcessButton(
+                      onPressed: () {
+                        context.read<ImageResizeBloc>().add(ResizeImageEvent());
+                      },
+                    ),
+                  ],
                 ),
-                const Gap(TNSizes.spaceBetweenItems),
-                ProcessButton(
-                  text: TNTextStrings.resizeAndPreview,
-                  onPressed: () {
-                    if (formKey.currentState?.validate() ?? false) {
-                      _updateDimensions(context, widthController, heightController);
-                      context.pushNamed(AppRoutes.imageResizeResult);
-                      context.read<ImageResizerBloc>().add(ResizeImage());
-                    }
-                  },
-                ),
-              ],
-            ),
-          );
-        },
+              );
+            } else if (state is ImageResizeError) {
+              return Center(child: Text(state.message));
+            } else {
+              return Center(child: ProgressIndicatorForAll());
+            }
+          },
+        ),
       ),
     );
-  }
-
-  void _updateDimensions(
-      BuildContext context,
-      TextEditingController widthController,
-      TextEditingController heightController,
-      ) {
-    final width = int.tryParse(widthController.text) ?? 0;
-    final height = int.tryParse(heightController.text) ?? 0;
-    context.read<ImageResizerBloc>().add(SetDimensions(width, height));
   }
 }

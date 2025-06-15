@@ -1,131 +1,85 @@
+import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
-import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
-import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
+import 'package:tool_nest/core/utils/file_services/file_services.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/buttons/download_button.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/container/single_image_view_container.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 
 class ImageResizeResult extends StatelessWidget {
-  const ImageResizeResult({super.key});
+  final Uint8List imageBytes;
+  final int width;
+  final int height;
+
+  const ImageResizeResult({
+    super.key,
+    required this.imageBytes,
+    required this.width,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {
-              context.read<ImageResizerBloc>().add(ResetState());
-              context.go('/');
-            },
-          ),
-        ],
+      appBar: AppbarForMainSections(
+        title: TNTextStrings.imageResizeResult,
+        isLeadingIcon: true,
       ),
-      body: BlocBuilder<ImageResizerBloc, ImageResizerState>(
-        builder: (context, state) {
-          if (state is! ImageResized) {
-            context.read<ImageResizerBloc>().add(ResetState());
-            return const Center(child: Text('No resized image available'));
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(TNSizes.defaultSpace),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: TNPaddingStyle.allPadding,
             child: Column(
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Image.memory(state.resizedImage, fit: BoxFit.contain),
-                        const Gap(TNSizes.spaceBetweenSections),
-                        _buildDetailsCard(state),
-                      ],
-                    ),
-                  ),
+                /// Show Resized Image
+                SingleImageViewContainer(imageBytes: imageBytes),
+
+                Gap(TNSizes.spaceBetweenItems),
+
+                /// Resized Image Details
+                Text(
+                  '$width x $height px',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const Gap(TNSizes.spaceBetweenSections),
-                ProcessButton(
-                  text: TNTextStrings.saveToGallery,
-                  onPressed: () => _saveImage(context, state.resizedImage),
-                ),
+
+                Gap(TNSizes.spaceBetweenSections),
+
+                /// Save Button (you can implement actual save logic)
+                DownloadButton(onPressed: () async {
+                  final tempDir = await getTemporaryDirectory();
+                  final file = File('${tempDir.path}/resized_image_${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+                  await file.writeAsBytes(imageBytes);
+
+                  bool isSuccess = false;
+                  await FileServices.saveImageToGallery(
+                    context: context,
+                    imageFile: file,
+                    onComplete: () {
+                      isSuccess = true;
+                    },
+                  );
+                  /// If Save Successfull then Goto Other screen
+                  if (isSuccess) {
+                    Future.delayed(const Duration(seconds: 1), () {
+                      context.pushNamed(AppRoutes.processFinishedForImgToPdf, extra: 'null');
+                    });
+                  }
+                }),
+
+
               ],
             ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildDetailsCard(ImageResized state) {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(TNSizes.defaultSpace),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Image Details', style: TextStyle(fontWeight: FontWeight.bold)),
-            const Divider(),
-            _buildDetailRow('Original Size', '${state.width} x ${state.height} pixels'),
-            _buildDetailRow('File Path', state.originalPath),
-            const Gap(TNSizes.spaceBetweenItems),
-            const Text(
-              'Long press the image to save or share',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ],
+          ),
         ),
       ),
     );
-  }
-
-  Widget _buildDetailRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: TNSizes.spaceXS),
-      child: Row(
-        children: [
-          Text('$title: ', style: const TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(child: Text(value)),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _saveImage(BuildContext context, Uint8List imageBytes) async {
-    final status = await Permission.storage.request();
-    if (!status.isGranted) {
-      DialogOptions().showModernErrorDialog(
-        context,
-        'Storage permission denied',
-      );
-      return;
-    }
-
-    try {
-      final result = await ImageGallerySaverPlus.saveImage(imageBytes);
-      if (result['isSuccess'] == true) {
-        DialogOptions().showModernSuccessDialog(
-          context,
-          'Image saved to gallery!',
-        );
-      } else {
-        throw Exception('Failed to save image');
-      }
-    } catch (e) {
-      DialogOptions().showModernErrorDialog(
-        context,
-        'Failed to save image: ${e.toString()}',
-      );
-    }
   }
 }

@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         BlocProvider<NavBloc>(create: (_) => NavBloc(),),
         BlocProvider<ImageToPdfBloc>(create: (_) => ImageToPdfBloc(),),
         BlocProvider<ImageCompressorBloc>(create: (_) => ImageCompressorBloc(),),
-        BlocProvider<ImageResizerBloc>(create: (_) => ImageResizerBloc(),),
+        BlocProvider<ImageResizeBloc>(create: (_) => ImageResizeBloc(),),
 
       ],
       child: MaterialApp.router(

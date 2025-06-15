@@ -1,90 +1,90 @@
-import 'dart:async';
 import 'dart:typed_data';
-import 'dart:io';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 
-part 'image_resizer_event.dart';
-part 'image_resizer_state.dart';
+import 'image_resizer_event.dart';
+import 'image_resizer_state.dart';
 
-class ImageResizerBloc extends Bloc<ImageResizerEvent, ImageResizerState> {
-  ImageResizerBloc() : super(ImageResizerInitial()) {
-    on<SelectImage>(_onSelectImage);
-    on<SetDimensions>(_onSetDimensions);
-    on<ResizeImage>(_onResizeImage);
-    on<ResetState>(_onResetState);
+class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
+  ImageResizeBloc() : super(ImageResizeInitial()) {
+    on<PickImageEvent>(_onPickImage);
+    on<UpdateWidthEvent>(_onUpdateWidth);
+    on<UpdateHeightEvent>(_onUpdateHeight);
+    on<UpdateAspectRatioLockEvent>(_onUpdateAspectRatioLock);
+    on<ResizeImageEvent>(_onResizeImage);
   }
 
-  Future<void> _onSelectImage(
-      SelectImage event,
-      Emitter<ImageResizerState> emit,
-      ) async {
-    try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedFile == null) return;
+  void _onPickImage(PickImageEvent event, Emitter<ImageResizeState> emit) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-      final file = File(pickedFile.path);
-      final bytes = await file.readAsBytes();
-      emit(ImageSelected(file, bytes));
-    } catch (e) {
-      emit(ImageResizerError('Failed to select image: ${e.toString()}'));
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      final decoded = img.decodeImage(bytes);
+      if (decoded != null) {
+        emit(ImageResizeLoaded(
+          originalImage: decoded,
+          imageBytes: bytes,
+          width: decoded.width,
+          height: decoded.height,
+          lockAspectRatio: true,
+        ));
+      } else {
+        emit(ImageResizeError('Failed to decode image.'));
+      }
+    } else {
+      emit(ImageResizeError('No image selected.'));
     }
   }
 
-  void _onSetDimensions(
-      SetDimensions event,
-      Emitter<ImageResizerState> emit,
-      ) {
-    if (state is ImageSelected) {
-      final currentState = state as ImageSelected;
-      emit(DimensionsSet(
-        imageFile: currentState.imageFile,
-        imageBytes: currentState.imageBytes,
-        width: event.width,
-        height: event.height,
-      ));
+  void _onUpdateWidth(UpdateWidthEvent event, Emitter<ImageResizeState> emit) {
+    final current = state;
+    if (current is ImageResizeLoaded) {
+      int newHeight = current.height;
+
+      if (current.lockAspectRatio) {
+        newHeight = (current.originalImage.height * event.width / current.originalImage.width).round();
+      }
+
+      emit(current.copyWith(width: event.width, height: newHeight));
     }
   }
 
-  Future<void> _onResizeImage(
-      ResizeImage event,
-      Emitter<ImageResizerState> emit,
-      ) async {
-    if (state is! DimensionsSet) return;
+  void _onUpdateHeight(UpdateHeightEvent event, Emitter<ImageResizeState> emit) {
+    final current = state;
+    if (current is ImageResizeLoaded) {
+      int newWidth = current.width;
 
-    emit(ImageResizing());
+      if (current.lockAspectRatio) {
+        newWidth = (current.originalImage.width * event.height / current.originalImage.height).round();
+      }
 
-    try {
-      final currentState = state as DimensionsSet;
-      final original = img.decodeImage(currentState.imageBytes);
-      if (original == null) throw Exception('Invalid image data');
+      emit(current.copyWith(width: newWidth, height: event.height));
+    }
+  }
 
+  void _onUpdateAspectRatioLock(UpdateAspectRatioLockEvent event, Emitter<ImageResizeState> emit) {
+    final current = state;
+    if (current is ImageResizeLoaded) {
+      emit(current.copyWith(lockAspectRatio: event.lock));
+    }
+  }
+
+  void _onResizeImage(ResizeImageEvent event, Emitter<ImageResizeState> emit) {
+    final current = state;
+    if (current is ImageResizeLoaded) {
       final resized = img.copyResize(
-        original,
-        width: currentState.width,
-        height: currentState.height,
+        current.originalImage,
+        width: current.width,
+        height: current.height,
       );
-
-      final resizedBytes = Uint8List.fromList(img.encodePng(resized));
-      emit(ImageResized(
-        resizedImage: resizedBytes,
-        originalPath: currentState.imageFile.path,
-        width: currentState.width,
-        height: currentState.height,
+      final bytes = Uint8List.fromList(img.encodeJpg(resized));
+      emit(ImageResizeDone(
+        resizedBytes: bytes,
+        width: current.width,
+        height: current.height,
       ));
-    } catch (e) {
-      debugPrint(e.toString());
-      emit(ImageResizerError('Resize failed: ${e.toString()}'));
     }
-  }
-
-  void _onResetState(
-      ResetState event,
-      Emitter<ImageResizerState> emit,
-      ) {
-    emit(ImageResizerInitial());
   }
 }

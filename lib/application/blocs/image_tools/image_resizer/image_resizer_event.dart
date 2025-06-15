@@ -1,34 +1,25 @@
-part of 'image_resizer_bloc.dart';
+abstract class ImageResizeEvent {}
 
+class PickImageEvent extends ImageResizeEvent {}
 
-
-
-
-abstract class ImageResizerEvent extends Equatable {
-  const ImageResizerEvent();
-}
-
-class SelectImage extends ImageResizerEvent {
-  @override
-  List<Object?> get props => [];
-}
-
-class SetDimensions extends ImageResizerEvent {
+class UpdateWidthEvent extends ImageResizeEvent {
   final int width;
+
+  UpdateWidthEvent(this.width);
+}
+
+class UpdateHeightEvent extends ImageResizeEvent {
   final int height;
 
-  const SetDimensions(this.width, this.height);
-
-  @override
-  List<Object?> get props => [width, height];
+  UpdateHeightEvent(this.height);
 }
 
-class ResizeImage extends ImageResizerEvent {
-  @override
-  List<Object?> get props => [];
+class UpdateAspectRatioLockEvent extends ImageResizeEvent {
+  final bool lock;
+
+  UpdateAspectRatioLockEvent(this.lock);
 }
 
-class ResetState extends ImageResizerEvent {
-  @override
-  List<Object?> get props => [];
-}
+class ResizeImageEvent extends ImageResizeEvent {}
+
+enum DimensionChanged { width, height }

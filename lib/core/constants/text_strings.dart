@@ -211,6 +211,13 @@ static const String savingFailed = "Saving failed";
   static const String pleaseSelectImage = "Please select an image first";
   static const String resizeAndPreview = "Resize & Preview";
   static const String saveToGallery = "Save to Gallery";
+  static const String imageResizeResult = "Resize Result";
+  static const String imageResizeSettings = "Resize Settings";
+
+  static const String width = "Width";
+  static const String height = "Height";
+  static const String lockAspectRatio = "Lock Aspect Ratio";
+
 
 
 }

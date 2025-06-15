@@ -1,4 +1,7 @@
 
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
@@ -90,14 +93,23 @@ final GoRouter appRouter = GoRouter(
               GoRoute(
                 path: AppRoutes.imageResizeSettingsPath,
                 name: AppRoutes.imageResizeSettings,
-                builder: (context, state) => const ImageResizeSettingsPage(),
+                pageBuilder: (context, state) {
+                  return MaterialPage(
+                    child: state.extra as Widget,
+                  );
+                },
               ),
               GoRoute(
                   path: AppRoutes.imageResizeResultPath,
                   name: AppRoutes.imageResizeResult,
 
                   builder: (context, state) {
-                    return ImageResizeResult();
+                    final imageBytes = state.extra as Map<String, dynamic>;
+                    return ImageResizeResult(
+                      imageBytes: imageBytes['imageBytes'] as Uint8List,
+                      width: imageBytes['width'] as int,
+                      height: imageBytes['height'] as int,
+                    );
                   }
               ),
             ]

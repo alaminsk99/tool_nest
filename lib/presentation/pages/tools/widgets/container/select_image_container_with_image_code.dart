@@ -1,26 +1,37 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-
+import 'package:tool_nest/core/constants/sizes.dart';
 
 class SelectImageContainerWithImageCode extends StatelessWidget {
   final Uint8List imageBytes;
 
-  const SelectImageContainerWithImageCode({super.key, required this.imageBytes});
+  const SelectImageContainerWithImageCode({
+    super.key,
+    required this.imageBytes,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.memory(
-          imageBytes,
-          fit: BoxFit.contain,
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
+        final maxHeight = constraints.maxHeight;
+
+        return Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+            child: Image.memory(
+              imageBytes,
+              fit: BoxFit.contain,
+              width: maxWidth,
+              height: maxHeight>=500?500: maxHeight,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.broken_image, size: 40, color: Colors.grey);
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
