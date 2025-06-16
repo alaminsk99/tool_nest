@@ -42,8 +42,8 @@ class _ImageCompressorSettingsState extends State<ImageCompressorSettings> {
                 context: context,
                 barrierDismissible: false,
                 builder: (context) => const ProcessingScreen(
-                  title: TNTextStrings.generatedPDF,
-                  warningMessage: TNTextStrings.pleaseWaitWhileProcessing,
+                  title: TNTextStrings.compressingImage,
+                  warningMessage: TNTextStrings.pleWaitWhileCompressing,
                 ),
               );
             }

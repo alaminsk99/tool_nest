@@ -9,6 +9,8 @@ abstract class ImageResizeState extends Equatable {
 
 class ImageResizeInitial extends ImageResizeState {}
 
+class ImageResizeLoading extends ImageResizeState {}
+
 class ImageResizeLoaded extends ImageResizeState {
   final img.Image originalImage;
   final Uint8List imageBytes;

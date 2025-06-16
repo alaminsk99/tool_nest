@@ -193,6 +193,8 @@ static const String textSummarizer = "Text Summarizer";
  static const String showOriginal = "Show Original";
  static const String failedToSave = "Failed To Save";
  static const String compressionPageSubTitle = "Reduce image file size without losing quality (JPG,JPEG & PNG)";
+  static const String compressingImage = "Compress Image";
+  static const String pleWaitWhileCompressing = "Please wait while compressing...";
 
 
 
@@ -213,6 +215,8 @@ static const String savingFailed = "Saving failed";
   static const String saveToGallery = "Save to Gallery";
   static const String imageResizeResult = "Resize Result";
   static const String imageResizeSettings = "Resize Settings";
+  static const String resizingImage = "Resizing Image";
+  static const String pleWaitWhileResizing = "Please wait while resizing...";
 
   static const String width = "Width";
   static const String height = "Height";

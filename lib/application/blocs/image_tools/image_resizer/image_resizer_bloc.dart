@@ -74,6 +74,8 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
   void _onResizeImage(ResizeImageEvent event, Emitter<ImageResizeState> emit) {
     final current = state;
     if (current is ImageResizeLoaded) {
+      emit(ImageResizeLoading());
+
       final resized = img.copyResize(
         current.originalImage,
         width: current.width,
@@ -87,4 +89,5 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
       ));
     }
   }
+
 }
