@@ -39,6 +39,7 @@ class TNTextStrings {
   static const String skip = "Skip";
   static const String submit = "Submit";
   static const String continueText = "Continue";
+  static const String format = "Format";
 
   /// Errors & Messages
   static const String somethingWentWrong = "Something went wrong!";
@@ -221,6 +222,14 @@ static const String savingFailed = "Saving failed";
   static const String width = "Width";
   static const String height = "Height";
   static const String lockAspectRatio = "Lock Aspect Ratio";
+
+
+
+  /// Image Format Converter app
+
+  static const String imageFormatConverterSettings = "Settings";
+  static const String imageFormatConverterResult = "Result";
+  static const String imageSelectFormat = "Select Format";
 
 
 

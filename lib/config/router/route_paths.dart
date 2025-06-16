@@ -19,8 +19,8 @@ class AppRoutes {
   static const imageResizeResultPath = 'image-resize-result';
 
   static const imageFormatConverterPath = 'image-converter';
-
-
+  static const imageFormatConverterSettingsPath = 'image-converter-settings';
+  static const imageFormatConverterResultPath = 'image-converter-result';
 
   static const pdfToImagePath = 'pdf-to-image';
 
@@ -53,6 +53,8 @@ class AppRoutes {
   static const imageResizeResult = 'imageResizeResult';
 
   static const imageFormatConverter = 'imageFormatConverter';
+  static const imageFormatConverterSettings = 'imageFormatConverterSettings';
+  static const imageFormatConverterResult = 'imageFormatConverterResult';
 
 
 

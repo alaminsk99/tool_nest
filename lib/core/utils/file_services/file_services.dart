@@ -84,5 +84,37 @@ class FileServices {
       onComplete?.call();
     }
   }
+  static Future<void> saveImageToGalleryForFormatConverter({
+    required BuildContext context,
+    required File imageFile,
+    required String fileName, // ❌ No extension here
+    VoidCallback? onStart,
+    VoidCallback? onComplete,
+  }) async {
+    try {
+      onStart?.call();
+
+      final bytes = await imageFile.readAsBytes();
+
+      final result = await ImageGallerySaverPlus.saveImage(
+        bytes,
+        name: fileName, // Just name — no extension
+        isReturnImagePathOfIOS: true,
+        quality: 100,
+      );
+
+      print('Save result: $result'); // ✅ For debugging
+
+      if (result['isSuccess'] == true || result['filePath'] != null) {
+        SnackbarHelper.showSuccess(context, TNTextStrings.save);
+      } else {
+        throw Exception(TNTextStrings.savingFailed);
+      }
+    } catch (e) {
+      SnackbarHelper.showError(context, TNTextStrings.failedToSave);
+    } finally {
+      onComplete?.call();
+    }
+  }
 
 }

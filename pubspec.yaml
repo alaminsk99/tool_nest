@@ -34,11 +34,16 @@ dependencies:
   image_gallery_saver_plus: ^4.0.1 # Updated to a compatible version
   photo_view: ^0.15.0
 
-
+  #Pdf Utilizes
   #For PDF Creation
   pdf: ^3.11.3
+
   #Pdf Viewer
   syncfusion_flutter_pdfviewer: ^29.2.9
+  pdf_render: ^1.4.12
+  syncfusion_flutter_pdf: ^29.2.10
+
+
   #Open File
   open_file: ^3.5.10
 

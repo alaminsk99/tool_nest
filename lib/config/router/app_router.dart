@@ -6,9 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
+import 'package:tool_nest/domain/models/image_tools/image_format_converter_model.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_page.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_result.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_result.dart';
@@ -131,7 +134,23 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.imageFormatConverter,
           builder: (context, state) => const ImageFormatConverterPage(),
           routes: [
+            GoRoute(
+              path: AppRoutes.imageFormatConverterSettingsPath,
+              name: AppRoutes.imageFormatConverterSettings,
+              builder: (context, state) => const ImageFormatConverterSettings(),
+            ),
+            GoRoute(
+                path: AppRoutes.imageFormatConverterResultPath,
+                name: AppRoutes.imageFormatConverterResult,
 
+                builder: (context, state) {
+                  final data = state.extra as ImageFormatConverterResultDataModel;
+                  return ImageFormatConverterResult(
+                    convertedBytes: data.convertedBytes,
+                    format: data.format,
+                  );
+                }
+            ),
           ],
 
         ),
