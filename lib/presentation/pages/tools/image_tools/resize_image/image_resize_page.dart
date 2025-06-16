@@ -59,14 +59,9 @@ class ImageResizePage extends StatelessWidget {
                     return ProcessButton(
                       onPressed: state is ImageResizeLoaded
                           ? () {
-                        context.push(
-                          GoRouter.of(context).namedLocation(
-                            AppRoutes.imageResizeSettings,
-                          ),
-                          extra: BlocProvider.value(
-                            value: context.read<ImageResizeBloc>(),
-                            child: const ImageResizeSettings(),
-                          ),
+                        context.pushNamed(
+                          AppRoutes.imageResizeSettings,
+                          extra: context.read<ImageResizeBloc>(),
                         );
 
                       }

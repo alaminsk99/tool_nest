@@ -35,14 +35,9 @@ class ImageTools extends StatelessWidget {
           icon: LucideIcons.repeat,
           title: TNTextStrings.formatConverter,
           subTitle: TNTextStrings.formatConverterSubTitle,
-          onPressed: () {}, // Placeholder
+          onPressed: () => context.goNamed(AppRoutes.imageFormatConverter),
         ),
-        ListTileForTools(
-          icon: LucideIcons.rotateCcw,
-          title: TNTextStrings.imageRotator,
-          subTitle: TNTextStrings.imageRotatorSubTitle,
-          onPressed: () {}, // Placeholder
-        ),
+
       ],
     );
   }

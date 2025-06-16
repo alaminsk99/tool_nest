@@ -5,13 +5,12 @@ import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/tool_list/image_tools.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/tool_list/pdf_tools.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/tool_list/text_tools.dart';
+
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
 import 'package:tool_nest/presentation/widgets/section_style/section_style.dart';
 
-import 'image_tools/image_tools_page.dart';
 
 class ToolsPages extends StatelessWidget {
   const ToolsPages({super.key});
@@ -37,13 +36,6 @@ class ToolsPages extends StatelessWidget {
               const ToolSectionHeader(title: TNTextStrings.pdfTools),
               Gap(TNSizes.spaceMD),
               PdfTools(),
-
-              Gap(TNSizes.spaceXL),
-
-              /// 🔤 Text Tools Section
-              const ToolSectionHeader(title: "Text Tools"),
-              Gap(TNSizes.spaceMD),
-              TextTools(),
               Gap(TNSizes.spaceXS),
             ],
           ),

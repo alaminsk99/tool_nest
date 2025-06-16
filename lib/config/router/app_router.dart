@@ -2,10 +2,13 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
+import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
+import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_result.dart';
@@ -14,6 +17,10 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widg
 import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_settings.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/compress_pdf/compress_pdf_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/split_pdf/split_pdf_page.dart';
 
 
 import '../../presentation/pages/tools/image_tools/image_compressor/image_compress_page.dart';
@@ -94,8 +101,12 @@ final GoRouter appRouter = GoRouter(
                 path: AppRoutes.imageResizeSettingsPath,
                 name: AppRoutes.imageResizeSettings,
                 pageBuilder: (context, state) {
+                  final bloc = state.extra as ImageResizeBloc;
                   return MaterialPage(
-                    child: state.extra as Widget,
+                    child: BlocProvider.value(
+                      value: bloc,
+                      child: const ImageResizeSettings(),
+                    ),
                   );
                 },
               ),
@@ -114,7 +125,52 @@ final GoRouter appRouter = GoRouter(
               ),
             ]
 
-        )
+        ),
+        GoRoute(
+          path: AppRoutes.imageFormatConverterPath,
+          name: AppRoutes.imageFormatConverter,
+          builder: (context, state) => const ImageFormatConverterPage(),
+          routes: [
+
+          ],
+
+        ),
+        GoRoute(
+          path: AppRoutes.pdfToImagePath,
+          name: AppRoutes.pdfToImage,
+          builder: (context, state) => const PdfToImagePage(),
+          routes: [
+
+          ],
+
+        ),
+        GoRoute(
+          path: AppRoutes.compressPdfPath,
+          name: AppRoutes.compressPdf,
+          builder: (context, state) => CompressPdfPage(),
+          routes: [
+
+          ],
+
+        ),
+        GoRoute(
+          path: AppRoutes.mergePdfPath,
+          name: AppRoutes.mergePdf,
+          builder: (context, state) => const MergePdfPage(),
+          routes: [
+
+          ],
+
+        ),
+        GoRoute(
+          path: AppRoutes.splitPdfPath,
+          name: AppRoutes.splitPdf,
+          builder: (context, state) => const SplitPdfPage(),
+          routes: [
+
+          ],
+
+        ),
       ],
     ),
   ],

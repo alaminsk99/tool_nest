@@ -21,5 +21,6 @@ class UpdateAspectRatioLockEvent extends ImageResizeEvent {
 }
 
 class ResizeImageEvent extends ImageResizeEvent {}
+class ResetResizeStateEvent extends ImageResizeEvent {}
 
 enum DimensionChanged { width, height }

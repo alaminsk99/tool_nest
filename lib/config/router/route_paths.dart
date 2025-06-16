@@ -9,12 +9,33 @@ class AppRoutes {
   static const previewPath = 'preview';
   static const resultPath = 'result';
   static const processFinishedForImgToPdfPath = 'process-finished-image-to-pdf';
+
   static const imageCompressorPath = 'image-compressor';
   static const imageCompressorSettingsPath = 'image-compressor-settings';
   static const imageCompressorResultPath = 'image-compressor-result';
+
   static const imageResizePath = 'image-resize';
   static const imageResizeSettingsPath = 'image-resize-settings';
   static const imageResizeResultPath = 'image-resize-result';
+
+  static const imageFormatConverterPath = 'image-converter';
+
+
+
+  static const pdfToImagePath = 'pdf-to-image';
+
+
+  static const mergePdfPath = 'merge-pdf';
+
+
+
+  static const splitPdfPath = 'split-pdf';
+
+
+
+
+  static const compressPdfPath = 'compress-pdf';
+
 
   // Route Names
   static const imageToPdf = 'imageToPdf';
@@ -22,12 +43,31 @@ class AppRoutes {
   static const preview = 'imageToPdfPreview';
   static const result = 'imageToPdfResult';
   static const processFinishedForImgToPdf = 'processFinishedForImGToPdf';
+
   static const imageCompressor = 'imageCompressor';
   static const imageCompressorSettings = 'imageCompressorSettings';
   static const imageCompressorResult = 'imageCompressorResult';
+
   static const imageResize = 'imageResize';
   static const imageResizeSettings = 'imageResizeSettings';
   static const imageResizeResult = 'imageResizeResult';
+
+  static const imageFormatConverter = 'imageFormatConverter';
+
+
+
+  static const pdfToImage = 'pdfToImage';
+
+
+  static const mergePdf = 'mergePdf';
+
+
+  static const splitPdf = 'splitPdf';
+
+
+
+  static const compressPdf = 'compressPdf';
+
 
 
 

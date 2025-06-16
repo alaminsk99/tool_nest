@@ -17,8 +17,21 @@ import 'package:tool_nest/presentation/widgets/loader/processing_screen.dart';
 import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
 
 
-class ImageResizeSettings extends StatelessWidget {
+class ImageResizeSettings extends StatefulWidget {
   const ImageResizeSettings({super.key});
+
+  @override
+  State<ImageResizeSettings> createState() => _ImageResizeSettingsState();
+}
+
+class _ImageResizeSettingsState extends State<ImageResizeSettings> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ImageResizeBloc>().add(ResetResizeStateEvent());
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +56,7 @@ class ImageResizeSettings extends StatelessWidget {
               );
             }
             if (state is ImageResizeDone) {
-              if (isProcessingDialogShown) {
+              if (isProcessingDialogShown && Navigator.of(context).canPop()) {
                 Navigator.of(context, rootNavigator: true).pop();
                 isProcessingDialogShown = false;
               }

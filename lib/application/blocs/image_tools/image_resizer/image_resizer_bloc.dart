@@ -13,6 +13,7 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
     on<UpdateHeightEvent>(_onUpdateHeight);
     on<UpdateAspectRatioLockEvent>(_onUpdateAspectRatioLock);
     on<ResizeImageEvent>(_onResizeImage);
+    on<ResetResizeStateEvent>(_onResetResizeState);
   }
 
   void _onPickImage(PickImageEvent event, Emitter<ImageResizeState> emit) async {
@@ -89,5 +90,24 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
       ));
     }
   }
+  void _onResetResizeState(ResetResizeStateEvent event, Emitter<ImageResizeState> emit) {
+    final current = state;
+    if (current is ImageResizeDone) {
+      // Reconstruct ImageResizeLoaded with previous data
+      final originalImage = img.decodeImage(current.resizedBytes);
+      if (originalImage != null) {
+        emit(ImageResizeLoaded(
+          originalImage: originalImage,
+          imageBytes: current.resizedBytes,
+          width: current.width,
+          height: current.height,
+          lockAspectRatio: true,
+        ));
+      } else {
+        emit(ImageResizeError('Failed to restore image state.'));
+      }
+    }
+  }
+
 
 }
