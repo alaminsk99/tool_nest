@@ -232,5 +232,10 @@ static const String savingFailed = "Saving failed";
   static const String imageSelectFormat = "Select Format";
 
 
+  /// PDF to Image
+
+  static const String pdfToImageSettings = "Settings";
+  static const String pdfToImageResult = "Result";
+
 
 }

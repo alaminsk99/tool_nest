@@ -84,7 +84,7 @@ class _ImageCompressorSettingsState extends State<ImageCompressorSettings> {
                   ),
 
                   // Format dropdown
-                  Dropdownbuttonselectionusingbottomsheets(
+                  DropdownButtonSelectionUsingBottomSheets(
                     titleForBottomSheet: TNTextStrings.selectImgFormat,
                     titleOfTheSection: TNTextStrings.saveAsTitle,
                     selectedItem: state.format,
@@ -97,7 +97,7 @@ class _ImageCompressorSettingsState extends State<ImageCompressorSettings> {
                   ),
 
                   // Resolution dropdown
-                  Dropdownbuttonselectionusingbottomsheets(
+                  DropdownButtonSelectionUsingBottomSheets(
                     titleForBottomSheet: TNTextStrings.selectImgResolution,
                     titleOfTheSection: TNTextStrings.resolution,
                     selectedItem: state.resolution,

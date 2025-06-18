@@ -23,6 +23,8 @@ class AppRoutes {
   static const imageFormatConverterResultPath = 'image-converter-result';
 
   static const pdfToImagePath = 'pdf-to-image';
+  static const pdfToImageSettingsPath = 'pdf-to-image-settings';
+  static const pdfToImageResultPath = 'pdf-to-image-result';
 
 
   static const mergePdfPath = 'merge-pdf';
@@ -59,6 +61,8 @@ class AppRoutes {
 
 
   static const pdfToImage = 'pdfToImage';
+  static const pdfToImageSettings = 'pdfToImageSettings';
+  static const pdfToImageResult = 'pdfToImageResult';
 
 
   static const mergePdf = 'mergePdf';

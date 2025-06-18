@@ -40,7 +40,8 @@ dependencies:
 
   #Pdf Viewer
   syncfusion_flutter_pdfviewer: ^29.2.9
-  pdf_render: ^1.4.12
+  pdfx: ^2.9.2
+
   syncfusion_flutter_pdf: ^29.2.10
 
 

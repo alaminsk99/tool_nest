@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'package:tool_nest/domain/models/image_tools/image_format_converter_model.dart';
+import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_args.dart';
+import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_page.dart';
@@ -23,6 +25,8 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/imag
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/compress_pdf/compress_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_result.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/split_pdf/split_pdf_page.dart';
 
 
@@ -159,7 +163,21 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.pdfToImage,
           builder: (context, state) => const PdfToImagePage(),
           routes: [
-
+            GoRoute(
+              path: AppRoutes.pdfToImageSettingsPath,
+              name: AppRoutes.pdfToImageSettings,
+              builder: (context, state) {
+               final args = state.extra as PdfToImageArgsModel;
+                return PdfToImageSettings(args: args);
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.pdfToImageResultPath,
+              name: AppRoutes.pdfToImageResult,
+              builder: (context, state) {
+                final results = state.extra as List<PdfToImageResultModel>;
+                return PdfToImageResult(results: results);},
+            ),
           ],
 
         ),

@@ -7,8 +7,8 @@ import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/presentation/widgets/bottom_sheets/Items_selection_bottom_sheets.dart';
 
 
-class Dropdownbuttonselectionusingbottomsheets extends StatelessWidget {
-  const Dropdownbuttonselectionusingbottomsheets(
+class DropdownButtonSelectionUsingBottomSheets extends StatelessWidget {
+  const DropdownButtonSelectionUsingBottomSheets(
       {super.key,
         required this.titleForBottomSheet,
         required this.titleOfTheSection,

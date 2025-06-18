@@ -40,7 +40,7 @@ class ImageResizePage extends StatelessWidget {
                       if (state is ImageResizeLoaded) {
                         return SingleImageViewContainer(imageBytes: state.imageBytes);
                       }
-                      return UploadImageContainer(
+                      return UploadContainerForItem(
                         title: TNTextStrings.uploadFiles,
                         subTitle: TNTextStrings.imageResizerSubTitle,
                         onPressed: () {

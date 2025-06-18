@@ -6,8 +6,8 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 import '../../image_tools/image_to_pdf/widgets/upload_image_section.dart';
 
 
-class UploadImageContainer extends StatelessWidget {
-  const UploadImageContainer({
+class UploadContainerForItem extends StatelessWidget {
+  const UploadContainerForItem({
     super.key, this.onPressed,required this.title, required this.subTitle,
   });
 

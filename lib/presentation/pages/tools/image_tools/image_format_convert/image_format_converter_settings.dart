@@ -57,7 +57,7 @@ class _ImageFormatConverterSettingsState extends State<ImageFormatConverterSetti
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Dropdownbuttonselectionusingbottomsheets(
+                      DropdownButtonSelectionUsingBottomSheets(
                         titleForBottomSheet: TNTextStrings.imageSelectFormat,
                         titleOfTheSection: TNTextStrings.format,
                         selectedItem: state.currentFormat.toUpperCase(),

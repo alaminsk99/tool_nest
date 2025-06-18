@@ -58,7 +58,7 @@ class _ImageCompressPageState extends State<ImageCompressPage> {
                         imagePath: state.selectedImage!.path,
                       );
                     }
-                    return UploadImageContainer(
+                    return UploadContainerForItem(
                       title: TNTextStrings.selectImageToCom,
                       subTitle: TNTextStrings.compressionPageSubTitle,
                       onPressed: () =>bloc.add(SelectImageForCompression()),

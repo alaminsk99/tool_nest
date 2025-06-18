@@ -53,7 +53,7 @@ class _ImageToPdfPageState extends State<ImageToPdfPage> {
                   if (state is ImageSelectionSuccess && state.selectedImages.isNotEmpty) {
                     return ImageGridView(imagePaths: state.selectedImages.map((file) => file.path).toList());
                   }
-                  return UploadImageContainer(
+                  return UploadContainerForItem(
                     title: TNTextStrings.uploadFiles,
                     subTitle: TNTextStrings.dragAndDrop,
                     onPressed: () => bloc.add(SelectImagesEvent()),

@@ -40,7 +40,7 @@ class ImageFormatConverterPage extends StatelessWidget {
               return Column(
                 children: [
                   Expanded(
-                    child: UploadImageContainer(
+                    child: UploadContainerForItem(
                       title: TNTextStrings.uploadFiles,
                       subTitle: TNTextStrings.formatConverterSubTitle,
                       onPressed: () {
