@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
+import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/file_services/file_services.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
@@ -72,9 +73,9 @@ class PdfToImageResult extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 16,
-            left: 16,
-            right: 16,
+            bottom: TNSizes.spaceMD,
+            left: TNSizes.spaceMD,
+            right: TNSizes.spaceMD,
             child: DownloadButton(
               onPressed: () => _saveAllImages(context),
             ),

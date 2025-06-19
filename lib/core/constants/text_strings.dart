@@ -238,4 +238,10 @@ static const String savingFailed = "Saving failed";
   static const String pdfToImageResult = "Result";
 
 
+
+  /// Merge PDF
+  static const String mergePdfSettings = "Settings";
+  static const String mergePdfResult = "Result";
+  static const String pdfAdds = "Add PDFs";
+
 }

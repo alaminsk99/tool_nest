@@ -24,6 +24,8 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/imag
 import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/compress_pdf/compress_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_result.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_page.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_result.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_settings.dart';
@@ -195,7 +197,22 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.mergePdf,
           builder: (context, state) => const MergePdfPage(),
           routes: [
+            GoRoute(
+              path: AppRoutes.mergePdfSettingsPath,
+              name: AppRoutes.mergePdfSettings,
+              builder: (context, state) {
 
+                return MergePdfSettings();
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.mergePdfResultPath,
+              name: AppRoutes.mergePdfResult,
+              builder: (context, state) {
+
+                return MergePdfResult();
+                },
+            ),
           ],
 
         ),

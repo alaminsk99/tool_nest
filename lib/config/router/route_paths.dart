@@ -28,6 +28,8 @@ class AppRoutes {
 
 
   static const mergePdfPath = 'merge-pdf';
+  static const mergePdfSettingsPath = 'merge-pdf-settings';
+  static const mergePdfResultPath = 'merge-pdf-result';
 
 
 
@@ -66,6 +68,8 @@ class AppRoutes {
 
 
   static const mergePdf = 'mergePdf';
+  static const mergePdfSettings = 'mergePdfSettings';
+  static const mergePdfResult = 'mergePdfResult';
 
 
   static const splitPdf = 'splitPdf';
