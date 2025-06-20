@@ -20,7 +20,7 @@ class MergePdfPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Run only once on widget enter
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MergePdfBloc>().add(const ClearFiles());
     });

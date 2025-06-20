@@ -10,6 +10,7 @@ import 'package:tool_nest/core/utils/file_services/file_services.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/download_button.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 import 'package:archive/archive_io.dart';
+import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
 
 class SplitPdfResult extends StatelessWidget {
   const SplitPdfResult({super.key});
@@ -111,9 +112,9 @@ class SplitPdfResult extends StatelessWidget {
               ],
             );
           } else if (state is SplittingInProgress) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: ProgressIndicatorForAll());
           } else if (state is SplitFailed) {
-            return Center(child: Text("Error: ${state.error}"));
+            return Center(child: Text("Error: try again"));
           }
 
           return const Center(child: Text("No split files available."));

@@ -26,3 +26,7 @@ class ApplySplitSettings extends SplitPdfEvent {
 }
 
 class PerformSplit extends SplitPdfEvent {}
+class ClearSplitFile extends SplitPdfEvent {
+  const ClearSplitFile();
+}
+

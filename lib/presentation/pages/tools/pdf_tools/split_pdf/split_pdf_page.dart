@@ -1,25 +1,29 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pdf/pdf.dart' hide PdfDocument;
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:tool_nest/application/blocs/pdf_tools/split_pdf/split_pdf_bloc.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/domain/models/pdf_tools/split_pdf_model/pdf_split_file_model.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/container/upload_image_container.dart';
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/domain/models/pdf_tools/split_pdf_model/pdf_split_file_model.dart';
 
 class SplitPdfPage extends StatelessWidget {
   const SplitPdfPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SplitPdfBloc>().add(const ClearSplitFile());
+    });
     return Scaffold(
       appBar: AppbarForMainSections(
         title: TNTextStrings.splitPDF,
@@ -47,12 +51,19 @@ class SplitPdfPage extends StatelessWidget {
                               type: FileType.custom,
                               allowedExtensions: ['pdf'],
                             );
-                            if (result != null &&
-                                result.files.single.path != null) {
+                            if (result != null && result.files.single.path != null) {
                               final path = result.files.single.path!;
-                              bloc.add(PickSplitFile(
-                                PdfSplitFileModel(File(path)),
-                              ));
+                              final file = File(path);
+                              final bytes = await file.readAsBytes();
+                              final document = PdfDocument(inputBytes: bytes);
+                              final pageCount = document.pages.count;
+                              document.dispose();
+
+                              final model = PdfSplitFileModel(
+                                file: file,
+                                totalPages: pageCount,
+                              );
+                              bloc.add(PickSplitFile(model));
                             }
                           },
                         )

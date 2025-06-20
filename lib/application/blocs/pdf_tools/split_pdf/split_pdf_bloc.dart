@@ -1,4 +1,4 @@
-// lib/application/blocs/pdf_tools/split_pdf/split_pdf_bloc.dart
+
 
 import 'dart:io';
 import 'package:bloc/bloc.dart';
@@ -21,12 +21,19 @@ class SplitPdfBloc extends Bloc<SplitPdfEvent, SplitPdfState> {
     on<PickSplitFile>(_onPickFile);
     on<ApplySplitSettings>(_onApplySettings);
     on<PerformSplit>(_onPerformSplit);
+    on<ClearSplitFile>(_onClear);
   }
 
   void _onPickFile(PickSplitFile event, Emitter<SplitPdfState> emit) {
     _file = event.file;
     emit(FileSelected(event.file));
   }
+  void _onClear(ClearSplitFile event, Emitter<SplitPdfState> emit) {
+    _file = null;
+    _selectedPages = [];
+    emit(SplitPdfInitial());
+  }
+
 
   void _onApplySettings(ApplySplitSettings event, Emitter<SplitPdfState> emit) {
     _selectedPages = event.selectedPages;

@@ -20,7 +20,9 @@ class SplitPdfSettings extends StatefulWidget {
 
 class _SplitPdfSettingsState extends State<SplitPdfSettings> {
   final TextEditingController _controller = TextEditingController();
-  String? _errorText;
+  final ValueNotifier<String?> _errorText = ValueNotifier(null);
+  final ValueNotifier<String> _splitMode = ValueNotifier('Range');
+  final ValueNotifier<bool> _extractAllPages = ValueNotifier(false);
 
   bool isProcessingDialogShown = false;
 
@@ -48,18 +50,28 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
   }
 
   void _submit(BuildContext context) {
-    final input = _controller.text;
-    final pages = _parsePageRanges(input);
+    final mode = _splitMode.value;
+    List<int> pages = [];
+
+    if (mode == 'Range') {
+      pages = _parsePageRanges(_controller.text);
+    } else {
+      if (_extractAllPages.value) {
+        final blocState = context.read<SplitPdfBloc>().state;
+        if (blocState is FileSelected) {
+          pages = List.generate(blocState.file.totalPages, (i) => i + 1);
+        }
+      } else {
+        pages = _parsePageRanges(_controller.text);
+      }
+    }
 
     if (pages.isEmpty) {
-      setState(() {
-        _errorText = "Enter a valid page range like 1-3,5";
-      });
+      _errorText.value = "Enter a valid page input";
       return;
     }
 
-    _errorText = null;
-
+    _errorText.value = null;
     context.read<SplitPdfBloc>()
       ..add(ApplySplitSettings(pages))
       ..add(PerformSplit());
@@ -95,7 +107,6 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
         }
 
         if (state is SplitSuccess) {
-          // Navigate to result screen
           context.pushNamed(AppRoutes.splitPdfResult);
         }
 
@@ -118,26 +129,93 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Enter Page Range",
-                      style: Theme.of(context).textTheme.titleMedium,
+                    /// Split Mode Selector
+                    ValueListenableBuilder(
+                      valueListenable: _splitMode,
+                      builder: (_, mode, __) => DropdownButton<String>(
+                        value: mode,
+                        items: const [
+                          DropdownMenuItem(value: 'Range', child: Text('Range')),
+                          DropdownMenuItem(value: 'Pages', child: Text('Pages')),
+                        ],
+                        onChanged: (value) => _splitMode.value = value!,
+                      ),
                     ),
+
                     const SizedBox(height: TNSizes.spaceSM),
 
-                    /// Page Range Input
-                    TextField(
-                      controller: _controller,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: "Example: 1-3,5",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        errorText: _errorText,
-                      ),
-                      onChanged: (_) => setState(() {
-                        _errorText = null;
-                      }),
+                    /// Extract All Checkbox or Input
+                    ValueListenableBuilder(
+                      valueListenable: _splitMode,
+                      builder: (_, mode, __) {
+                        if (mode == 'Pages') {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  ValueListenableBuilder(
+                                    valueListenable: _extractAllPages,
+                                    builder: (_, extractAll, __) => Checkbox(
+                                      value: extractAll,
+                                      onChanged: (val) => _extractAllPages.value = val!,
+                                    ),
+                                  ),
+                                  const Text('Extract All Pages')
+                                ],
+                              ),
+                              ValueListenableBuilder(
+                                valueListenable: _extractAllPages,
+                                builder: (_, extractAll, __) {
+                                  return extractAll
+                                      ? const SizedBox.shrink()
+                                      : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text("Enter Page Numbers (e.g. 1,3,5)"),
+                                      const SizedBox(height: TNSizes.spaceSM),
+                                      ValueListenableBuilder(
+                                        valueListenable: _errorText,
+                                        builder: (_, err, __) => TextField(
+                                          controller: _controller,
+                                          decoration: InputDecoration(
+                                            hintText: "e.g. 2,4,6",
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                            errorText: err,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                },
+                              )
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Enter Page Range (e.g. 1-3,5)"),
+                              const SizedBox(height: TNSizes.spaceSM),
+                              ValueListenableBuilder(
+                                valueListenable: _errorText,
+                                builder: (_, err, __) => TextField(
+                                  controller: _controller,
+                                  decoration: InputDecoration(
+                                    hintText: "Example: 1-3,5",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    errorText: err,
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -161,4 +239,3 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
     );
   }
 }
-
