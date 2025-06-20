@@ -31,6 +31,7 @@ class SplitPdfPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocBuilder<SplitPdfBloc, SplitPdfState>(
+
           builder: (context, state) {
             final bloc = context.read<SplitPdfBloc>();
             final PdfSplitFileModel? fileModel =

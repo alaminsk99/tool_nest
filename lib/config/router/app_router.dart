@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'package:tool_nest/domain/models/image_tools/image_format_converter_model.dart';
+import 'package:tool_nest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_args.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
@@ -204,10 +206,11 @@ final GoRouter appRouter = GoRouter(
               path: AppRoutes.compressPdfResultPath,
               name: AppRoutes.compressPdfResult,
               builder: (context, state) {
-
-                return CompressPdfResult();
+                final model = state.extra as CompressedPdfModel;
+                return CompressPdfResult(compressedPdf: model);
               },
             ),
+
           ],
 
         ),

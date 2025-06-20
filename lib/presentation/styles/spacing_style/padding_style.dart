@@ -14,4 +14,9 @@ class TNPaddingStyle{
   static const EdgeInsetsGeometry onlyHorizontalMDPadding = EdgeInsets.symmetric(horizontal: TNSizes.paddingMD);
   static const EdgeInsetsGeometry onlyHorizontalLGPadding = EdgeInsets.symmetric(horizontal: TNSizes.paddingLG);
   static const EdgeInsetsGeometry onlyHorizontalXXLPadding = EdgeInsets.symmetric(horizontal: TNSizes.spaceXXL);
+  static const EdgeInsetsGeometry onlyTopPaddingMD = EdgeInsets.only(top: TNSizes.paddingMD);
+  static const EdgeInsetsGeometry onlyBottomPaddingLG = EdgeInsets.only(bottom: TNSizes.paddingLG);
+  static const EdgeInsetsGeometry symmetricHVMargin = EdgeInsets.symmetric(horizontal: TNSizes.spaceMD, vertical: TNSizes.spaceSM);
+  static const EdgeInsetsGeometry onlyBottomXXL = EdgeInsets.only(bottom: TNSizes.spaceXXL);
+
 }

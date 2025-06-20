@@ -40,6 +40,8 @@ class TNTextStrings {
   static const String submit = "Submit";
   static const String continueText = "Continue";
   static const String format = "Format";
+  static const String saved = "Saved";
+
 
   /// Errors & Messages
   static const String somethingWentWrong = "Something went wrong!";
@@ -83,6 +85,7 @@ static const String toolScreenName = "Tools";
 static const String imageTools = "Image Tools";
 static const String pdfTools = "PDF Tools";
 static const String textTools = "Text Tools";
+static const String compressionSummary = "Compression Summary";
 
 
 /// Tools Names
@@ -254,6 +257,8 @@ static const String savingFailed = "Saving failed";
   /// Compress PDF
   static const String compressPdfSettings = "Settings";
   static const String compressPdfResult = "Result";
+  static const String selectCompressionLevel = "Select Compression Level";
+  static const String compressionLevel = "Compression Level";
 
 
 
