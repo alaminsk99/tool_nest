@@ -9,8 +9,10 @@ import 'application/blocs/image_tools/image_compressor/image_compressor_bloc.dar
 import 'application/blocs/image_tools/image_format_converter/image_format_converter_bloc.dart';
 import 'application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'application/blocs/image_tools/image_to_pdf/image_to_pdf_bloc.dart';
+import 'application/blocs/pdf_tools/compress_pdf/compress_pdf_bloc.dart';
 import 'application/blocs/pdf_tools/merge_pdfs/merge_pdf_bloc.dart';
 import 'application/blocs/pdf_tools/pdf_to_image/pdf_to_image_bloc.dart';
+import 'application/blocs/pdf_tools/split_pdf/split_pdf_bloc.dart';
 import 'config/router/app_router.dart';
 
 
@@ -28,6 +30,8 @@ class App extends StatelessWidget {
         BlocProvider<ImageFormatConverterBloc>(create: (_) => ImageFormatConverterBloc(),),
         BlocProvider<PdfToImageBloc>(create: (_) => PdfToImageBloc(),),
         BlocProvider<MergePdfBloc>(create: (_) => MergePdfBloc(),),
+        BlocProvider<SplitPdfBloc>(create: (_) => SplitPdfBloc(),),
+        BlocProvider<CompressPdfBloc>(create: (_) => CompressPdfBloc(),),
 
       ],
       child: MaterialApp.router(

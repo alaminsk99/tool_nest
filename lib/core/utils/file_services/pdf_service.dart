@@ -51,4 +51,40 @@ class PdfService {
 
     return file;
   }
+  Future<List<File>> splitPdf(File pdfFile, List<int> selectedPages) async {
+    final originalBytes = await pdfFile.readAsBytes();
+    final PdfDocument originalDocument = PdfDocument(inputBytes: originalBytes);
+
+    final outputFiles = <File>[];
+    final tempDir = await getTemporaryDirectory();
+
+    for (int pageIndex in selectedPages) {
+      if (pageIndex <= 0 || pageIndex > originalDocument.pages.count) continue;
+
+      final PdfDocument newDoc = PdfDocument();
+      final page = originalDocument.pages[pageIndex - 1];
+
+      final template = page.createTemplate();
+      final settings = PdfPageSettings();
+      settings.size = Size(page.size.width, page.size.height);
+      newDoc.pageSettings = settings;
+
+      final newPage = newDoc.pages.add();
+      newPage.graphics.drawPdfTemplate(template, Offset.zero);
+
+      final bytes = await newDoc.save();
+      newDoc.dispose();
+
+      final filePath = '${tempDir.path}/split_page_$pageIndex.pdf';
+      final file = File(filePath);
+      await file.writeAsBytes(bytes, flush: true); // Ensure file is flushed to disk
+      outputFiles.add(file);
+    }
+
+    originalDocument.dispose();
+    return outputFiles;
+  }
+
+
+
 }

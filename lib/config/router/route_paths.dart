@@ -34,11 +34,15 @@ class AppRoutes {
 
 
   static const splitPdfPath = 'split-pdf';
+  static const splitPdfSettingsPath = 'split-pdf-settings';
+  static const splitPdfResultPath = 'split-pdf-result';
 
 
 
 
   static const compressPdfPath = 'compress-pdf';
+  static const compressPdfSettingsPath = 'compress-pdf-settings';
+  static const compressPdfResultPath = 'compress-pdf-result';
 
 
   // Route Names
@@ -73,10 +77,14 @@ class AppRoutes {
 
 
   static const splitPdf = 'splitPdf';
+  static const splitPdfSettings = 'splitPdfSettings';
+  static const splitPdfResult = 'splitPdfResult';
 
 
 
   static const compressPdf = 'compressPdf';
+  static const compressPdfSettings = 'compressPdfSettings';
+  static const compressPdfResult = 'compressPdfResult';
 
 
 

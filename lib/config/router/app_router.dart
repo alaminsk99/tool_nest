@@ -23,6 +23,8 @@ import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/imag
 import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/compress_pdf/compress_pdf_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/compress_pdf/compress_pdf_result.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/compress_pdf/compress_pdf_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_result.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/merge_pdf/merge_pdf_settings.dart';
@@ -30,6 +32,8 @@ import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_result.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/pdf_to_Image/pdf_to_image_settings.dart';
 import 'package:tool_nest/presentation/pages/tools/pdf_tools/split_pdf/split_pdf_page.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/split_pdf/split_pdf_result.dart';
+import 'package:tool_nest/presentation/pages/tools/pdf_tools/split_pdf/split_pdf_settings.dart';
 
 
 import '../../presentation/pages/tools/image_tools/image_compressor/image_compress_page.dart';
@@ -188,7 +192,22 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.compressPdf,
           builder: (context, state) => CompressPdfPage(),
           routes: [
+            GoRoute(
+              path: AppRoutes.compressPdfSettingsPath,
+              name: AppRoutes.compressPdfSettings,
+              builder: (context, state) {
 
+                return CompressPdfSettings();
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.compressPdfResultPath,
+              name: AppRoutes.compressPdfResult,
+              builder: (context, state) {
+
+                return CompressPdfResult();
+              },
+            ),
           ],
 
         ),
@@ -221,6 +240,22 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.splitPdf,
           builder: (context, state) => const SplitPdfPage(),
           routes: [
+            GoRoute(
+              path: AppRoutes.splitPdfSettingsPath,
+              name: AppRoutes.splitPdfSettings  ,
+              builder: (context, state) {
+
+                return SplitPdfSettings();
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.splitPdfResultPath,
+              name: AppRoutes.splitPdfResult,
+              builder: (context, state) {
+
+                return SplitPdfResult();
+              },
+            ),
 
           ],
 

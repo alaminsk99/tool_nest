@@ -244,4 +244,17 @@ static const String savingFailed = "Saving failed";
   static const String mergePdfResult = "Result";
   static const String pdfAdds = "Add PDFs";
 
+  /// Split PDF
+  static const String splitPdfSettings = "Settings";
+  static const String splitPdfResult = "Result";
+  static const String splitingPdf = "Splitting PDF";
+  static const String pleWaitWhileSplitting = "Please wait while splitting...";
+
+
+  /// Compress PDF
+  static const String compressPdfSettings = "Settings";
+  static const String compressPdfResult = "Result";
+
+
+
 }
