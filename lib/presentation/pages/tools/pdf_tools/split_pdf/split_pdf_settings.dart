@@ -6,10 +6,13 @@ import 'package:tool_nest/application/blocs/pdf_tools/split_pdf/split_pdf_bloc.d
 import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/buttons/dropdownButtonSelectionUsingBottomSheets.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/icon_with_process.dart';
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 import 'package:tool_nest/presentation/widgets/loader/processing_screen.dart';
+import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
+
 
 class SplitPdfSettings extends StatefulWidget {
   const SplitPdfSettings({super.key});
@@ -82,10 +85,7 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => ProcessingScreen(
-        title: TNTextStrings.splitingPdf,
-        warningMessage: TNTextStrings.pleWaitWhileSplitting,
-      ),
+      builder: (_) => ProgressIndicatorForAll(),
     );
   }
 
@@ -112,7 +112,7 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
 
         if (state is SplitFailed) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Split failed: ${state.error}")),
+            SnackBar(content: Text("Split failed: \${state.error}")),
           );
         }
       },
@@ -129,16 +129,15 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// Split Mode Selector
+                    /// Split Mode Selector using bottom sheet
                     ValueListenableBuilder(
                       valueListenable: _splitMode,
-                      builder: (_, mode, __) => DropdownButton<String>(
-                        value: mode,
-                        items: const [
-                          DropdownMenuItem(value: 'Range', child: Text('Range')),
-                          DropdownMenuItem(value: 'Pages', child: Text('Pages')),
-                        ],
-                        onChanged: (value) => _splitMode.value = value!,
+                      builder: (_, mode, __) => DropdownButtonSelectionUsingBottomSheets(
+                        titleForBottomSheet: 'Select Split Mode',
+                        titleOfTheSection: 'Split Mode',
+                        selectedItem: mode,
+                        options: const ['Range', 'Pages'],
+                        onSelect: (selected) => _splitMode.value = selected,
                       ),
                     ),
 

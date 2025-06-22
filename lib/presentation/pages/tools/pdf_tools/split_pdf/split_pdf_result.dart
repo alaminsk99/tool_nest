@@ -2,15 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:tool_nest/application/blocs/pdf_tools/split_pdf/split_pdf_bloc.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/file_services/file_services.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/download_button.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:archive/archive_io.dart';
 import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
+import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
+import 'package:archive/archive_io.dart';
+import 'package:gap/gap.dart';
 
 class SplitPdfResult extends StatelessWidget {
   const SplitPdfResult({super.key});
@@ -27,15 +32,17 @@ class SplitPdfResult extends StatelessWidget {
   }
 
   void _showSnack(BuildContext context, String? path) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          path != null
-              ? 'Saved to Downloads'
-              : 'Failed to save file.',
-        ),
-      ),
-    );
+    if (path != null) {
+      DialogOptions().showModernSuccessDialog(context, TNTextStrings.savedToDownloads);
+      Future.delayed(const Duration(seconds: 1), () {
+        context.pushNamed(
+          AppRoutes.processFinishedForImgToPdf,
+          extra: path,
+        );
+      });
+    } else {
+      DialogOptions().showModernErrorDialog(context, TNTextStrings.failedToSave);
+    }
   }
 
   Future<File> _createZip(List<File> files) async {
@@ -59,9 +66,6 @@ class SplitPdfResult extends StatelessWidget {
     return File(zipPath);
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,57 +73,114 @@ class SplitPdfResult extends StatelessWidget {
         title: TNTextStrings.splitPdfResult,
         isLeadingIcon: true,
       ),
+      backgroundColor: TNColors.primaryBackground,
       body: BlocBuilder<SplitPdfBloc, SplitPdfState>(
         builder: (context, state) {
           if (state is SplitSuccess) {
             final files = state.splitFiles;
 
-            return Stack(
+            return Column(
               children: [
-                ListView.separated(
-                  padding: const EdgeInsets.only(
-                    bottom: TNSizes.spaceXL * 2,
-                    left: TNSizes.spaceMD,
-                    right: TNSizes.spaceMD,
-                    top: TNSizes.spaceMD,
+                Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: TNSizes.spaceMD,
+                      vertical: TNSizes.spaceMD,
+                    ).copyWith(bottom: TNSizes.spaceXL * 2),
+                    itemCount: files.length,
+                    separatorBuilder: (_, __) => const Gap(TNSizes.spaceMD),
+                    itemBuilder: (context, index) {
+                      final file = files[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: TNColors.lightContainer,
+                          borderRadius: BorderRadius.circular(TNSizes.borderRadiusLG),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        height: 320,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(TNSizes.borderRadiusLG),
+                          child: SfPdfViewer.file(file),
+                        ),
+                      );
+                    },
                   ),
-                  itemCount: files.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: TNSizes.spaceMD),
-                  itemBuilder: (context, index) {
-                    final file = files[index];
-                    return Container(
-                      height: 300,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: SfPdfViewer.file(file),
-                      ),
-                    );
-                  },
                 ),
 
-                Positioned(
-                  bottom: TNSizes.spaceMD,
-                  left: TNSizes.spaceMD,
-                  right: TNSizes.spaceMD,
-                  child: DownloadButton(
-                    onPressed: () => _downloadFiles(context, files),
+                Container(
+                  padding: const EdgeInsets.all(TNSizes.spaceLG),
+                  decoration: BoxDecoration(
+                    color: TNColors.lightContainer,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(TNSizes.borderRadiusLG),
+                      topRight: Radius.circular(TNSizes.borderRadiusLG),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 12,
+                        offset: const Offset(0, -4),
+                      ),
+                    ],
                   ),
-                ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        TNTextStrings.compressionSummary,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: TNColors.textPrimary,
+                        ),
+                      ),
+                      const Gap(TNSizes.spaceSM),
+                      _buildSummaryInfo(TNTextStrings.original, '${files.length} page(s)', context),
+                      const Gap(TNSizes.spaceXS),
+                      _buildSummaryInfo(TNTextStrings.splitPDF, '${files.length} file(s)', context),
+                      const Gap(TNSizes.spaceLG),
+                      DownloadButton(
+                        onPressed: () => _downloadFiles(context, files),
+                      ),
+                    ],
+                  ),
+                )
               ],
             );
           } else if (state is SplittingInProgress) {
             return const Center(child: ProgressIndicatorForAll());
           } else if (state is SplitFailed) {
-            return Center(child: Text("Error: try again"));
+            return Center(child: Text("${TNTextStrings.somThingWrong}"));
+          } else {
+            return const Center(child: Text("${TNTextStrings.noImageSelected}"));
           }
-
-          return const Center(child: Text("No split files available."));
         },
       ),
+    );
+  }
+
+  Widget _buildSummaryInfo(String label, String value, BuildContext context, {Color? valueColor}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          '$label:',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TNColors.textSecondary),
+        ),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: valueColor ?? TNColors.textPrimary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

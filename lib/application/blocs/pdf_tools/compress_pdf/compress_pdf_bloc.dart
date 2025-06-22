@@ -89,4 +89,3 @@ class CompressPdfBloc extends Bloc<CompressPdfEvent, CompressPdfState> {
     emit(CompressPdfInitial());
   }
 }
-

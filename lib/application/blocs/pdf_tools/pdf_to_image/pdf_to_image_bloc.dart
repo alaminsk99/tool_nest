@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:pdfx/pdfx.dart';
@@ -14,11 +13,7 @@ class PdfToImageBloc extends Bloc<PdfToImageEvent, PdfToImageState> {
   PdfToImageBloc() : super(PdfInitial()) {
     on<PickPdfEvent>(_onPickPdf);
     on<ConvertPdfEvent>(_onConvertPdf);
-    on<ResetPdfToImageEvent>((event, emit) {
-      _pdfPath = null;
-      _pageCount = null;
-      emit(PdfInitial());
-    });
+    on<ResetPdfToImageEvent>(_onReset);
   }
 
   Future<void> _onPickPdf(PickPdfEvent event, Emitter<PdfToImageState> emit) async {
@@ -27,15 +22,18 @@ class PdfToImageBloc extends Bloc<PdfToImageEvent, PdfToImageState> {
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
-      if (result?.files.single.path != null) {
-        _pdfPath = result!.files.single.path!;
-        final doc = await PdfDocument.openFile(_pdfPath!);
-        _pageCount = doc.pagesCount;
-        await doc.close();
-        emit(PdfPicked(_pdfPath!, _pageCount!));
-      } else {
+      final path = result?.files.single.path;
+      if (path == null) {
         emit(PdfError("No PDF selected."));
+        return;
       }
+
+      final doc = await PdfDocument.openFile(path);
+      _pageCount = doc.pagesCount;
+      _pdfPath = path;
+      await doc.close();
+
+      emit(PdfPicked(path, _pageCount!));
     } catch (e) {
       emit(PdfError("Failed picking PDF: $e"));
     }
@@ -47,7 +45,10 @@ class PdfToImageBloc extends Bloc<PdfToImageEvent, PdfToImageState> {
       return;
     }
 
-    if (event.startPage < 1 || event.endPage > _pageCount! || event.startPage > event.endPage) {
+    final start = event.startPage;
+    final end = event.endPage;
+
+    if (start < 1 || end > _pageCount! || start > end) {
       emit(PdfError("Invalid page range."));
       return;
     }
@@ -57,16 +58,17 @@ class PdfToImageBloc extends Bloc<PdfToImageEvent, PdfToImageState> {
       final results = <PdfToImageResultModel>[];
       final document = await PdfDocument.openFile(_pdfPath!);
 
-      for (int i = event.startPage; i <= event.endPage; i++) {
+      for (int i = start; i <= end; i++) {
         final page = await document.getPage(i);
-        final pageImage = await page.render(
-          width: page.width,
-          height: page.height,
+        final image = await page.render(
+          width: page.width * 2,
+          height: page.height * 2,
           format: PdfPageImageFormat.png,
+          backgroundColor: '#FFFFFF',
         );
 
         results.add(PdfToImageResultModel(
-          imageBytes: Uint8List.fromList(pageImage!.bytes),
+          imageBytes: Uint8List.fromList(image!.bytes),
           pageNumber: i,
         ));
 
@@ -78,5 +80,11 @@ class PdfToImageBloc extends Bloc<PdfToImageEvent, PdfToImageState> {
     } catch (e) {
       emit(PdfError("Conversion failed: $e"));
     }
+  }
+
+  void _onReset(ResetPdfToImageEvent event, Emitter<PdfToImageState> emit) {
+    _pdfPath = null;
+    _pageCount = null;
+    emit(PdfInitial());
   }
 }

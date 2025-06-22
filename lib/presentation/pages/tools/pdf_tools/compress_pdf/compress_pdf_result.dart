@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
@@ -48,7 +49,12 @@ class CompressPdfResult extends StatelessWidget {
               child: Padding(
                 padding: TNPaddingStyle.onlyBottomXXL,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(TNSizes.borderRadiusLG),
+                  borderRadius:  BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                    bottomLeft: Radius.circular(TNSizes.borderRadiusLG),
+                    bottomRight:Radius.circular(TNSizes.borderRadiusLG),
+                  ),
                   child: SfPdfViewer.file(compressedPdf.file),
                 ),
               ),
@@ -99,6 +105,12 @@ class CompressPdfResult extends StatelessWidget {
                       final filePath = await FileServices().saveToDownloads(compressedPdf.file.path);
                       if (filePath != null) {
                         DialogOptions().showModernSuccessDialog(context, TNTextStrings.save);
+                        Future.delayed(const Duration(seconds: 1), () {
+                          context.pushNamed(
+                            AppRoutes.processFinishedForImgToPdf,
+                            extra: filePath,
+                          );
+                        });
                       } else {
                         DialogOptions().showModernErrorDialog(context, TNTextStrings.savingFailed);
                       }
