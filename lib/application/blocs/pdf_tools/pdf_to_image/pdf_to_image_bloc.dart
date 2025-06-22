@@ -61,7 +61,7 @@ class PdfToImageBloc extends Bloc<PdfToImageEvent, PdfToImageState> {
       for (int i = start; i <= end; i++) {
         final page = await document.getPage(i);
         final image = await page.render(
-          width: page.width * 2,
+          width: page.width * 2, //
           height: page.height * 2,
           format: PdfPageImageFormat.png,
           backgroundColor: '#FFFFFF',
