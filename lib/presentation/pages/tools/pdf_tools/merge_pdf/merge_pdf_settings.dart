@@ -3,14 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tool_nest/application/blocs/pdf_tools/merge_pdfs/merge_pdf_bloc.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
+import 'package:tool_nest/core/constants/colors.dart';
+import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-
-import 'merge_pdf_result.dart';
 
 class MergePdfSettings extends StatefulWidget {
   const MergePdfSettings({super.key});
+
   @override
   State<MergePdfSettings> createState() => _MergePdfSettingsState();
 }
@@ -21,30 +23,102 @@ class _MergePdfSettingsState extends State<MergePdfSettings> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<MergePdfBloc>();
-    return Scaffold(
-      appBar:  AppbarForMainSections(title: TNTextStrings.mergePdfSettings, isLeadingIcon: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text('Page spacing: ${_spacing.toInt()} pts'),
-            Slider(
-              min: 0,
-              max: 72,
-              divisions: 12,
-              value: _spacing,
-              onChanged: (v) => setState(() => _spacing = v),
-            ),
-            const Spacer(),
-            ProcessButton(
-              onPressed: () {
-                bloc.add(UpdateSettings(_spacing.toInt()));
-                bloc.add(MergeRequested());
+    final theme = Theme.of(context);
 
-                context.pushNamed(AppRoutes.mergePdfResult);
-              },
-            ),
-          ],
+    return Scaffold(
+      appBar: AppbarForMainSections(
+        title: TNTextStrings.mergePdfSettings,
+        isLeadingIcon: true,
+      ),
+      backgroundColor: TNColors.primaryBackground,
+      body: SafeArea(
+        child: Padding(
+          padding: TNPaddingStyle.allPaddingLG,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Adjust Spacing Between Pages",
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: TNColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: TNSizes.spaceMD),
+              Text(
+                "Set how much empty space (in points) to insert between pages when merging your PDF.",
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: TNColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: TNSizes.spaceXL),
+
+              // Preview Box
+              Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: TNColors.white,
+                  borderRadius: BorderRadius.circular(TNSizes.borderRadiusLG),
+                  boxShadow: [
+                    BoxShadow(
+                      color: TNColors.black.withOpacity(0.05),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '${_spacing.toInt()} pt spacing',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: TNColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: TNSizes.spaceXL),
+
+              // Slider
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  activeTrackColor: TNColors.primary,
+                  inactiveTrackColor: TNColors.primary.withOpacity(0.3),
+                  thumbColor: TNColors.primary,
+                  overlayColor: TNColors.primary.withOpacity(0.2),
+                  trackHeight: 4,
+                ),
+                child: Slider(
+                  min: 0,
+                  max: 72,
+                  divisions: 12,
+                  value: _spacing,
+                  onChanged: (v) => setState(() => _spacing = v),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text("0 pt", style: TextStyle(fontSize: 12)),
+                    Text("72 pt", style: TextStyle(fontSize: 12)),
+                  ],
+                ),
+              ),
+
+              const Spacer(),
+
+              // Process Button
+              ProcessButton(
+                text: "Merge Now",
+                onPressed: () {
+                  bloc.add(UpdateSettings(_spacing.toInt()));
+                  bloc.add(MergeRequested());
+                  context.pushNamed(AppRoutes.mergePdfResult);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
