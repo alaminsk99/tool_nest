@@ -28,6 +28,7 @@ class TNTextStrings {
   /// Home Screen
   static const String homeTitle = "Explore Tools";
   static const String searchHint = "Search tools...";
+  static const String pageSelection = "Page Selection";
 
   /// General Labels
   static const String ok = "OK";
