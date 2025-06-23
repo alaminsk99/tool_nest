@@ -16,6 +16,7 @@ import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/button_with_style/two_action_buttons.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/icon_with_filled_button.dart';
 import 'package:tool_nest/core/utils/file_services/file_services.dart';
+import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
 
 class ActionButtonForImgToPdfResult extends StatelessWidget {
   final String pdfPath;
@@ -58,10 +59,7 @@ class ActionButtonForImgToPdfResult extends StatelessWidget {
       final path = await FileServices().saveToDownloads(pdfPath);
       if (path != null) {
         // Show success snackbar
-        SnackbarHelper.showSuccess(
-          context,
-          TNTextStrings.savedToDownloads,
-        );
+        DialogOptions().showModernSuccessDialog(context, TNTextStrings.savedToDownloads);
 
         // Navigate after short delay (optional UX touch)
         Future.delayed(const Duration(seconds: 1), () {

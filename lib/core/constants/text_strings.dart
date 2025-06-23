@@ -138,6 +138,8 @@ static const String textSummarizer = "Text Summarizer";
  static const String addPagesGeneratePreview = "Add pages or images to generate preview.";
  static const String resultPDFScreen = "PDF Result";
  static const String generatedPDF = "Your Generated PDF";
+ static const String convertToPdf = "Convert To Pdf";
+ static const String viewYourCreatedPdf = "View Your Created Pdf";
 
   static const String processingPDF = 'Generating your PDF...';
   static const String pleaseWaitWhileProcessing = 'Please wait while we process your file.';

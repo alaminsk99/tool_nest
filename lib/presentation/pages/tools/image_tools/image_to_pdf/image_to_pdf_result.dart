@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/buttons/action_button_for_img_to_pdf_result.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ImageToPdfResultScreen extends StatelessWidget {
   final String pdfPath;
@@ -16,35 +17,71 @@ class ImageToPdfResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppbarForMainSections(
         title: TNTextStrings.resultPDFScreen,
         isLeadingIcon: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(TNSizes.spaceMD),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Heading
-            Text(
-              TNTextStrings.generatedPDF,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const Gap(TNSizes.spaceMD),
-
-            /// PDF Viewer replacing ResultCard
-            Expanded(
-              child: SfPdfViewer.file(
-                                File(pdfPath),
+      backgroundColor: TNColors.primaryBackground,
+      body: SafeArea(
+        child: Padding(
+          padding: TNPaddingStyle.allPaddingLG,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// Title
+              Text(
+                TNTextStrings.generatedPDF,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: TNColors.textPrimary,
+                ),
               ),
-            ),
+              const Gap(TNSizes.spaceSM),
+              Text(
+                TNTextStrings.viewYourCreatedPdf,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: TNColors.textSecondary,
+                ),
+              ),
 
-            const Gap(TNSizes.spaceXL),
+              const Gap(TNSizes.spaceXL),
 
-            /// Action Buttons
-            ActionButtonForImgToPdfResult(pdfPath: pdfPath),
-          ],
+              /// PDF Viewer
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(TNSizes.borderRadiusLG),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: TNColors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: TNColors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        )
+                      ],
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: TNColors.borderPrimary, width: 1.2),
+                        borderRadius: BorderRadius.circular(TNSizes.borderRadiusLG),
+                      ),
+                      child: SfPdfViewer.file(File(pdfPath)),
+                    ),
+                  ),
+                ),
+
+              ),
+
+              const Gap(TNSizes.spaceXL),
+
+              /// Action Buttons (Share / Save / Home etc.)
+              ActionButtonForImgToPdfResult(pdfPath: pdfPath),
+            ],
+          ),
         ),
       ),
     );
