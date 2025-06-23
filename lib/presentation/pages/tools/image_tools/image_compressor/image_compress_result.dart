@@ -1,21 +1,20 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/colors.dart';
+import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/file_services/file_services.dart';
 import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/icon_with_outline_button.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/icon_with_outline_button_with_bacground_color.dart' show IconWithOutlineButtonWithBackgroundColor;
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
+import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
 
 class ImageCompressResult extends StatefulWidget {
-  const ImageCompressResult({super.key, required this.state});
   final ImageCompressionSuccess state;
+  const ImageCompressResult({super.key, required this.state});
 
   @override
   State<ImageCompressResult> createState() => _ImageCompressResultState();
@@ -24,7 +23,6 @@ class ImageCompressResult extends StatefulWidget {
 class _ImageCompressResultState extends State<ImageCompressResult> {
   bool _showOriginal = false;
   bool _isSaving = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,64 +35,73 @@ class _ImageCompressResultState extends State<ImageCompressResult> {
         : widget.state.compressedSize;
 
     return Scaffold(
-      appBar: AppbarForMainSections(title: TNTextStrings.compressionResult, isLeadingIcon: true,widgets: [
-        IconButton(
-            icon: const Icon(Icons.save_alt),
-            onPressed: _isSaving ? null : () async{
-              try{
+      backgroundColor: TNColors.primaryBackground,
+      appBar: AppbarForMainSections(
+        title: TNTextStrings.compressionResult,
+        isLeadingIcon: true,
+        widgets: [
+          IconButton(
+            icon: Icon(Icons.save_alt, color: TNColors.white),
+            onPressed: _isSaving
+                ? null
+                : () async {
+              try {
                 await FileServices.saveImageToGallery(
                   context: context,
                   imageFile: widget.state.compressedFile,
-                  fileName: "${TNTextStrings.appNameDirectory}${DateTime.now().millisecondsSinceEpoch}",
+                  fileName:
+                  "${TNTextStrings.appNameDirectory}${DateTime.now().millisecondsSinceEpoch}",
                   onStart: () => setState(() => _isSaving = true),
                   onComplete: () => setState(() => _isSaving = false),
                 );
 
-                /// If Save Successfull then Goto Other screen
-                Future.delayed(const Duration(seconds: 1), () {
+                DialogOptions().showModernSuccessDialog(context, TNTextStrings.savedToDownloads);
+
+                await Future.delayed(const Duration(seconds: 1));
+                if (context.mounted) {
                   context.pushNamed(
                     AppRoutes.processFinishedForImgToPdf,
                     extra: 'null',
                   );
-                });
-              }catch(e){
+                }
+              } catch (e) {
                 debugPrint("Save error: $e");
+                SnackbarHelper.showError(context, TNTextStrings.failedToSave);
               }
-
-
             },
-          color: TNColors.white,
-          ),],),
-
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Preview Section
+            /// Image Preview
             Expanded(
               child: Stack(
                 children: [
                   PhotoView(
                     imageProvider: FileImage(currentFile),
+                    backgroundDecoration:
+                    BoxDecoration(color: TNColors.primaryBackground),
                     minScale: PhotoViewComputedScale.contained,
                     maxScale: PhotoViewComputedScale.covered * 2,
                   ),
-
-                  // Size Indicator
                   Positioned(
                     top: 16,
                     right: 16,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.black54,
+                        color: Colors.black.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         currentSize,
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -102,91 +109,59 @@ class _ImageCompressResultState extends State<ImageCompressResult> {
               ),
             ),
 
-            // Comparison Controls
+            /// Toggle Controls
             Container(
-              padding: const EdgeInsets.all(16),
-              color: Theme.of(context).cardColor,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: IconWithOutlineButtonWithBackgroundColor(
-                      icon: _showOriginal
-                          ? Icons.toggle_on
-                          : Icons.toggle_off,
-                      title: TNTextStrings.showOriginal,
-                      onPressed: () => setState(() => _showOriginal = true),
-                        color: _showOriginal
-                            ? TNColors.materialPrimaryColor[300]
-                            : null,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-
-                    child: IconWithOutlineButtonWithBackgroundColor(
-                      color: _showOriginal?null:TNColors.materialPrimaryColor[300],
-                        icon: !_showOriginal
-                              ? Icons.toggle_on
-                              : Icons.toggle_off,
-
-                        title:TNTextStrings.showCompressed,
-                       onPressed: () => setState(() => _showOriginal = false,
-                       ),
-                    ),
-
+              padding: const EdgeInsets.all(TNSizes.spaceLG),
+              decoration: BoxDecoration(
+                color: TNColors.lightContainer,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(TNSizes.borderRadiusLG),
+                  topRight: Radius.circular(TNSizes.borderRadiusLG),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -4),
                   ),
                 ],
               ),
-            ),
-
-            // Info Panel
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Column(
                 children: [
-                  Column(
+                  /// Toggle Buttons
+                  Row(
                     children: [
-                      Text(TNTextStrings.original,
-                          style:
-                          Theme.of(context).textTheme.labelSmall),
-                      Text(widget.state.originalSize,
-                          style:
-                          Theme.of(context).textTheme.titleMedium),
+                      _buildToggleButton(
+                        title: TNTextStrings.showOriginal,
+                        isSelected: _showOriginal,
+                        onTap: () => setState(() => _showOriginal = true),
+                      ),
+                      const SizedBox(width: 12),
+                      _buildToggleButton(
+                        title: TNTextStrings.showCompressed,
+                        isSelected: !_showOriginal,
+                        onTap: () => setState(() => _showOriginal = false),
+                      ),
                     ],
                   ),
-                  const Icon(Icons.arrow_right_alt, size: 36),
-                  Column(
+                  const SizedBox(height: TNSizes.spaceLG),
+
+                  /// Info Panel
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(TNTextStrings.compressed,
-                          style:
-                          Theme.of(context).textTheme.labelSmall),
-                      Text(widget.state.compressedSize,
-                          style:
-                          Theme.of(context).textTheme.titleMedium),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(TNTextStrings.reduction,
-                          style:
-                          Theme.of(context).textTheme.labelSmall),
-                      Text(
+                      _buildInfoColumn(
+                          TNTextStrings.original, widget.state.originalSize),
+                      const Icon(Icons.arrow_right_alt, size: 36),
+                      _buildInfoColumn(
+                          TNTextStrings.compressed, widget.state.compressedSize),
+                      _buildInfoColumn(
+                        TNTextStrings.reduction,
                         _calculateReduction(
                           widget.state.selectedImage!.lengthSync(),
                           widget.state.compressedFile.lengthSync(),
                         ),
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(color: Colors.green),
+                        valueColor: TNColors.success,
                       ),
                     ],
                   ),
@@ -196,6 +171,60 @@ class _ImageCompressResultState extends State<ImageCompressResult> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildToggleButton({
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? TNColors.materialPrimaryColor.shade500
+                : TNColors.lightContainer,
+            borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+            border: Border.all(
+              color: isSelected
+                  ? TNColors.materialPrimaryColor.shade400
+                  : TNColors.borderSecondary,
+              width: 1.2,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color:
+              isSelected ? Colors.white : TNColors.textSecondary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoColumn(String label, String value, {Color? valueColor}) {
+    return Column(
+      children: [
+        Text(label, style: const TextStyle(fontSize: 12)),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: valueColor ?? TNColors.textPrimary,
+          ),
+        ),
+      ],
     );
   }
 
