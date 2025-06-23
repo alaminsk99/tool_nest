@@ -4,7 +4,7 @@ import 'package:tool_nest/application/blocs/bottom_nav/nav_bloc.dart';
 import 'package:tool_nest/application/blocs/bottom_nav/nav_state.dart';
 import 'package:tool_nest/presentation/pages/home/home_page.dart';
 import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
-import 'package:tool_nest/presentation/pages/search/search_pages.dart';
+
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
@@ -24,7 +24,6 @@ class MainPage extends StatelessWidget {
             index: state.selectedIndex,
             children: [
               const HomePage(),
-              SearchPages(),
               ToolsPages(),
               const ProfilePage(),
             ],
