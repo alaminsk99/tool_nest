@@ -225,6 +225,12 @@ static const String savingFailed = "Saving failed";
   static const String imageResizeSettings = "Resize Settings";
   static const String resizingImage = "Resizing Image";
   static const String pleWaitWhileResizing = "Please wait while resizing...";
+  static const String inputDesiredDimensions = "Input your desired dimensions below";
+  static const String enterWidthHeight = "Enter width and height to resize your image";
+  static const String maintainProportions = "Maintain aspect ratio while resizing";
+  static const String dimensionsLabel = "Custom Dimensions";
+  static const String readyToResize = "Ready to resize your image?";
+
 
   static const String width = "Width";
   static const String height = "Height";

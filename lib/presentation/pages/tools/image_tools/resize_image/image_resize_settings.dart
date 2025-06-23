@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tool_nest/config/router/route_paths.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
-import 'package:tool_nest/presentation/pages/tools/image_tools/resize_image/image_resize_result.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
-import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
-import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_event.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_state.dart';
-import 'package:tool_nest/presentation/widgets/loader/processing_screen.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
+import 'package:tool_nest/core/constants/colors.dart';
+import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
+import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
 import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
-
 
 class ImageResizeSettings extends StatefulWidget {
   const ImageResizeSettings({super.key});
@@ -25,6 +23,7 @@ class ImageResizeSettings extends StatefulWidget {
 }
 
 class _ImageResizeSettingsState extends State<ImageResizeSettings> {
+  bool _isDialogShown = false;
 
   @override
   void initState() {
@@ -32,97 +31,111 @@ class _ImageResizeSettingsState extends State<ImageResizeSettings> {
     context.read<ImageResizeBloc>().add(ResetResizeStateEvent());
   }
 
-
   @override
   Widget build(BuildContext context) {
-    bool isProcessingDialogShown = false;
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppbarForMainSections(
         title: TNTextStrings.imageResizeSettings,
         isLeadingIcon: true,
       ),
+      backgroundColor: TNColors.primaryBackground,
       body: SafeArea(
         child: BlocConsumer<ImageResizeBloc, ImageResizeState>(
           listener: (context, state) {
-            if (state is ImageResizeLoading && !isProcessingDialogShown) {
-              isProcessingDialogShown = true;
+            if (state is ImageResizeLoading && !_isDialogShown) {
+              _isDialogShown = true;
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder: (context) => const ProcessingScreen(
-                  title: TNTextStrings.resizingImage,
-                  warningMessage: TNTextStrings.pleWaitWhileResizing,
-                ),
+                builder: (_) => const ProgressIndicatorForAll(),
               );
             }
+
             if (state is ImageResizeDone) {
-              if (isProcessingDialogShown && Navigator.of(context).canPop()) {
+              if (_isDialogShown && Navigator.of(context).canPop()) {
                 Navigator.of(context, rootNavigator: true).pop();
-                isProcessingDialogShown = false;
-              }
-              context.pushNamed(AppRoutes.imageResizeResult, extra: {
-              'imageBytes': state.resizedBytes,
-              'width': state.width,
-              'height': state.height,
-              },);
-            }
-            if (state is ImageResizeError) {
-              if (isProcessingDialogShown) {
-                Navigator.of(context, rootNavigator: true).pop();
-                isProcessingDialogShown = false;
+                _isDialogShown = false;
               }
 
+              context.pushNamed(AppRoutes.imageResizeResult, extra: {
+                'imageBytes': state.resizedBytes,
+                'width': state.width,
+                'height': state.height,
+              });
+            }
+
+            if (state is ImageResizeError) {
+              if (_isDialogShown) {
+                Navigator.of(context, rootNavigator: true).pop();
+                _isDialogShown = false;
+              }
               SnackbarHelper.showError(context, state.message);
             }
-
           },
           builder: (context, state) {
             if (state is ImageResizeLoaded) {
               return Padding(
-                padding: TNPaddingStyle.allPadding,
+                padding: TNPaddingStyle.allPaddingLG,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(TNTextStrings.imageResizer, style: Theme.of(context).textTheme.bodyLarge),
-                    Gap(TNSizes.spaceMD),
-
-                    /// Width and Height Input
-                    Form(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: state.width.toString(),
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(labelText: TNTextStrings.width),
-                              onChanged: (value) {
-                                final width = int.tryParse(value);
-                                if (width != null) {
-                                  context.read<ImageResizeBloc>().add(UpdateWidthEvent(width));
-                                }
-                              },
-                            ),
-                          ),
-                          Gap(TNSizes.spaceBetweenInputFields),
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: state.height.toString(),
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(labelText: TNTextStrings.height),
-                              onChanged: (value) {
-                                final height = int.tryParse(value);
-                                if (height != null) {
-                                  context.read<ImageResizeBloc>().add(UpdateHeightEvent(height));
-                                }
-                              },
-                            ),
-                          ),
-                        ],
+                    /// Title
+                    Text(
+                      TNTextStrings.imageResizer,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: TNColors.textPrimary,
                       ),
                     ),
+                    const Gap(TNSizes.spaceSM),
+
+                    /// Subtitle
+                    Text(
+                      TNTextStrings.inputDesiredDimensions,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: TNColors.textSecondary,
+                      ),
+                    ),
+                    const Gap(TNSizes.spaceXL),
+
+                    /// Dimension Input
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildDimensionField(
+                            context,
+                            label: TNTextStrings.width,
+                            initialValue: state.width.toString(),
+                            onChanged: (val) {
+                              final width = int.tryParse(val);
+                              if (width != null) {
+                                context.read<ImageResizeBloc>().add(UpdateWidthEvent(width));
+                              }
+                            },
+                          ),
+                        ),
+                        const Gap(TNSizes.spaceBetweenInputFields),
+                        Expanded(
+                          child: _buildDimensionField(
+                            context,
+                            label: TNTextStrings.height,
+                            initialValue: state.height.toString(),
+                            onChanged: (val) {
+                              final height = int.tryParse(val);
+                              if (height != null) {
+                                context.read<ImageResizeBloc>().add(UpdateHeightEvent(height));
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const Gap(TNSizes.spaceBetweenItems),
 
                     /// Lock Aspect Ratio
-                    Gap(TNSizes.spaceBetweenItems),
                     Row(
                       children: [
                         Checkbox(
@@ -132,13 +145,19 @@ class _ImageResizeSettingsState extends State<ImageResizeSettings> {
                               UpdateAspectRatioLockEvent(val ?? false),
                             );
                           },
+                          activeColor: TNColors.primary,
                         ),
-                        Gap(TNSizes.spaceMD),
-                        Text(TNTextStrings.lockAspectRatio),
+                        const Gap(TNSizes.spaceSM),
+                        Text(
+                          TNTextStrings.lockAspectRatio,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: TNColors.textPrimary,
+                          ),
+                        ),
                       ],
                     ),
 
-                    Gap(TNSizes.spaceBetweenSections),
+                    const Spacer(),
 
                     /// Process Button
                     ProcessButton(
@@ -152,9 +171,40 @@ class _ImageResizeSettingsState extends State<ImageResizeSettings> {
             } else if (state is ImageResizeError) {
               return Center(child: Text(state.message));
             } else {
-              return Center(child: ProgressIndicatorForAll());
+              return const Center(child: ProgressIndicatorForAll());
             }
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDimensionField(
+      BuildContext context, {
+        required String label,
+        required String initialValue,
+        required ValueChanged<String> onChanged,
+      }) {
+    return TextFormField(
+      initialValue: initialValue,
+      keyboardType: TextInputType.number,
+      onChanged: onChanged,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: TNColors.textPrimary,
+      ),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: TNColors.textSecondary),
+        filled: true,
+        fillColor: TNColors.buttonSecondary,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+          borderSide: const BorderSide(color: TNColors.borderPrimary),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+          borderSide: const BorderSide(color: TNColors.primary),
         ),
       ),
     );
