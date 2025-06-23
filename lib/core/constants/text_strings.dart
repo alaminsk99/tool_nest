@@ -235,6 +235,8 @@ static const String savingFailed = "Saving failed";
   static const String imageFormatConverterSettings = "Settings";
   static const String imageFormatConverterResult = "Result";
   static const String imageSelectFormat = "Select Format";
+  static const String convertedTo = "Converted To";
+  static const String conversionSummary = "Conversion Summary";
 
 
   /// PDF to Image
@@ -248,6 +250,9 @@ static const String savingFailed = "Saving failed";
   static const String mergePdfSettings = "Settings";
   static const String mergePdfResult = "Result";
   static const String pdfAdds = "Add PDFs";
+  static const String pdfMergeNowButtonText = "Merge Now";
+  static const String adjSpaceBetweenPages = "Adjust Spacing Between Pages";
+  static const String mergePdfTitle = "Set how much empty space (in points) to insert between pages when merging your PDF.";
 
   /// Split PDF
   static const String splitPdfSettings = "Settings";

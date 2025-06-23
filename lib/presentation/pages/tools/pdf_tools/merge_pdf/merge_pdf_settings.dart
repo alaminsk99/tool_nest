@@ -38,7 +38,7 @@ class _MergePdfSettingsState extends State<MergePdfSettings> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Adjust Spacing Between Pages",
+                TNTextStrings.adjSpaceBetweenPages,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: TNColors.textPrimary,
@@ -46,7 +46,7 @@ class _MergePdfSettingsState extends State<MergePdfSettings> {
               ),
               const SizedBox(height: TNSizes.spaceMD),
               Text(
-                "Set how much empty space (in points) to insert between pages when merging your PDF.",
+                TNTextStrings.mergePdfTitle,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: TNColors.textSecondary,
                 ),
@@ -110,7 +110,7 @@ class _MergePdfSettingsState extends State<MergePdfSettings> {
 
               // Process Button
               ProcessButton(
-                text: "Merge Now",
+                text: TNTextStrings.pdfMergeNowButtonText,
                 onPressed: () {
                   bloc.add(UpdateSettings(_spacing.toInt()));
                   bloc.add(MergeRequested());

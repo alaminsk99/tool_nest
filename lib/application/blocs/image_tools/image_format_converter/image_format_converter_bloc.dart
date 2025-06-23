@@ -25,6 +25,7 @@ class ImageFormatConverterBloc extends Bloc<ImageFormatConverterEvent, ImageForm
           originalImage: decoded,
           imageBytes: bytes,
           currentFormat: 'jpg',
+          originalFormat: pickedFile.name.split('.').last,
         ));
       } else {
         emit(ImageFormatError('Failed to decode image.'));
@@ -41,6 +42,7 @@ class ImageFormatConverterBloc extends Bloc<ImageFormatConverterEvent, ImageForm
         originalImage: current.originalImage,
         imageBytes: current.imageBytes,
         currentFormat: event.format,
+        originalFormat: current.originalFormat,
       ));
     }
   }

@@ -9,11 +9,13 @@ class ImageFormatPickedState extends ImageFormatConverterState {
   final img.Image originalImage;
   final Uint8List imageBytes;
   final String currentFormat;
+  final String originalFormat;
 
   ImageFormatPickedState({
     required this.originalImage,
     required this.imageBytes,
     required this.currentFormat,
+    required this.originalFormat,
   });
 }
 
