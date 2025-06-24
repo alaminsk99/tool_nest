@@ -29,7 +29,7 @@ class TNTheme{
     outlinedButtonTheme: TNOutlineButtonTheme.lightOutlinedButtonTheme,
     filledButtonTheme: TNFilledButtonTheme.lightFilledButtonTheme,
     inputDecorationTheme: TNTextFieldThemes.lightTextFieldThemes,
-    scaffoldBackgroundColor: TNColors.primaryBackground,
+    scaffoldBackgroundColor: TNColors.lightGrey,
 
 
 

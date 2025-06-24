@@ -276,5 +276,7 @@ static const String savingFailed = "Saving failed";
   static const String compressionLevel = "Compression Level";
 
 
+  /// Home Page
+  static const String recentFiles = "Recent Files";
 
 }

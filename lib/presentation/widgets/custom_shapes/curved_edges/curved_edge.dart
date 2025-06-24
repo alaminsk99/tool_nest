@@ -17,7 +17,7 @@ class CustomCurvedEdgesWithContainer extends CustomClipper<Path> {
     // Second smooth curve to right side
     path.quadraticBezierTo(
       size.width * 0.9, size.height * 0.2424,
-      size.width, size.height * 0.4,
+      size.width, size.height * 0.5,
     );
 
     // Top-right corner

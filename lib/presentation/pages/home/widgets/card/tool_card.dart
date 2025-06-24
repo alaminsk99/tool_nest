@@ -1,37 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 
 class ToolCard extends StatelessWidget {
+  final String title;
   final IconData icon;
-  final String label;
+  final Color color;
+  final VoidCallback onTap;
 
-  const ToolCard({super.key, required this.icon, required this.label});
+  const ToolCard({
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Handle navigation or action
-      },
+      onTap: onTap,
       child: Container(
-        width: 140,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.grey.shade100,
+          color: TNColors.white,
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4,
-              offset: Offset(2, 2),
-            )
+              color: TNColors.black.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
           ],
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 32, color: Colors.blueAccent),
-            const SizedBox(height: 8),
-            Text(label, textAlign: TextAlign.center),
+            CircleAvatar(
+              radius: 26,
+              backgroundColor: color.withOpacity(0.12),
+              child: Icon(icon, color: color, size: 22),
+            ),
+            const Gap(10),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: TNColors.textPrimary,
+              ),
+            ),
           ],
         ),
       ),
