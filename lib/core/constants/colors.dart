@@ -79,6 +79,8 @@ class TNColors {
   /// Border Color
   static const Color borderPrimary = Color(0xffD9D9D9); // For primary borders
   static const Color borderSecondary = Color(0xffE6E6E6); // For secondary/lighter borders
+  static const Color cusClipperBack =  Color(0xFFDEF2F9); // For the Clipper color
+
 
   /// Error and Validation Color (Standard colors, kept as is)
   static const Color error = Color(0xffD32F2F);
