@@ -6,6 +6,7 @@ import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/appbar/home_appbar.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/card/tool_card.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/scroll/recent_files_scroll.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/tabbar/tabbar_apps.dart' show TabButton;
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/custom_shapes/container/background_container.dart';
@@ -59,42 +60,10 @@ class HomePage extends StatelessWidget {
                       Gap(TNSizes.spaceBetweenSections),
 
                       /// Recent Files Horizontal Scroll
-                      SizedBox(
-                        height: 160,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 3,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: Container(
-                              width: 140,
-                              decoration: BoxDecoration(
-                                color: TNColors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: TNColors.black.withOpacity(0.05),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(LucideIcons.fileText, color: TNColors.primary, size: 38),
-                                  const Gap(12),
-                                  Text("Document.pdf", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
-                                  const Gap(4),
-                                  Text("102 KB", style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TNColors.textSecondary)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      RecentFilesScroll(),
 
-                      Gap(TNSizes.spaceBetweenSections * 2),
+
+                      Gap(TNSizes.spaceBetweenSections *1.3),
 
                       /// Image Tools Section
                       _sectionTitle(TNTextStrings.imageTools, context),
@@ -106,7 +75,7 @@ class HomePage extends StatelessWidget {
                         ToolCard(title: TNTextStrings.formatConverter, icon: LucideIcons.arrowRightLeft, color: Colors.purple, onTap: () {}),
                       ]),
 
-                      Gap(TNSizes.spaceBetweenSections * 2),
+                      Gap(TNSizes.spaceBetweenSections*1.3 ),
 
                       /// PDF Tools Section
                       _sectionTitle(TNTextStrings.pdfTools, context),
@@ -142,10 +111,10 @@ class HomePage extends StatelessWidget {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      mainAxisSpacing: 14,
-      crossAxisSpacing: 14,
-      childAspectRatio: 1.2,
+      crossAxisCount: 3,
+      mainAxisSpacing: 8,
+      crossAxisSpacing: 8,
+      childAspectRatio: 0.8,
       children: children,
     );
   }

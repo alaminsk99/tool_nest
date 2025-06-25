@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:tool_nest/core/constants/colors.dart';
+import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 
 class ToolCard extends StatelessWidget {
   final String title;
@@ -9,11 +11,11 @@ class ToolCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const ToolCard({
+    super.key,
     required this.title,
     required this.icon,
     required this.color,
     required this.onTap,
-    super.key,
   });
 
   @override
@@ -21,27 +23,35 @@ class ToolCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        padding: TNPaddingStyle.allPaddingXS,
         decoration: BoxDecoration(
           color: TNColors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(TNSizes.borderRadiusMD),
           boxShadow: [
             BoxShadow(
-              color: TNColors.black.withOpacity(0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: TNColors.black.withOpacity(0.06),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 26,
-              backgroundColor: color.withOpacity(0.12),
-              child: Icon(icon, color: color, size: 22),
+            Container(
+              padding: TNPaddingStyle.allPaddingSM,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 24,
+              ),
             ),
-            const Gap(10),
+            Gap(TNSizes.spaceBetweenItems),
             Text(
               title,
               textAlign: TextAlign.center,
