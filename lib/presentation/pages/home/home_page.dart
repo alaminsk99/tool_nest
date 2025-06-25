@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
                       Gap(TNSizes.spaceXS),
                       _toolGrid([
                         ToolCard(title: TNTextStrings.compressImage, icon: LucideIcons.image, color: Colors.orange, onTap: () {}),
-                        ToolCard(title: TNTextStrings.imageResizer, icon: LucideIcons.image, color: Colors.teal, onTap: () {}),
+                        ToolCard(title: TNTextStrings.imageResizer, icon: LucideIcons.minimize, color: Colors.teal, onTap: () {}),
                         ToolCard(title: TNTextStrings.imageToPDF, icon: LucideIcons.fileImage, color: Colors.yellow.shade800, onTap: () {}),
                         ToolCard(title: TNTextStrings.formatConverter, icon: LucideIcons.arrowRightLeft, color: Colors.purple, onTap: () {}),
                       ]),
@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
                         ToolCard(title: TNTextStrings.pdfToImage, icon: LucideIcons.image, color: Colors.blue, onTap: () {}),
                         ToolCard(title: TNTextStrings.mergePDFs, icon: LucideIcons.merge, color: Colors.green, onTap: () {}),
                         ToolCard(title: TNTextStrings.splitPDF, icon: LucideIcons.split, color: Colors.red, onTap: () {}),
-                        ToolCard(title: TNTextStrings.compressPDF, icon: LucideIcons.map, color: Colors.indigo, onTap: () {}),
+                        ToolCard(title: TNTextStrings.compressPDF, icon: LucideIcons.fileAxis3d, color: Colors.indigo, onTap: () {}),
                       ]),
                     ],
                   ),
@@ -112,8 +112,8 @@ class HomePage extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 3,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 8,
+      mainAxisSpacing: TNSizes.spaceSM,
+      crossAxisSpacing: TNSizes.spaceSM,
       childAspectRatio: 0.8,
       children: children,
     );
