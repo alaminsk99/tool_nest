@@ -1,8 +1,15 @@
+// lib/presentation/widgets/recent_files_scroll.dart
+
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 
 class RecentFilesScroll extends StatelessWidget {
@@ -10,24 +17,51 @@ class RecentFilesScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: 5,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) => const RecentFileCard(),
+    return BlocBuilder<HomePageBloc, HomePageState>(
+      builder: (context, state) {
+        if (state is HomeLoaded) {
+          final files = state.recentFiles.where((file) {
+            // Directly compare stored tab values
+            return file.tab == state.activeTab;
+          }).toList();
+
+          return SizedBox(
+            height: 160,
+            child: files.isEmpty
+                ? _buildEmptyState(context)
+                : ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              itemCount: files.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              itemBuilder: (context, index) =>
+                  RecentFileCard(file: files[index]),
+            ),
+          );
+        }
+        return const SizedBox(height: 160);
+      },
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Text(
+        'No files found',
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }
 }
 
 class RecentFileCard extends StatelessWidget {
-  const RecentFileCard({super.key});
+  final RecentFileModel file;
+  const RecentFileCard({super.key, required this.file});
 
   @override
   Widget build(BuildContext context) {
+    final exists = File(file.path).existsSync();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -47,29 +81,71 @@ class RecentFileCard extends StatelessWidget {
               ),
             ],
           ),
-          child: Center(
-            child: Icon(
-              LucideIcons.fileText,
-              color: TNColors.primary,
-              size: TNSizes.iconSizeMDForBottoms,
-            ),
-          ),
+          child: _buildFilePreview(context, exists),
         ),
         const Gap(TNSizes.spaceSM),
-        SizedBox(
-          width: 100,
-          child: Text(
-            "Document.pdf",
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: TNColors.textPrimary,
-            ),
-          ),
-        ),
+        _buildFileName(context),
+        if (file.status == FileStatus.processing) _buildProgressIndicator(),
       ],
+    );
+  }
+
+  Widget _buildFilePreview(BuildContext context, bool exists) {
+    if (!exists) {
+      return Center(child: Icon(LucideIcons.fileWarning, color: Colors.red));
+    }
+
+    switch (file.fileType) {
+      case RecentFileType.image:
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.file(File(file.path), fit: BoxFit.cover),
+        );
+
+      case RecentFileType.pdf:
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: SfPdfViewer.file(
+            File(file.path),
+            canShowScrollHead: false,
+            canShowScrollStatus: false,
+            canShowPaginationDialog: false,
+          ),
+        );
+    }
+  }
+
+  Widget _buildFileName(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      child: Text(
+        file.name,
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: file.status == FileStatus.processing
+              ? Colors.grey
+              : TNColors.textPrimary,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProgressIndicator() {
+    return Container(
+      margin: const EdgeInsets.only(top: 4),
+      width: 80,
+      height: 4,
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: LinearProgressIndicator(
+        backgroundColor: Colors.transparent,
+        valueColor: AlwaysStoppedAnimation(TNColors.primary),
+      ),
     );
   }
 }

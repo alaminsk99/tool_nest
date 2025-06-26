@@ -7,7 +7,7 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/appbar/home_appbar.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/card/tool_card.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/scroll/recent_files_scroll.dart';
-import 'package:tool_nest/presentation/pages/home/widgets/tabbar/tabbar_apps.dart' show TabButton;
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/tabbar_apps.dart' show TabButton, TabSection;
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/custom_shapes/container/background_container.dart';
 
@@ -48,14 +48,7 @@ class HomePage extends StatelessWidget {
                       Gap(TNSizes.spaceBetweenSections),
 
                       /// Tabs
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          TabButton(label: "Downloads", selected: true),
-                          TabButton(label: "Opened"),
-                          TabButton(label: "Processed"),
-                        ],
-                      ),
+                      TabSection(),
 
                       Gap(TNSizes.spaceBetweenSections),
 

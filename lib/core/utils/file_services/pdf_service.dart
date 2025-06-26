@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_merge_model/pdf_file_model.dart';
 
@@ -84,6 +85,28 @@ class PdfService {
     originalDocument.dispose();
     return outputFiles;
   }
+
+
+  Future<List<FileSystemEntity>> getDownloadedPDFs() async {
+    final status = await Permission.storage.request();
+    if (!status.isGranted) {
+      throw Exception("Storage permission not granted");
+    }
+
+    final downloadDir = Directory('/storage/emulated/0/Download');
+
+    if (!await downloadDir.exists()) return [];
+
+    final files = downloadDir
+        .listSync()
+        .where((file) =>
+    file.path.toLowerCase().endsWith('.pdf') &&
+        File(file.path).existsSync())
+        .toList();
+
+    return files;
+  }
+
 
 
 
