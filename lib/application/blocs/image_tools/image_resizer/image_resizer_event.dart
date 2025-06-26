@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class ImageResizeEvent {}
 
 class PickImageEvent extends ImageResizeEvent {}
@@ -20,7 +22,12 @@ class UpdateAspectRatioLockEvent extends ImageResizeEvent {
   UpdateAspectRatioLockEvent(this.lock);
 }
 
-class ResizeImageEvent extends ImageResizeEvent {}
+class ResizeImageEvent extends ImageResizeEvent {
+  final BuildContext context;
+
+  ResizeImageEvent({required this.context});
+}
+
 class ResetResizeStateEvent extends ImageResizeEvent {}
 
 enum DimensionChanged { width, height }

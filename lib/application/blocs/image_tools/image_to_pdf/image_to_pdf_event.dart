@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class ImageToPdfEvent {}
 
 class SelectImagesEvent extends ImageToPdfEvent {}
@@ -28,6 +30,11 @@ class UpdateMarginValueEvent extends ImageToPdfEvent {
   UpdateMarginValueEvent(this.margin);
 }
 
-class ConvertToPdfEvent extends ImageToPdfEvent {}
+class ConvertToPdfEvent extends ImageToPdfEvent {
+  final BuildContext context;
+
+  ConvertToPdfEvent({required this.context});
+}
+
 
 class ClearSelectedImagesEvent extends ImageToPdfEvent {}

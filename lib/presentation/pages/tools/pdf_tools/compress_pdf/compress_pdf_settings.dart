@@ -99,7 +99,7 @@ class _CompressPdfSettingsState extends State<CompressPdfSettings> {
                     onPressed: () {
                       context
                           .read<CompressPdfBloc>()
-                          .add(CompressPdfFileEvent());
+                          .add(CompressPdfFileEvent(context: context));
                     },
                   ),
                   if (state is CompressPdfLoading) ...[

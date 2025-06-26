@@ -24,7 +24,11 @@ class SetCompressionLevelEvent extends CompressPdfEvent {
   List<Object?> get props => [level];
 }
 
-class CompressPdfFileEvent extends CompressPdfEvent {}
+class CompressPdfFileEvent extends CompressPdfEvent {
+  final BuildContext context;
+  CompressPdfFileEvent({required this.context});
+}
+
 
 enum CompressionLevel { extreme, recommended, less }
 class ClearPickedPdfEvent extends CompressPdfEvent {

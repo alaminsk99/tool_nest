@@ -25,7 +25,15 @@ class ApplySplitSettings extends SplitPdfEvent {
   List<Object?> get props => [selectedPages];
 }
 
-class PerformSplit extends SplitPdfEvent {}
+class PerformSplit extends SplitPdfEvent {
+  final BuildContext context;
+
+  const PerformSplit(this.context);
+
+  @override
+  List<Object?> get props => [context];
+}
+
 class ClearSplitFile extends SplitPdfEvent {
   const ClearSplitFile();
 }

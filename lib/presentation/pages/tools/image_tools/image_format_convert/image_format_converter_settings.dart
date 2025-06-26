@@ -145,7 +145,7 @@ class _ImageFormatConverterSettingsState
                           ProcessButton(
                             text: "Convert Image",
                             onPressed: () {
-                              context.read<ImageFormatConverterBloc>().add(ConvertFormatEvent());
+                              context.read<ImageFormatConverterBloc>().add(ConvertFormatEvent(context: context));
                             },
                           ),
                         ],

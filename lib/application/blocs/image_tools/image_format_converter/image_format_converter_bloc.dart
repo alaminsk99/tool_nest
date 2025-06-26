@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_format_converter_event.dart';
 import 'image_format_converter_state.dart';
 
@@ -48,7 +52,7 @@ class ImageFormatConverterBloc extends Bloc<ImageFormatConverterEvent, ImageForm
   }
 
 
-  void _onConvert(ConvertFormatEvent event, Emitter emit) {
+  Future<void> _onConvert(ConvertFormatEvent event, Emitter emit) async {
     final current = state;
     if (current is ImageFormatPickedState) {
       emit(ImageFormatLoading());
@@ -72,6 +76,22 @@ class ImageFormatConverterBloc extends Bloc<ImageFormatConverterEvent, ImageForm
             convertedBytes: convertedBytes,
             format: format,
           ));
+          // Save file to temp directory
+          final tempDir = await getTemporaryDirectory();
+          final fileName = 'converted_${DateTime.now().millisecondsSinceEpoch}.$format';
+          final filePath = '${tempDir.path}/$fileName';
+          final file = File(filePath);
+          await file.writeAsBytes(convertedBytes);
+
+          // Add to recent files (processed tab)
+          final recent = RecentFileModel(
+            path: file.path,
+            name: fileName,
+            fileType: RecentFileType.image,
+            status: FileStatus.completed,
+            tab: RecentTabs.processed,
+          );
+          event.context.read<HomePageBloc>().add(AddRecentFileEvent(recent));
         } else {
           emit(ImageFormatError('Unsupported format.'));
         }

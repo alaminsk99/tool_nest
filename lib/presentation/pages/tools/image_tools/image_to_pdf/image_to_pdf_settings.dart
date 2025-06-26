@@ -136,7 +136,7 @@ class _ImageToPdfSettingsState extends State<ImageToPdfSettings> {
                   ProcessButton(
                     text: TNTextStrings.convertToPdf,
                     onPressed: () {
-                      context.read<ImageToPdfBloc>().add(ConvertToPdfEvent());
+                      context.read<ImageToPdfBloc>().add(ConvertToPdfEvent(context: context));
                     },
                   ),
                 ],

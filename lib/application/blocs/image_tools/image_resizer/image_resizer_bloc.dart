@@ -1,7 +1,12 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
 import 'image_resizer_event.dart';
 import 'image_resizer_state.dart';
@@ -72,7 +77,7 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
     }
   }
 
-  void _onResizeImage(ResizeImageEvent event, Emitter<ImageResizeState> emit) {
+  Future<void> _onResizeImage(ResizeImageEvent event, Emitter<ImageResizeState> emit) async {
     final current = state;
     if (current is ImageResizeLoaded) {
       emit(ImageResizeLoading());
@@ -83,11 +88,27 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
         height: current.height,
       );
       final bytes = Uint8List.fromList(img.encodeJpg(resized));
+      // Save to temporary file
+      final dir = await getTemporaryDirectory();
+      final fileName = 'resized_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final filePath = '${dir.path}/$fileName';
+      final file = File(filePath)..writeAsBytesSync(bytes);
+
       emit(ImageResizeDone(
         resizedBytes: bytes,
         width: current.width,
         height: current.height,
       ));
+      // Add to recent processed files
+      final recentImage = RecentFileModel(
+        path: file.path,
+        name: fileName,
+        fileType: RecentFileType.image,
+        status: FileStatus.completed,
+        tab: RecentTabs.processed,
+      );
+
+      event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentImage));
     }
   }
   void _onResetResizeState(ResetResizeStateEvent event, Emitter<ImageResizeState> emit) {

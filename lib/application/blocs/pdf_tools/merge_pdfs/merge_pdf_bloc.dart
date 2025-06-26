@@ -1,8 +1,13 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/core/utils/file_services/pdf_service.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_merge_model/pdf_file_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
 part 'merge_pdf_event.dart';
 part 'merge_pdf_state.dart';
@@ -41,6 +46,16 @@ class MergePdfBloc extends Bloc<MergePdfEvent, MergePdfState> {
     try {
       final merged = await _service.mergePdfs(_files);
       emit(MergedSuccess(merged));
+      ///  Add merged PDF to recent processed files
+      final recentFile = RecentFileModel(
+        path: merged.path,
+        name: merged.path.split('/').last,
+        fileType: RecentFileType.pdf,
+        status: FileStatus.completed,
+        tab: RecentTabs.processed,
+      );
+
+      event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentFile));
     } catch (e) {
       emit(MergeFailed(e.toString()));
     }

@@ -3,8 +3,13 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/core/utils/file_services/pdf_service.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
 import 'package:tool_nest/domain/models/pdf_tools/split_pdf_model/pdf_split_file_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
 part 'split_pdf_event.dart';
 part 'split_pdf_state.dart';
@@ -42,8 +47,7 @@ class SplitPdfBloc extends Bloc<SplitPdfEvent, SplitPdfState> {
     }
   }
 
-  Future<void> _onPerformSplit(
-      PerformSplit event, Emitter<SplitPdfState> emit) async {
+  Future<void> _onPerformSplit(PerformSplit event, Emitter<SplitPdfState> emit) async {
     if (_file == null || _selectedPages.isEmpty) {
       emit(const SplitFailed('No file or pages selected.'));
       return;
@@ -53,9 +57,26 @@ class SplitPdfBloc extends Bloc<SplitPdfEvent, SplitPdfState> {
 
     try {
       final splitFiles = await _pdfService.splitPdf(_file!.file, _selectedPages);
+
+      //  Add only the first file to recent
+      if (splitFiles.isNotEmpty) {
+        final firstSplit = splitFiles.first;
+
+        final recentFile = RecentFileModel(
+          path: firstSplit.path,
+          name: firstSplit.path.split('/').last,
+          fileType: RecentFileType.pdf,
+          status: FileStatus.completed,
+          tab: RecentTabs.processed,
+        );
+
+        event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentFile));
+      }
+
       emit(SplitSuccess(splitFiles));
     } catch (e) {
       emit(SplitFailed(e.toString()));
     }
   }
+
 }

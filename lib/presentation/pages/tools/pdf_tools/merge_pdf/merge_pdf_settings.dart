@@ -113,7 +113,7 @@ class _MergePdfSettingsState extends State<MergePdfSettings> {
                 text: TNTextStrings.pdfMergeNowButtonText,
                 onPressed: () {
                   bloc.add(UpdateSettings(_spacing.toInt()));
-                  bloc.add(MergeRequested());
+                  bloc.add(MergeRequested(context: context));
                   context.pushNamed(AppRoutes.mergePdfResult);
                 },
               ),

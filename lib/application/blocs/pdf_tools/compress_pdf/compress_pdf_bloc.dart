@@ -2,9 +2,14 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
 import 'package:tool_nest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
 part 'compress_pdf_event.dart';
 part 'compress_pdf_state.dart';
@@ -78,6 +83,17 @@ class CompressPdfBloc extends Bloc<CompressPdfEvent, CompressPdfState> {
           compressedSize: compressedSize,
         ),
       ));
+
+      /// Add compressed PDF to recent processed files
+      final recentFile = RecentFileModel(
+        path: compressedFile.path,
+        name: compressedFile.path.split('/').last,
+        fileType: RecentFileType.pdf,
+        status: FileStatus.completed,
+        tab: RecentTabs.processed,
+      );
+
+      event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentFile));
     } catch (e) {
       emit(CompressPdfError(e.toString()));
     }

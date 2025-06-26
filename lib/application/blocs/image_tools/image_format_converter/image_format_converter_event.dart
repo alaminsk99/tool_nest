@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class ImageFormatConverterEvent {}
 
 class PickImageFormatEvent extends ImageFormatConverterEvent {}
@@ -7,6 +9,10 @@ class UpdateFormatEvent extends ImageFormatConverterEvent {
   UpdateFormatEvent(this.format);
 }
 
-class ConvertFormatEvent extends ImageFormatConverterEvent {}
+class ConvertFormatEvent extends ImageFormatConverterEvent {
+  final BuildContext context;
+   ConvertFormatEvent({required this.context});
+}
+
 
 class ResetConverterStateEvent extends ImageFormatConverterEvent {}

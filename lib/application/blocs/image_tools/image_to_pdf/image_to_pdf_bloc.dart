@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_to_pdf_event.dart';
 import 'image_to_pdf_state.dart';
 import 'package:pdf/pdf.dart' as pdf;
@@ -153,6 +156,17 @@ class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
         isCustomMargin: state.isCustomMargin,
         pdfPath: pdfPath,
       ));
+
+      //  Add to recent processed files
+      final recentPdf = RecentFileModel(
+        path: file.path,
+        name: '${TNTextStrings.appNameDirectory}$formattedDate.pdf',
+        fileType: RecentFileType.pdf,
+        status: FileStatus.completed,
+        tab: RecentTabs.processed,
+      );
+      event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentPdf));
+
     } catch (e) {
       emit(ImageToPdfError(
         selectedImages: state.selectedImages,

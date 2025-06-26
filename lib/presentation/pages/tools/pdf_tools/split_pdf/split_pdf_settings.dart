@@ -77,7 +77,7 @@ class _SplitPdfSettingsState extends State<SplitPdfSettings> {
     _errorText.value = null;
     context.read<SplitPdfBloc>()
       ..add(ApplySplitSettings(pages))
-      ..add(PerformSplit());
+      ..add(PerformSplit(context));
   }
 
   void _showLoader(BuildContext context) {

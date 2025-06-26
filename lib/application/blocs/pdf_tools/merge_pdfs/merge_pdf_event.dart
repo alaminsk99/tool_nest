@@ -17,7 +17,12 @@ final class UpdateSettings extends MergePdfEvent {
   @override List<Object?> get props => [spacing];
 }
 
-final class MergeRequested extends MergePdfEvent {}
+class MergeRequested extends MergePdfEvent {
+  final BuildContext context;
+
+  MergeRequested({required this.context});
+}
+
 
 class ClearFiles extends MergePdfEvent {
   const ClearFiles();

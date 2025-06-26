@@ -162,7 +162,7 @@ class _ImageResizeSettingsState extends State<ImageResizeSettings> {
                     /// Process Button
                     ProcessButton(
                       onPressed: () {
-                        context.read<ImageResizeBloc>().add(ResizeImageEvent());
+                        context.read<ImageResizeBloc>().add(ResizeImageEvent(context: context));
                       },
                     ),
                   ],
