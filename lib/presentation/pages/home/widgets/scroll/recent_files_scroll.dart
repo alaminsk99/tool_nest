@@ -1,11 +1,12 @@
-// lib/presentation/widgets/recent_files_scroll.dart
-
 import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:pdfx/pdfx.dart';
+
 import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
@@ -20,10 +21,7 @@ class RecentFilesScroll extends StatelessWidget {
     return BlocBuilder<HomePageBloc, HomePageState>(
       builder: (context, state) {
         if (state is HomeLoaded) {
-          final files = state.recentFiles.where((file) {
-            // Directly compare stored tab values
-            return file.tab == state.activeTab;
-          }).toList();
+          final files = state.recentFiles.where((file) => file.tab == state.activeTab).toList();
 
           return SizedBox(
             height: 160,
@@ -34,8 +32,7 @@ class RecentFilesScroll extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               itemCount: files.length,
               separatorBuilder: (_, __) => const SizedBox(width: 12),
-              itemBuilder: (context, index) =>
-                  RecentFileCard(file: files[index]),
+              itemBuilder: (context, index) => RecentFileCard(file: files[index]),
             ),
           );
         }
@@ -56,6 +53,8 @@ class RecentFilesScroll extends StatelessWidget {
 
 class RecentFileCard extends StatelessWidget {
   final RecentFileModel file;
+  static final Map<String, Uint8List> _thumbnailCache = {};
+
   const RecentFileCard({super.key, required this.file});
 
   @override
@@ -91,6 +90,9 @@ class RecentFileCard extends StatelessWidget {
   }
 
   Widget _buildFilePreview(BuildContext context, bool exists) {
+    const previewWidth = 150;
+    const previewHeight = 200;
+
     if (!exists) {
       return Center(child: Icon(LucideIcons.fileWarning, color: Colors.red));
     }
@@ -103,15 +105,49 @@ class RecentFileCard extends StatelessWidget {
         );
 
       case RecentFileType.pdf:
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
-          child: SfPdfViewer.file(
-            File(file.path),
+        if (_thumbnailCache.containsKey(file.path)) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+            child: Image.memory(_thumbnailCache[file.path]!, fit: BoxFit.cover),
+          );
+        }
 
-            canShowScrollHead: false,
-            canShowScrollStatus: false,
-            canShowPaginationDialog: false,
-          ),
+        return FutureBuilder<PdfDocument>(
+          future: PdfDocument.openFile(file.path),
+          builder: (context, docSnapshot) {
+            if (docSnapshot.connectionState != ConnectionState.done || docSnapshot.hasError || docSnapshot.data == null) {
+              return Center(child: Icon(LucideIcons.fileWarning, color: Colors.red));
+            }
+
+            final document = docSnapshot.data!;
+            return FutureBuilder<PdfPageImage>(
+              future: document.getPage(1).then((page) async {
+                final image = await page.render(
+                  width: previewWidth.toDouble(),
+                  height: previewHeight.toDouble(),
+                  format: PdfPageImageFormat.png,
+                );
+                if (image == null) throw Exception("Page render failed");
+                _thumbnailCache[file.path] = image.bytes;
+                return image;
+              }),
+              builder: (context, imageSnapshot) {
+                if (imageSnapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                }
+
+                if (imageSnapshot.hasError || imageSnapshot.data == null) {
+                  return Center(child: Icon(LucideIcons.fileWarning, color: Colors.red));
+                }
+
+                final pageImage = imageSnapshot.data!;
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
+                  child: Image.memory(pageImage.bytes, fit: BoxFit.cover),
+                );
+              },
+            );
+          },
         );
     }
   }
@@ -126,9 +162,7 @@ class RecentFileCard extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           fontWeight: FontWeight.w600,
-          color: file.status == FileStatus.processing
-              ? Colors.grey
-              : TNColors.textPrimary,
+          color: file.status == FileStatus.processing ? Colors.grey : TNColors.textPrimary,
         ),
       ),
     );

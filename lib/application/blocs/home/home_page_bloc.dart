@@ -26,13 +26,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         .map((e) => RecentFileModel.fromJson(jsonDecode(e)))
         .toList();
 
-    // ✅ Extract processed files only
+    //  Extract processed files only
     final processedFiles = storedFiles
         .where((f) => f.tab == RecentTabs.processed)
         .take(10) // Optional: limit processed items
         .toList();
 
-    // ✅ Get fresh downloaded files from external folders
+    //  Get fresh downloaded files from external folders
     final downloadedFiles = await PdfService().getDownloadedPDFs();
     final freshDownloaded = downloadedFiles.map((file) {
       return RecentFileModel(
@@ -44,10 +44,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       );
     }).take(10).toList(); // Limit to recent 10 external files
 
-    // ✅ Final list
+    //  Final list
     final allFiles = [...processedFiles, ...freshDownloaded];
 
-    // ✅ Only save processed files, NOT downloads
+    //  Only save processed files, NOT downloads
     await _saveFiles(processedFiles);
 
     emit(HomeLoaded(
@@ -86,7 +86,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         .take(10)
         .toList();
 
-    await _saveFiles(updatedProcessed); // ✅ Save only processed
+    await _saveFiles(updatedProcessed);
 
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
