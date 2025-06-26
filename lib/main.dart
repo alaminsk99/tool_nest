@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
+import 'application/blocs/home/home_page_bloc.dart';
 
 
 /// Main Function is here....
@@ -23,8 +24,6 @@ void main()async{
   //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   /// Initialize Firebase & Authentication
-
-
 
 
 

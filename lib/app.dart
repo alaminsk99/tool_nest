@@ -17,8 +17,33 @@ import 'application/blocs/pdf_tools/split_pdf/split_pdf_bloc.dart';
 import 'config/router/app_router.dart';
 
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> with WidgetsBindingObserver{
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<HomePageBloc>().add(LoadRecentFilesEvent());
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
