@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,8 @@ part 'home_page_event.dart';
 part 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
+  static const int expiryDays = 3;
+
   HomePageBloc() : super(HomeInitial()) {
     on<LoadRecentFilesEvent>(_onLoadRecentFiles);
     on<ChangeRecentTabEvent>(_onChangeTab);
@@ -22,17 +25,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('recentFiles') ?? [];
 
-    final storedFiles = stored
-        .map((e) => RecentFileModel.fromJson(jsonDecode(e)))
-        .toList();
+    final now = DateTime.now();
+    final validFiles = stored.map((e) => RecentFileModel.fromJson(jsonDecode(e)))
+        .where((f) {
+      final file = File(f.path);
+      if (!file.existsSync()) return false;
+      final modified = file.lastModifiedSync();
+      return now.difference(modified).inDays <= expiryDays;
+    }).toList();
 
-    //  Extract processed files only
-    final processedFiles = storedFiles
+    final processedFiles = validFiles
         .where((f) => f.tab == RecentTabs.processed)
-        .take(10) // Optional: limit processed items
+        .take(10)
         .toList();
 
-    //  Get fresh downloaded files from external folders
     final downloadedFiles = await PdfService().getDownloadedPDFs();
     final freshDownloaded = downloadedFiles.map((file) {
       return RecentFileModel(
@@ -42,12 +48,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         status: FileStatus.opened,
         tab: RecentTabs.downloads,
       );
-    }).take(10).toList(); // Limit to recent 10 external files
+    }).take(10).toList();
 
-    //  Final list
     final allFiles = [...processedFiles, ...freshDownloaded];
-
-    //  Only save processed files, NOT downloads
     await _saveFiles(processedFiles);
 
     emit(HomeLoaded(
@@ -56,12 +59,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     ));
   }
 
-
   Future<void> _onChangeTab(
       ChangeRecentTabEvent event, Emitter<HomePageState> emit) async {
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
-      // Only emit new state if tab actually changes
       if (current.activeTab != event.tab) {
         emit(HomeLoaded(
           recentFiles: current.recentFiles,
@@ -76,10 +77,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('recentFiles') ?? [];
 
-    final existing = stored
-        .map((e) => RecentFileModel.fromJson(jsonDecode(e)))
-        .where((f) => f.path != event.file.path)
-        .toList();
+    final now = DateTime.now();
+    final existing = stored.map((e) => RecentFileModel.fromJson(jsonDecode(e)))
+        .where((f) {
+      final file = File(f.path);
+      if (!file.existsSync()) return false;
+      final modified = file.lastModifiedSync();
+      return now.difference(modified).inDays <= expiryDays && f.path != event.file.path;
+    }).toList();
 
     final updatedProcessed = [event.file, ...existing]
         .where((f) => f.tab == RecentTabs.processed)
@@ -130,13 +135,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('recentFiles') ?? [];
 
+    final now = DateTime.now();
     final files = stored
         .map((e) => RecentFileModel.fromJson(jsonDecode(e)))
-        .where((f) => f.path != file.path)
+        .where((f) {
+      final fileObj = File(f.path);
+      if (!fileObj.existsSync()) return false;
+      final modified = fileObj.lastModifiedSync();
+      return now.difference(modified).inDays <= expiryDays && f.path != file.path;
+    })
         .toList();
 
     final updated = [file, ...files].take(10).toList();
-
     final updatedString = updated.map((e) => jsonEncode(e.toJson())).toList();
     await prefs.setStringList('recentFiles', updatedString);
     add(LoadRecentFilesEvent());
