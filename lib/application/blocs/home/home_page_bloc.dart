@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tool_nest/core/utils/file_services/pdf_service.dart';
 import 'package:tool_nest/domain/models/home/recent_file_model.dart';
 import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
@@ -21,16 +22,40 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('recentFiles') ?? [];
 
-    final recentFiles = stored
+    final storedFiles = stored
         .map((e) => RecentFileModel.fromJson(jsonDecode(e)))
         .toList();
 
-    // Set initial active tab to Downloads
+    // ✅ Extract processed files only
+    final processedFiles = storedFiles
+        .where((f) => f.tab == RecentTabs.processed)
+        .take(10) // Optional: limit processed items
+        .toList();
+
+    // ✅ Get fresh downloaded files from external folders
+    final downloadedFiles = await PdfService().getDownloadedPDFs();
+    final freshDownloaded = downloadedFiles.map((file) {
+      return RecentFileModel(
+        path: file.path,
+        name: file.path.split('/').last,
+        fileType: RecentFileType.pdf,
+        status: FileStatus.opened,
+        tab: RecentTabs.downloads,
+      );
+    }).take(10).toList(); // Limit to recent 10 external files
+
+    // ✅ Final list
+    final allFiles = [...processedFiles, ...freshDownloaded];
+
+    // ✅ Only save processed files, NOT downloads
+    await _saveFiles(processedFiles);
+
     emit(HomeLoaded(
-      recentFiles: recentFiles,
+      recentFiles: allFiles,
       activeTab: RecentTabs.downloads,
     ));
   }
+
 
   Future<void> _onChangeTab(
       ChangeRecentTabEvent event, Emitter<HomePageState> emit) async {
@@ -56,15 +81,27 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         .where((f) => f.path != event.file.path)
         .toList();
 
-    final updated = [event.file, ...existing].take(10).toList();
+    final updatedProcessed = [event.file, ...existing]
+        .where((f) => f.tab == RecentTabs.processed)
+        .take(10)
+        .toList();
 
-    await _saveFiles(updated);
+    await _saveFiles(updatedProcessed); // ✅ Save only processed
 
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
-      emit(HomeLoaded(recentFiles: updated, activeTab: current.activeTab));
+      final downloads = current.recentFiles
+          .where((f) => f.tab == RecentTabs.downloads)
+          .toList();
+
+      final combined = [...updatedProcessed, ...downloads];
+
+      emit(HomeLoaded(recentFiles: combined, activeTab: current.activeTab));
     } else {
-      emit(HomeLoaded(recentFiles: updated, activeTab: RecentTabs.downloads));
+      emit(HomeLoaded(
+        recentFiles: updatedProcessed,
+        activeTab: RecentTabs.downloads,
+      ));
     }
   }
 

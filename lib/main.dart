@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 
 
@@ -14,6 +15,7 @@ void main()async{
 
   /// GetX Local Storage
   //await GetStorage.init();
+  await SharedPreferences.getInstance();
   /// Theme changer
   ///  Get.put(ThemeController());
 

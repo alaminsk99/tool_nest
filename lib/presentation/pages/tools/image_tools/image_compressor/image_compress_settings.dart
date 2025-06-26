@@ -164,7 +164,7 @@ class _ImageCompressorSettingsState extends State<ImageCompressorSettings> {
                   /// Action Buttons
                   ProcessButton(
                         onPressed: () {
-                      bloc.add(CompressImageNow());
+                      bloc.add(CompressImageNow(context: context));
                     },
                   ),
 

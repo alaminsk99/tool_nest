@@ -98,15 +98,16 @@ class RecentFileCard extends StatelessWidget {
     switch (file.fileType) {
       case RecentFileType.image:
         return ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
           child: Image.file(File(file.path), fit: BoxFit.cover),
         );
 
       case RecentFileType.pdf:
         return ClipRRect(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
           child: SfPdfViewer.file(
             File(file.path),
+
             canShowScrollHead: false,
             canShowScrollStatus: false,
             canShowPaginationDialog: false,

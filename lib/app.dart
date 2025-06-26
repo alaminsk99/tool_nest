@@ -25,7 +25,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<NavBloc>(create: (_) => NavBloc(),),
-        BlocProvider<HomePageBloc>(create: (_) => HomePageBloc(),),
+        BlocProvider<HomePageBloc>(create: (_) => HomePageBloc()..add(LoadRecentFilesEvent()),),
         BlocProvider<ImageToPdfBloc>(create: (_) => ImageToPdfBloc(),),
         BlocProvider<ImageCompressorBloc>(create: (_) => ImageCompressorBloc(),),
         BlocProvider<ImageResizeBloc>(create: (_) => ImageResizeBloc(),),

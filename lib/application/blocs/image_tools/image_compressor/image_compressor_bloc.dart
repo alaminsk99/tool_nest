@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
+import 'package:tool_nest/domain/models/home/recent_file_model.dart';
+import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_compressor_event.dart';
 import 'image_compressor_state.dart';
 
@@ -119,6 +122,17 @@ class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorStat
         resolution: state.resolution,
         compressedFile: compressedFile,
       ));
+      // Optional: Add to recent files
+      final recentImage = RecentFileModel(
+        path: compressedFile.path,
+        name: 'compressed_${compressedFile.path.split('/').last}',
+        fileType: RecentFileType.image,
+        status: FileStatus.completed,
+        tab: RecentTabs.processed,
+      );
+
+      /// Dispatch to HomePageBloc
+      event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentImage));
     } catch (e) {
       emit(ImageCompressorError(
         selectedImage: state.selectedImage,

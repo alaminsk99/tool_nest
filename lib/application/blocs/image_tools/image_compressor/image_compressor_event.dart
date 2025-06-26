@@ -4,6 +4,8 @@
 
 
 
+import 'package:flutter/material.dart';
+
 abstract class ImageCompressorEvent{}
 
 
@@ -25,5 +27,10 @@ class UpdateCompressionSettings extends ImageCompressorEvent {
     required this.resolution,
   });
 }
-class CompressImageNow extends ImageCompressorEvent {}
+class CompressImageNow extends ImageCompressorEvent {
+  final BuildContext context;
+
+  CompressImageNow({required this.context});
+}
+
 class ClearSelectedImagesForImageCompressor extends ImageCompressorEvent {}
