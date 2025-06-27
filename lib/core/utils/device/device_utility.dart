@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:get/get.dart';
-// import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -103,13 +102,14 @@ class TNDeviceUtility{
   static bool isAndroid() => !kIsWeb && Platform.isAndroid;
 
 
-  // static void launchUrl(String url)async{
-  //   if(await canLaunchUrlString(url)){
-  //     await launchUrlString(url);
-  //   }else{
-  //     throw 'Could not launch $url';
-  //   }
-  // }
+  static Future<void> launchUrlExternal(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
 
 }

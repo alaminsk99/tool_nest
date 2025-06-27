@@ -57,6 +57,9 @@ dependencies:
   #For use Date Time
   intl: ^0.20.2
 
+  # For Web Views
+  webview_flutter: ^4.13.0
+
   #File save and share
   printing: ^5.14.2
 
