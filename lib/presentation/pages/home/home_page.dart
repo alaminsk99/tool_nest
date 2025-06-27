@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
@@ -76,10 +78,10 @@ class _HomePageState extends State<HomePage> {
                       _sectionTitle(TNTextStrings.imageTools, context),
                       Gap(TNSizes.spaceXS),
                       _toolGrid([
-                        ToolCard(title: TNTextStrings.compressImage, icon: LucideIcons.image, color: Colors.orange, onTap: () {}),
-                        ToolCard(title: TNTextStrings.imageResizer, icon: LucideIcons.minimize, color: Colors.teal, onTap: () {}),
-                        ToolCard(title: TNTextStrings.imageToPDF, icon: LucideIcons.fileImage, color: Colors.yellow.shade800, onTap: () {}),
-                        ToolCard(title: TNTextStrings.formatConverter, icon: LucideIcons.arrowRightLeft, color: Colors.purple, onTap: () {}),
+                        ToolCard(title: TNTextStrings.compressImage, icon: LucideIcons.image, color: Colors.orange, onTap:() => context.goNamed(AppRoutes.imageCompressor),),
+                        ToolCard(title: TNTextStrings.imageResizer, icon: LucideIcons.minimize, color: Colors.teal, onTap: () => context.goNamed(AppRoutes.imageResize)),
+                        ToolCard(title: TNTextStrings.imageToPDF, icon: LucideIcons.fileImage, color: Colors.yellow.shade800, onTap: () => context.goNamed(AppRoutes.imageToPdf)),
+                        ToolCard(title: TNTextStrings.formatConverter, icon: LucideIcons.arrowRightLeft, color: Colors.purple, onTap: () => context.goNamed(AppRoutes.imageFormatConverter)),
                       ]),
 
                       Gap(TNSizes.spaceBetweenSections*1.3 ),
@@ -88,10 +90,10 @@ class _HomePageState extends State<HomePage> {
                       _sectionTitle(TNTextStrings.pdfTools, context),
                       Gap(TNSizes.spaceXS),
                       _toolGrid([
-                        ToolCard(title: TNTextStrings.pdfToImage, icon: LucideIcons.image, color: Colors.blue, onTap: () {}),
-                        ToolCard(title: TNTextStrings.mergePDFs, icon: LucideIcons.merge, color: Colors.green, onTap: () {}),
-                        ToolCard(title: TNTextStrings.splitPDF, icon: LucideIcons.split, color: Colors.red, onTap: () {}),
-                        ToolCard(title: TNTextStrings.compressPDF, icon: LucideIcons.fileAxis3d, color: Colors.indigo, onTap: () {}),
+                        ToolCard(title: TNTextStrings.pdfToImage, icon: LucideIcons.image, color: Colors.blue, onTap: ()=> context.goNamed(AppRoutes.pdfToImage)),
+                        ToolCard(title: TNTextStrings.mergePDFs, icon: LucideIcons.merge, color: Colors.green, onTap: ()=> context.goNamed(AppRoutes.mergePdf)),
+                        ToolCard(title: TNTextStrings.splitPDF, icon: LucideIcons.split, color: Colors.red, onTap: ()=> context.goNamed(AppRoutes.splitPdf)),
+                        ToolCard(title: TNTextStrings.compressPDF, icon: LucideIcons.fileAxis3d, color: Colors.indigo, onTap: ()=> context.goNamed(AppRoutes.compressPdf)),
                       ]),
                     ],
                   ),

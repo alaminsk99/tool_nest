@@ -59,11 +59,27 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     ));
   }
 
-  Future<void> _onChangeTab(
-      ChangeRecentTabEvent event, Emitter<HomePageState> emit) async {
+  Future<void> _onChangeTab(ChangeRecentTabEvent event, Emitter<HomePageState> emit) async {
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
-      if (current.activeTab != event.tab) {
+
+      if (event.tab == RecentTabs.downloads) {
+        // Always refresh downloads
+        final downloadedFiles = await PdfService().getDownloadedPDFs();
+        final freshDownloaded = downloadedFiles.map((file) {
+          return RecentFileModel(
+            path: file.path,
+            name: file.path.split('/').last,
+            fileType: RecentFileType.pdf,
+            status: FileStatus.opened,
+            tab: RecentTabs.downloads,
+          );
+        }).take(10).toList();
+
+        final combined = [...current.recentFiles.where((f) => f.tab == RecentTabs.processed), ...freshDownloaded];
+
+        emit(HomeLoaded(recentFiles: combined, activeTab: event.tab));
+      } else {
         emit(HomeLoaded(
           recentFiles: current.recentFiles,
           activeTab: event.tab,
@@ -71,6 +87,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       }
     }
   }
+
 
   Future<void> _onAddRecentFile(
       AddRecentFileEvent event, Emitter<HomePageState> emit) async {
