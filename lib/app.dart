@@ -37,12 +37,7 @@ class _AppState extends State<App> with WidgetsBindingObserver{
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      context.read<HomePageBloc>().add(LoadRecentFilesEvent());
-    }
-  }
+
 
 
   @override

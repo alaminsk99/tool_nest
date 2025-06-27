@@ -46,6 +46,7 @@ class AppRoutes {
 
 
   static const profilePath = 'profile-path';
+  static const homePath = 'home-path';
 
   // Route Names
   static const imageToPdf = 'imageToPdf';
@@ -90,6 +91,7 @@ class AppRoutes {
 
 
   static const profile = 'profile';
+  static const home = 'home';
 
 
 

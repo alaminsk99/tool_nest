@@ -5,12 +5,14 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
 import 'package:tool_nest/domain/models/image_tools/image_format_converter_model.dart';
 import 'package:tool_nest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_args.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
+import 'package:tool_nest/presentation/pages/home/home_page.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
@@ -50,6 +52,12 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.main,
       builder: (context, state) => const MainPage(),
       routes: [
+        // Home
+        GoRoute(
+          path: AppRoutes.homePath,
+          name: AppRoutes.home,
+          builder: (context, state) => const HomePage(),
+        ),
         // Image Tools
         GoRoute(
           path: AppRoutes.processFinishedForImgToPdfPath,
