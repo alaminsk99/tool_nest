@@ -23,6 +23,13 @@ class TNTextStrings {
   static const String loginWithGoogle = "Login with Google";
   static const String dontHaveAccount = "Don't have an account?";
   static const String alreadyHaveAccount = "Already have an account?";
+  static const String edtProfile = "EDIT PROFILE";
+  static const String logInSignUp = "LOG IN OR SIGN UP";
+  static const String changePhoto = "CHANGE PHOTO";
+  static const String google = "Google";
+/// Login SubTitle
+  static const String loginSlog = "Smarter document management";
+  static const String selectPhotoFromGallery = "Select a photo of your gallery\nor take a picture with your camera.";
 
 
   /// Home Screen
@@ -43,6 +50,7 @@ class TNTextStrings {
   static const String continueText = "Continue";
   static const String format = "Format";
   static const String saved = "Saved";
+
 
 
   /// Errors & Messages

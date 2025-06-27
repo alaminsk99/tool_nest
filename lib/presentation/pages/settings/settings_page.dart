@@ -7,8 +7,8 @@ import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/api_constants.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/domain/models/common/webview_model.dart';
+import 'package:tool_nest/presentation/pages/profile/auth/login/login_page.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/login_card.dart';
-import 'package:tool_nest/presentation/pages/profile/widgets/webview_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -21,7 +21,14 @@ class SettingsPage extends StatelessWidget {
       body: SafeArea(
         child: ListView(
           children: [
-            LoginCard(onTap: (){},),
+            AuthCard(onTap: (){
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => LoginPage(onPressed: (){},),
+              );
+
+            },),
             Divider(),
             _tile(
               icon: LucideIcons.fileText,

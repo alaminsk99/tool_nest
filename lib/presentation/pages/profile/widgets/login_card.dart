@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 
-class LoginCard extends StatelessWidget {
+class AuthCard extends StatelessWidget {
   final VoidCallback onTap;
+  final String? userName;
+  final String? email;
 
-  const LoginCard({super.key, required this.onTap});
+  const AuthCard({
+    super.key,
+    required this.onTap,
+    this.userName,
+    this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final bool isLoggedIn = userName != null && email != null;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -23,18 +33,45 @@ class LoginCard extends StatelessWidget {
         child: Row(
           children: [
             const CircleAvatar(
-              radius: 48,
+              radius: 32,
               backgroundColor: TNColors.white,
               child: Icon(
                 LucideIcons.user,
-                size: 48,
+                size: 36,
                 color: TNColors.grey,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: Text(
-                "LOG IN OR SIGN UP",
+              child: isLoggedIn
+                  ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userName!,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    email!,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: TNColors.darkerGrey,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    TNTextStrings.edtProfile,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              )
+                  : Text(
+                TNTextStrings.logInSignUp,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1032736834920",
+    "project_id": "tool-nest",
+    "storage_bucket": "tool-nest.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032736834920:android:0baac6b79e659c1a2b42dd",
+        "android_client_info": {
+          "package_name": "com.ariact.toolnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3syyZlcmtfNlMYJr3KmDZVbnXwlKs2Xk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

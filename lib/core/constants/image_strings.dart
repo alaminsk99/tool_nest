@@ -7,5 +7,7 @@ class TNImageStrings{
 
 
   /// Animation Icon
-  static const loadingAnimation = "assets/animations/loading.json";
+
+  /// Auth Icon
+  static const google = "assets/images/google.png";
 }

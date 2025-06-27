@@ -11,12 +11,10 @@ import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/button_with_style/two_action_buttons.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/dropdownButtonSelectionUsingBottomSheets.dart';
 import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
 import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
 import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/presentation/widgets/loader/processing_screen.dart';
 import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
 
 class ImageCompressorSettings extends StatefulWidget {

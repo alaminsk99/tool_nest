@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/domain/models/common/webview_model.dart';
+import 'package:tool_nest/presentation/widgets/loader/progress_indicator_for_all.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _WebViewPageState extends State<WebViewPage> {
         children: [
           WebViewWidget(controller: _controller),
           if (isLoading)
-            const Center(child: CircularProgressIndicator()),
+            const Center(child: ProgressIndicatorForAll()),
         ],
       ),
     );
