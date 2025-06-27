@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: SingleChildScrollView(
                   padding: TNPaddingStyle.allPadding,
-                  physics: const BouncingScrollPhysics(),
+                  physics:const PageScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
