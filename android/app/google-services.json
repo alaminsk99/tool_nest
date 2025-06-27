@@ -12,7 +12,20 @@
           "package_name": "com.ariact.toolnest"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1032736834920-hp5auo9bd39fkcpgaapum4v68c0gvsvh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ariact.toolnest",
+            "certificate_hash": "0117023dea167b1639463fbe450b0e7eb8ac5cd8"
+          }
+        },
+        {
+          "client_id": "1032736834920-d0eug29pd8n86413s8v971mrt4oeb5b1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC3syyZlcmtfNlMYJr3KmDZVbnXwlKs2Xk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1032736834920-d0eug29pd8n86413s8v971mrt4oeb5b1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1032736834920-htjgll7cvs5dae1r4fha9j1qs89kn5ds.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.toolNest"
+              }
+            }
+          ]
         }
       }
     }

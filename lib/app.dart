@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tool_nest/application/blocs/bottom_nav/nav_bloc.dart';
 import 'package:tool_nest/config/theme/theme.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/main_page.dart';
-
+import 'application/blocs/auth/auth_bloc.dart';
+import 'application/blocs/auth/auth_event.dart';
 import 'application/blocs/home/home_page_bloc.dart';
 import 'application/blocs/image_tools/image_compressor/image_compressor_bloc.dart';
 import 'application/blocs/image_tools/image_format_converter/image_format_converter_bloc.dart';
@@ -15,6 +15,7 @@ import 'application/blocs/pdf_tools/merge_pdfs/merge_pdf_bloc.dart';
 import 'application/blocs/pdf_tools/pdf_to_image/pdf_to_image_bloc.dart';
 import 'application/blocs/pdf_tools/split_pdf/split_pdf_bloc.dart';
 import 'config/router/app_router.dart';
+import 'domain/repositories/auth_repositories/auth_repository.dart';
 
 
 class App extends StatefulWidget {
@@ -44,8 +45,9 @@ class _AppState extends State<App> with WidgetsBindingObserver{
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<NavBloc>(create: (_) => NavBloc(),),
+        BlocProvider(create: (_) => AuthBloc(AuthRepository())..add(AppStarted())),
         BlocProvider<HomePageBloc>(create: (_) => HomePageBloc()..add(LoadRecentFilesEvent()),),
+        BlocProvider<NavBloc>(create: (_) => NavBloc(),),
         BlocProvider<ImageToPdfBloc>(create: (_) => ImageToPdfBloc(),),
         BlocProvider<ImageCompressorBloc>(create: (_) => ImageCompressorBloc(),),
         BlocProvider<ImageResizeBloc>(create: (_) => ImageResizeBloc(),),

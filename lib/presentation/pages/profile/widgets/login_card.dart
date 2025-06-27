@@ -1,3 +1,4 @@
+// lib/presentation/pages/profile/widgets/login_card.dart
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:tool_nest/core/constants/colors.dart';
@@ -9,12 +10,14 @@ class AuthCard extends StatelessWidget {
   final VoidCallback onTap;
   final String? userName;
   final String? email;
+  final String? photoUrl;
 
   const AuthCard({
     super.key,
     required this.onTap,
     this.userName,
     this.email,
+    this.photoUrl,
   });
 
   @override
@@ -32,10 +35,13 @@ class AuthCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 32,
               backgroundColor: TNColors.white,
-              child: Icon(
+              backgroundImage: photoUrl != null ? NetworkImage(photoUrl!) : null,
+              child: isLoggedIn
+                  ? null
+                  : const Icon(
                 LucideIcons.user,
                 size: 36,
                 color: TNColors.grey,
@@ -49,21 +55,30 @@ class AuthCard extends StatelessWidget {
                 children: [
                   Text(
                     userName!,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     email!,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(
                       color: TNColors.darkerGrey,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     TNTextStrings.edtProfile,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
                     ),
@@ -72,7 +87,10 @@ class AuthCard extends StatelessWidget {
               )
                   : Text(
                 TNTextStrings.logInSignUp,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,

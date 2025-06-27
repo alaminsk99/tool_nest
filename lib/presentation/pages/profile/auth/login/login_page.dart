@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +9,12 @@ import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/presentation/widgets/buttons/widgets_with_elevated_button.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key, required this.onPressed});
-  final VoidCallback onPressed;
+  final VoidCallback onGoogleSignIn;
+
+  const LoginPage({
+    super.key,
+    required this.onGoogleSignIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,6 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            /// Main content centered
             Align(
               alignment: Alignment.center,
               child: Padding(
@@ -27,14 +31,11 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Logo (optional)
-                    // Image.asset(TNImageStrings.logo, width: 100, height: 100),
-
                     Text(
                       TNTextStrings.appName,
                       style: textTheme.headlineLarge,
                     ),
-                    Gap(TNSizes.spaceBetweenItems),
+                    const Gap(TNSizes.spaceBetweenItems),
                     Text(
                       TNTextStrings.loginSlog,
                       textAlign: TextAlign.center,
@@ -42,7 +43,7 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Gap(TNSizes.spaceBetweenSections),
+                    const Gap(TNSizes.spaceBetweenSections),
                     WidgetsWithElevatedButton(
                       title: TNTextStrings.google,
                       child: Image.asset(
@@ -50,19 +51,17 @@ class LoginPage extends StatelessWidget {
                         width: 20,
                         height: 20,
                       ),
-                      onPressed: onPressed,
+                      onPressed: onGoogleSignIn,
                     ),
                   ],
                 ),
               ),
             ),
-
-            /// Close icon in top-right
             Positioned(
               top: 16,
               right: 16,
               child: IconButton(
-                onPressed: () => context.pop(), // GoRouter pop
+                onPressed: () => context.pop(),
                 icon: const Icon(LucideIcons.x),
                 tooltip: "Close",
               ),
