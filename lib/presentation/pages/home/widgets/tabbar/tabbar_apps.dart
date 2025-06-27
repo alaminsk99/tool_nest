@@ -16,18 +16,16 @@ class TabSection extends StatefulWidget {
 
 class _TabSectionState extends State<TabSection> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  final List<String> tabs = [
-    RecentTabs.downloads,
-    RecentTabs.processed,
-  ];
+  final List<String> tabs = [RecentTabs.downloads, RecentTabs.processed];
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: tabs.length, vsync: this);
+
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
+        // User triggered change → notify Bloc
         context.read<HomePageBloc>().add(
           ChangeRecentTabEvent(tabs[_tabController.index]),
         );
@@ -36,17 +34,32 @@ class _TabSectionState extends State<TabSection> with SingleTickerProviderStateM
   }
 
   @override
+  void didUpdateWidget(covariant TabSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _syncTabWithState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Also call here to ensure tab sync on first build
+    WidgetsBinding.instance.addPostFrameCallback((_) => _syncTabWithState());
+  }
+
+  void _syncTabWithState() {
+    final state = context.read<HomePageBloc>().state;
+    if (state is HomeLoaded) {
+      final blocIndex = tabs.indexOf(state.activeTab);
+      if (_tabController.index != blocIndex && !_tabController.indexIsChanging) {
+        _tabController.animateTo(blocIndex);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomePageBloc, HomePageState>(
       builder: (context, state) {
-        final activeTab = (state is HomeLoaded) ? state.activeTab : RecentTabs.downloads;
-
-        // Sync tab controller index with state
-        final index = tabs.indexOf(activeTab);
-        if (_tabController.index != index) {
-          _tabController.animateTo(index);
-        }
-
         return Theme(
           data: Theme.of(context).copyWith(
             splashColor: Colors.transparent,
@@ -66,20 +79,17 @@ class _TabSectionState extends State<TabSection> with SingleTickerProviderStateM
               bottomRightRadius: 10,
               paintingStyle: PaintingStyle.fill,
             ),
-            indicatorColor: Colors.transparent, // Make sure no default line shows
-            indicatorWeight: 0.0001, // Avoid Flutter fallback to underline
+            indicatorColor: Colors.transparent,
+            indicatorWeight: 0.0001,
             overlayColor: MaterialStateProperty.all(Colors.transparent),
             tabs: tabs
-                .map(
-                  (label) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Text(label),
-              ),
-            )
+                .map((label) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Text(label),
+            ))
                 .toList(),
           ),
         );
-
       },
     );
   }
@@ -90,3 +100,4 @@ class _TabSectionState extends State<TabSection> with SingleTickerProviderStateM
     super.dispose();
   }
 }
+
