@@ -83,6 +83,7 @@ dependencies:
   flutter_image_compress: ^2.4.0
   archive: ^4.0.7
   flutter_tab_indicator_styler: ^2.0.0
+  package_info_plus: ^8.3.0
 
 
   #Networking package

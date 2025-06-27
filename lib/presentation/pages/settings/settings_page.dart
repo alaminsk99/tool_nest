@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/api_constants.dart';
+import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/domain/models/common/webview_model.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/login_card.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/webview_page.dart';
@@ -23,50 +25,93 @@ class SettingsPage extends StatelessWidget {
             Divider(),
             _tile(
               icon: LucideIcons.fileText,
-              title: "Terms & Conditions",
+              title: TNTextStrings.termsConditions,
               onTap: () {
                context.goNamed(AppRoutes.webViews,
                  extra: WebViewModel(
-                   title: 'Terms & Conditions',
+                   title: TNTextStrings.termsConditions,
                    url: ApiConstants.termsAndConditions,
                  ), );
               },
             ),
             _tile(
               icon: LucideIcons.lock,
-              title: "Privacy Policy",
-              onTap: () {},
+              title:TNTextStrings.privacyPolicy,
+              onTap: () {
+                context.goNamed(
+                    AppRoutes.webViews,
+                    extra: WebViewModel(
+                    url: ApiConstants.privacyPolicy,
+                    title: TNTextStrings.privacyPolicy,
+                    ),
+                );
+              }
             ),
             _tile(
               icon: LucideIcons.info,
-              title: "About us",
-              onTap: () {},
+              title: TNTextStrings.aboutUS,
+              onTap: () {
+                context.goNamed(
+                  AppRoutes.webViews,
+                  extra: WebViewModel(
+                    url: ApiConstants.aboutUs,
+                    title: TNTextStrings.aboutUS,
+                  ),
+                );
+              },
             ),
             _tile(
               icon: LucideIcons.sparkles,
-              title: "Credits",
-              onTap: () {},
+              title: TNTextStrings.credits,
+              onTap: () {
+                context.goNamed(
+                  AppRoutes.webViews,
+                  extra: WebViewModel(
+                    url: ApiConstants.credits,
+                    title: TNTextStrings.credits
+                  ),
+                );
+              },
             ),
             _tile(
               icon: LucideIcons.badgeHelp,
-              title: "Help / Contact",
-              onTap: () {},
+              title: TNTextStrings.helpContact,
+              onTap: () {
+                context.goNamed(
+                  AppRoutes.webViews,
+                  extra: WebViewModel(
+                    url: ApiConstants.helpContact,
+                    title: TNTextStrings.helpContact,
+                  ),
+                );
+              },
             ),
             _tile(
               icon: LucideIcons.share2,
-              title: "Share App",
+              title: TNTextStrings.shareApp,
               onTap: () {},
             ),
 
             const Gap(40),
             Center(
-              child: Column(
-                children: const [
-                  Text("Tool Nest", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text("Version 3.11.1", style: TextStyle(color: Colors.grey)),
-                ],
+              child: FutureBuilder(
+                future: PackageInfo.fromPlatform(),
+                builder: (context, snapshot) {
+                  final version = snapshot.data?.version ?? '...';
+                  final buildNumber = snapshot.data?.buildNumber ?? '';
+                  return Column(
+                    children: [
+                      const Text(
+                        TNTextStrings.appName,
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text("$version ($buildNumber)", style: const TextStyle(color: Colors.grey)),
+                    ],
+                  );
+                },
               ),
+
             ),
             const Gap(20),
           ],

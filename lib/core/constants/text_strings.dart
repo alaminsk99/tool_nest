@@ -278,5 +278,15 @@ static const String savingFailed = "Saving failed";
 
   /// Home Page
   static const String recentFiles = "Recent Files";
+  // Settings
+  static const String termsConditions = "Terms & Conditions";
+  static const String privacyPolicy = "Privacy Policy";
+  static const String aboutUS = "About Us";
+  static const String credits = "Credits";
+  static const String helpContact = "Help / Contact";
+  static const String shareApp = "Share App";
+  static const String version = "Version";
+
+
 
 }
