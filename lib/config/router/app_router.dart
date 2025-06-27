@@ -12,6 +12,7 @@ import 'package:tool_nest/domain/models/pdf_tools/compress_pdf_model/compress_pd
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_args.dart';
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
+import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_result.dart';
@@ -49,6 +50,7 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.main,
       builder: (context, state) => const MainPage(),
       routes: [
+        // Image Tools
         GoRoute(
           path: AppRoutes.processFinishedForImgToPdfPath,
           name: AppRoutes.processFinishedForImgToPdf,
@@ -166,6 +168,7 @@ final GoRouter appRouter = GoRouter(
           ],
 
         ),
+        // Pdf Tools
         GoRoute(
           path: AppRoutes.pdfToImagePath,
           name: AppRoutes.pdfToImage,
@@ -263,6 +266,14 @@ final GoRouter appRouter = GoRouter(
           ],
 
         ),
+        // Profile
+
+        GoRoute(
+          path: AppRoutes.profilePath,
+          name: AppRoutes.profile,
+          builder: (context, state) => ProfilePage(),
+        ),
+
       ],
     ),
   ],

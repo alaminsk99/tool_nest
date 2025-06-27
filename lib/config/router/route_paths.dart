@@ -45,6 +45,8 @@ class AppRoutes {
   static const compressPdfResultPath = 'compress-pdf-result';
 
 
+  static const profilePath = 'profile-path';
+
   // Route Names
   static const imageToPdf = 'imageToPdf';
   static const settings = 'imageToPdfSettings';
@@ -85,6 +87,9 @@ class AppRoutes {
   static const compressPdf = 'compressPdf';
   static const compressPdfSettings = 'compressPdfSettings';
   static const compressPdfResult = 'compressPdfResult';
+
+
+  static const profile = 'profile';
 
 
 

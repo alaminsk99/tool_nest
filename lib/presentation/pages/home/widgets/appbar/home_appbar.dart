@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
@@ -26,8 +28,8 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           padding: EdgeInsets.only(right: TNSizes.spaceBetweenItems),
           child: CircleAvatar(
             backgroundColor: Colors.white,
-            radius: 18,
-            child: Icon(Icons.person, color: TNColors.primary),
+            radius: 20,
+            child: Center(child:  IconButton(onPressed: ()=> context.goNamed(AppRoutes.profile), color: TNColors.primary, icon:Icon(Icons.person,))),
           ),
         ),
       ],
