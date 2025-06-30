@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
-import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
+import 'package:toolest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
 
 abstract class PdfToImageState extends Equatable {
   @override

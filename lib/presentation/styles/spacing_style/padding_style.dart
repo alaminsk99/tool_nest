@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/sizes.dart';
 
 class TNPaddingStyle{
   TNPaddingStyle._();

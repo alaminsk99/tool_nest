@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
-import 'package:tool_nest/domain/models/home/recent_file_model.dart';
-import 'package:tool_nest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
-import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
+import 'package:toolest/application/blocs/home/home_page_bloc.dart';
+import 'package:toolest/domain/models/home/recent_file_model.dart';
+import 'package:toolest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
+import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
 part 'compress_pdf_event.dart';
 part 'compress_pdf_state.dart';

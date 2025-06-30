@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/tool_list/image_tools.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/tool_list/pdf_tools.dart';
+import 'package:toolest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/presentation/pages/tools/widgets/tool_list/image_tools.dart';
+import 'package:toolest/presentation/pages/tools/widgets/tool_list/pdf_tools.dart';
 
-import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
-import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
-import 'package:tool_nest/presentation/widgets/section_style/section_style.dart';
+import 'package:toolest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:toolest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
+import 'package:toolest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
+import 'package:toolest/presentation/widgets/section_style/section_style.dart';
 
 
 class ToolsPages extends StatelessWidget {

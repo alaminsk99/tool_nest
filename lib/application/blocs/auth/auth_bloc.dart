@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tool_nest/domain/models/auth/user_model.dart';
-import 'package:tool_nest/domain/repositories/auth_repositories/auth_repository.dart';
+import 'package:toolest/domain/models/auth/user_model.dart' show AppUser;
+import 'package:toolest/domain/repositories/auth_repositories/auth_repository.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 

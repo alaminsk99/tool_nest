@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/sizes.dart';
 
 class ItemsSelectionBottomSheet {
   static void show({

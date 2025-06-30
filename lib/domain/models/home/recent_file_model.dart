@@ -1,4 +1,4 @@
-import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
+import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
 enum FileStatus { processing, completed, opened }
 enum RecentFileType { image, pdf }

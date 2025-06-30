@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tool_nest/application/blocs/bottom_nav/nav_bloc.dart';
-import 'package:tool_nest/config/theme/theme.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:toolest/application/blocs/bottom_nav/nav_bloc.dart';
+import 'package:toolest/config/theme/theme.dart';
+import 'package:toolest/core/constants/text_strings.dart';
 import 'application/blocs/auth/auth_bloc.dart';
 import 'application/blocs/auth/auth_event.dart';
 import 'application/blocs/home/home_page_bloc.dart';

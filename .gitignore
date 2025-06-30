@@ -32,6 +32,10 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+*.jks
+*.keystore
+key.properties
+
 
 
 # Web related (if generated code isn't checked in)

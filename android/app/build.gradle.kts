@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.ariact.toolnest"
+    namespace = "com.ariact.toolest"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973" ?: flutter.ndkVersion
 
     defaultConfig {
-        applicationId = "com.ariact.toolnest"
+        applicationId = "com.ariact.toolest"
         minSdk = 23
         targetSdk = 34
         versionCode = flutter.versionCode
@@ -19,14 +19,22 @@ android {
         resConfigs("en")
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("../keystore/toolest-key.jks")
+            storePassword = "31326465"
+            keyAlias = "toolestkey"
+            keyPassword = "31326465"
+        }
+    }
+
     buildTypes {
         getByName("release") {
-//            isMinifyEnabled = true
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release") //  Use  release key
+            isMinifyEnabled = false
+            isShrinkResources = false
+            // Optional: Enable these for optimization
+            // proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -38,8 +46,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-
-
 }
 
 flutter {
@@ -47,5 +53,5 @@ flutter {
 }
 
 dependencies {
-
+    //  add custom dependencies here if needed
 }

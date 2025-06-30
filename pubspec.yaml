@@ -1,5 +1,6 @@
-name: tool_nest
-description: "A new Flutter project."
+name: toolest
+description: "ToolEst – All-in-One PDF & Image Utility App"
+
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

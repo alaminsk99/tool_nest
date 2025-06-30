@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/text_strings.dart';
 
 class ProcessButton extends StatelessWidget {
   const ProcessButton({

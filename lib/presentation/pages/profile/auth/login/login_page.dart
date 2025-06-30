@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:tool_nest/core/constants/image_strings.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/widgets/buttons/widgets_with_elevated_button.dart';
+import 'package:toolest/core/constants/image_strings.dart';
+import 'package:toolest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/presentation/widgets/buttons/widgets_with_elevated_button.dart';
 
 class LoginPage extends StatelessWidget {
   final VoidCallback onGoogleSignIn;

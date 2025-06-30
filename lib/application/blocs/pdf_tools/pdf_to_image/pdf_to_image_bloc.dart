@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:pdfx/pdfx.dart';
-import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
+import 'package:toolest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
 import 'pdf_to_image_event.dart';
 import 'pdf_to_image_state.dart';
 

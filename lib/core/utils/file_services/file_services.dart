@@ -5,8 +5,8 @@ import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:cross_file/cross_file.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/core/utils/snackbar_helpers/snackbar_helper.dart';
 
 class FileServices {
   /// Request storage permission if on Android

@@ -1,5 +1,5 @@
 
-import 'package:tool_nest/domain/models/auth/user_model.dart';
+import 'package:toolest/domain/models/auth/user_model.dart';
 
 abstract class AuthState {}
 

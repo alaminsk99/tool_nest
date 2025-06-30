@@ -9,7 +9,7 @@
     <!-- For Android 12 and below -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
     <application
-        android:label="Tool Nest"
+        android:label="Tool Est"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

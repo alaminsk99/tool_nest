@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:tool_nest/config/router/route_paths.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/core/utils/file_services/file_services.dart';
-import 'package:tool_nest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/download_button.dart';
-import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
-import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
+import 'package:toolest/config/router/route_paths.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/core/utils/file_services/file_services.dart';
+import 'package:toolest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
+import 'package:toolest/presentation/pages/tools/widgets/buttons/download_button.dart';
+import 'package:toolest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:toolest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
+import 'package:toolest/presentation/widgets/dialogs/custom_error_dialog.dart';
 
 class CompressPdfResult extends StatelessWidget {
   final CompressedPdfModel compressedPdf;

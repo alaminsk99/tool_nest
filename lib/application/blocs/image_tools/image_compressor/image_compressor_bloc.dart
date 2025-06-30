@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
-import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/core/utils/file_core_helper/file_core_helper.dart';
-import 'package:tool_nest/domain/models/home/recent_file_model.dart';
-import 'package:tool_nest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
+import 'package:toolest/application/blocs/home/home_page_bloc.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/core/utils/file_core_helper/file_core_helper.dart';
+import 'package:toolest/domain/models/home/recent_file_model.dart';
+import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_compressor_event.dart';
 import 'image_compressor_state.dart';
 

@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:tool_nest/config/router/route_paths.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
+import 'package:toolest/config/router/route_paths.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/presentation/pages/tools/widgets/list_tile/list_tile_for_tools.dart';
 
 class PdfTools extends StatelessWidget {
   const PdfTools({super.key});

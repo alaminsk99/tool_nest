@@ -2,9 +2,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/sizes.dart';
+import 'package:toolest/presentation/styles/spacing_style/padding_style.dart';
 
 
 class TNHelperFunctions{

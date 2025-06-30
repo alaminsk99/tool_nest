@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:tool_nest/application/blocs/pdf_tools/compress_pdf/compress_pdf_bloc.dart';
-import 'package:tool_nest/config/router/route_paths.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/buttons/process_button.dart';
-import 'package:tool_nest/presentation/pages/tools/widgets/container/upload_image_container.dart';
-import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
-import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
+import 'package:toolest/application/blocs/pdf_tools/compress_pdf/compress_pdf_bloc.dart';
+import 'package:toolest/config/router/route_paths.dart';
+import 'package:toolest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/presentation/pages/tools/widgets/buttons/process_button.dart';
+import 'package:toolest/presentation/pages/tools/widgets/container/upload_image_container.dart';
+import 'package:toolest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:toolest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
+import 'package:toolest/presentation/widgets/dialogs/custom_error_dialog.dart';
 
 class CompressPdfPage extends StatefulWidget {
   const CompressPdfPage({super.key});

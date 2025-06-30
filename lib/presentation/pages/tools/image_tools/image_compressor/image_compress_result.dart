@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
-import 'package:tool_nest/config/router/route_paths.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/core/utils/file_services/file_services.dart';
-import 'package:tool_nest/core/utils/snackbar_helpers/snackbar_helper.dart';
-import 'package:tool_nest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
-import 'package:tool_nest/presentation/widgets/dialogs/custom_error_dialog.dart';
+import 'package:toolest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
+import 'package:toolest/config/router/route_paths.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/core/utils/file_services/file_services.dart';
+import 'package:toolest/core/utils/snackbar_helpers/snackbar_helper.dart';
+import 'package:toolest/presentation/widgets/appbar/main_section_appbar/appbar_for_main_sections.dart';
+import 'package:toolest/presentation/widgets/dialogs/custom_error_dialog.dart';
 
 class ImageCompressResult extends StatefulWidget {
   final ImageCompressionSuccess state;

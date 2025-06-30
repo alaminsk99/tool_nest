@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/text_strings.dart';
-import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
-import 'package:tool_nest/presentation/pages/tools/image_tools/image_to_pdf/widgets/custom_margin_chip_for_image_to_pdf.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/text_strings.dart';
+import 'package:toolest/presentation/pages/tools/image_tools/image_to_pdf/image_to_pdf_settings.dart';
+import 'package:toolest/presentation/pages/tools/image_tools/image_to_pdf/widgets/custom_margin_chip_for_image_to_pdf.dart';
 
 class MarginTypeSection extends StatelessWidget {
   final double margin;

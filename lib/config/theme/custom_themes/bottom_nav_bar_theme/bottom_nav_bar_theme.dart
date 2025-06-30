@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tool_nest/core/constants/colors.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/colors.dart';
+import 'package:toolest/core/constants/sizes.dart';
 
 class TNBottomNavBarTheme {
   TNBottomNavBarTheme._(); // Private constructor to prevent instantiation

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tool_nest/config/router/route_paths.dart';
-import 'package:tool_nest/presentation/widgets/card/process_finished_card.dart';
+import 'package:toolest/config/router/route_paths.dart';
+import 'package:toolest/presentation/widgets/card/process_finished_card.dart';
 
 
 class ProcessFinishedForAllTools extends StatelessWidget {

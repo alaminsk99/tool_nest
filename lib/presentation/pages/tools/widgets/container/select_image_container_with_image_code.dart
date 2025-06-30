@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:toolest/core/constants/sizes.dart';
 
 class SelectImageContainerWithImageCode extends StatelessWidget {
   final Uint8List imageBytes;

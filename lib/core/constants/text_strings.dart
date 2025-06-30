@@ -2,10 +2,10 @@ class TNTextStrings {
   TNTextStrings._();
 
   /// App Name
-  static const String appName = "Tool Nest";
+  static const String appName = "Tool Est";
 
   /// Onboarding Texts
-  static const String onboardingTitle1 = "Welcome to Tool Nest";
+  static const String onboardingTitle1 = "Welcome to Tool Est";
   static const String onboardingTitle2 = "All Tools In One Place";
   static const String onboardingTitle3 = "Let’s Get Started";
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:tool_nest/application/blocs/bottom_nav/nav_bloc.dart';
-import 'package:tool_nest/application/blocs/bottom_nav/nav_event.dart';
-import 'package:tool_nest/application/blocs/bottom_nav/nav_state.dart';
-import 'package:tool_nest/core/constants/sizes.dart';
+import 'package:toolest/application/blocs/bottom_nav/nav_bloc.dart';
+import 'package:toolest/application/blocs/bottom_nav/nav_event.dart';
+import 'package:toolest/application/blocs/bottom_nav/nav_state.dart';
+import 'package:toolest/core/constants/sizes.dart';
 
 class BottomNavBar extends StatelessWidget {
   @override
