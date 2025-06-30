@@ -46,12 +46,12 @@ class LoginPage extends StatelessWidget {
                     const Gap(TNSizes.spaceBetweenSections),
                     WidgetsWithElevatedButton(
                       title: TNTextStrings.google,
+                      onPressed: onGoogleSignIn,
                       child: Image.asset(
                         TNImageStrings.google,
                         width: 20,
                         height: 20,
                       ),
-                      onPressed: onGoogleSignIn,
                     ),
                   ],
                 ),

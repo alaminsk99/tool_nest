@@ -10,6 +10,7 @@ class AppRoutes {
   static const resultPath = 'result';
   static const processFinishedForImgToPdfPath = 'process-finished-image-to-pdf';
 
+
   static const imageCompressorPath = 'image-compressor';
   static const imageCompressorSettingsPath = 'image-compressor-settings';
   static const imageCompressorResultPath = 'image-compressor-result';
@@ -48,6 +49,8 @@ class AppRoutes {
   static const profilePath = 'profile-path';
   static const homePath = 'home-path';
   static const webViewsPath = 'web-views-path';
+  static const appSettingsPath = 'app-settings-path';
+
 
   // Route Names
   static const imageToPdf = 'imageToPdf';
@@ -94,6 +97,7 @@ class AppRoutes {
   static const profile = 'profile';
   static const home = 'home';
   static const webViews = 'webViews';
+  static const appSettings = 'appSettingsPath';
 
 
 

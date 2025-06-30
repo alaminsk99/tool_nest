@@ -13,6 +13,7 @@ import 'package:tool_nest/core/constants/api_constants.dart';
 import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
+import 'package:tool_nest/core/utils/helper/helper_functions.dart';
 import 'package:tool_nest/domain/models/common/webview_model.dart';
 import 'package:tool_nest/presentation/pages/profile/auth/login/login_page.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/login_card.dart';
@@ -35,7 +36,6 @@ class SettingsPage extends StatelessWidget {
             final user = isAuthenticated ? (state as Authenticated).user : null;
 
             return ListView(
-
               children: [
                 AuthCard(
                   onTap: () {
@@ -73,10 +73,15 @@ class SettingsPage extends StatelessWidget {
                             foregroundColor: WidgetStatePropertyAll(Colors.red),
                           ),
                           onPressed: () {
-                            CustomDialogWithCancelButton(
-                              onPressed:  () => authBloc.add(SignOutRequested()),
-                              confirmText: TNTextStrings.logOut,
-                              message: TNTextStrings.logOutWoarningMessage,
+                            TNHelperFunctions.showDialogWithWidgets(
+                              context,
+                                CustomDialogWithCancelButton(
+                                  onPressed: () {
+                                    authBloc.add(SignOutRequested());
+                                  },
+                                  confirmText: TNTextStrings.logOut,
+                                  message: TNTextStrings.logOutWoarningMessage,
+                                ),
                             );
 
                           },
@@ -215,4 +220,6 @@ class SettingsPage extends StatelessWidget {
       onTap: onTap,
     );
   }
+
+
 }

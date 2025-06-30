@@ -95,6 +95,7 @@ dependencies:
 
   #Networking package
   http: ^1.4.0
+  connectivity_plus: ^6.1.4
 
 #Delopent dependencies is here
 dev_dependencies:

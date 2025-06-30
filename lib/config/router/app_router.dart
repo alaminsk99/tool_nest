@@ -17,6 +17,7 @@ import 'package:tool_nest/presentation/pages/home/home_page.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
 import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/webview_page.dart';
+import 'package:tool_nest/presentation/pages/settings/settings_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_compressor/image_compress_result.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_page.dart';
 import 'package:tool_nest/presentation/pages/tools/image_tools/image_format_convert/image_format_converter_result.dart';
@@ -60,6 +61,12 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.home,
           builder: (context, state) => const HomePage(),
         ),
+        /// App Settings
+        GoRoute(
+          path: AppRoutes.appSettingsPath,
+          name: AppRoutes.appSettings,
+          builder: (context, state) => const SettingsPage(),
+        ),
         // Web View
 
         GoRoute(
@@ -76,7 +83,7 @@ final GoRouter appRouter = GoRouter(
           name: AppRoutes.processFinishedForImgToPdf,
           builder: (context, state) {
             final path = state.extra as String;
-            return ProcessFinishedForImageToPdf(pdfPath: path);
+            return ProcessFinishedForAllTools(pdfPath: path);
           },
         ),
         GoRoute(
@@ -288,11 +295,11 @@ final GoRouter appRouter = GoRouter(
         ),
         // Profile
 
-        GoRoute(
-          path: AppRoutes.profilePath,
-          name: AppRoutes.profile,
-          builder: (context, state) => ProfilePage(),
-        ),
+        // GoRoute(
+        //   path: AppRoutes.profilePath,
+        //   name: AppRoutes.profile,
+        //   builder: (context, state) => ProfilePage(),
+        // ),
 
       ],
     ),

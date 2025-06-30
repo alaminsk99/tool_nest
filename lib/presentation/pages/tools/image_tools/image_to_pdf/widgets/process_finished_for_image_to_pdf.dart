@@ -4,8 +4,8 @@ import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/presentation/widgets/card/process_finished_card.dart';
 
 
-class ProcessFinishedForImageToPdf extends StatelessWidget {
-  const ProcessFinishedForImageToPdf({super.key, this.pdfPath});
+class ProcessFinishedForAllTools extends StatelessWidget {
+  const ProcessFinishedForAllTools({super.key, this.pdfPath});
   final String? pdfPath;
   @override
   Widget build(BuildContext context) {
