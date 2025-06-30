@@ -81,16 +81,22 @@ class ProfilePage extends StatelessWidget {
             : Column(
           mainAxisSize: MainAxisSize.min,
               children: [
-                Center(
-                          child: Text(
-                TNTextStrings.logInSignUp,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: TNColors.primary,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
+                GestureDetector(
+                  onTap: (){
+                    TNHelperFunctions.navigateToScreenAndBack(context, AppRoutes.loginOptionsPages);
+                    context.pop();
+                    },
+                  child: Center(
+                            child: Text(
+                  TNTextStrings.logInSignUp,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: TNColors.primary,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
+                  ),
+                            ),
                           ),
-                        ),
+                ),
               ],
             ),
       ),

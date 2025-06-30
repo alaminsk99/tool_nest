@@ -5,6 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tool_nest/application/blocs/auth/auth_bloc.dart';
+import 'package:tool_nest/application/blocs/auth/auth_event.dart';
 import 'package:tool_nest/application/blocs/home/home_page_bloc.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_compressor/image_compressor_state.dart';
 import 'package:tool_nest/application/blocs/image_tools/image_resizer/image_resizer_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_imag
 import 'package:tool_nest/domain/models/pdf_tools/pdf_to_image_model/pdf_to_image_result_model.dart';
 import 'package:tool_nest/presentation/pages/home/home_page.dart';
 import 'package:tool_nest/presentation/pages/main_page.dart';
+import 'package:tool_nest/presentation/pages/profile/auth/login/login_page.dart';
 import 'package:tool_nest/presentation/pages/profile/profile_page.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/webview_page.dart';
 import 'package:tool_nest/presentation/pages/settings/settings_page.dart';
@@ -66,6 +69,20 @@ final GoRouter appRouter = GoRouter(
           path: AppRoutes.appSettingsPath,
           name: AppRoutes.appSettings,
           builder: (context, state) => const SettingsPage(),
+        ),
+        /// Login Options Pages
+        GoRoute(
+          path: AppRoutes.loginOptionsPagesPath,
+          name: AppRoutes.loginOptionsPages,
+          builder: (context, state) {
+            final authBloc = BlocProvider.of<AuthBloc>(context);
+            return LoginPage(
+              onGoogleSignIn: () {
+                authBloc.add(SignInRequested());
+                context.pop();
+              },
+            );
+          },
         ),
         // Web View
 

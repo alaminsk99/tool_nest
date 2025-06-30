@@ -50,6 +50,7 @@ class AppRoutes {
   static const homePath = 'home-path';
   static const webViewsPath = 'web-views-path';
   static const appSettingsPath = 'app-settings-path';
+  static const loginOptionsPagesPath = 'login-options-pages-path';
 
 
   // Route Names
@@ -97,7 +98,8 @@ class AppRoutes {
   static const profile = 'profile';
   static const home = 'home';
   static const webViews = 'webViews';
-  static const appSettings = 'appSettingsPath';
+  static const appSettings = 'appSettings';
+  static const loginOptionsPages = 'loginOptionsPages';
 
 
 
