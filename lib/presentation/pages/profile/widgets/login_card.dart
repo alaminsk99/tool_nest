@@ -71,6 +71,7 @@ class AuthCard extends StatelessWidget {
                         ?.copyWith(
                       color: TNColors.darkerGrey,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -79,7 +80,7 @@ class AuthCard extends StatelessWidget {
                         .textTheme
                         .bodySmall
                         ?.copyWith(
-                      color: Colors.red,
+                      color:TNColors.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -91,7 +92,7 @@ class AuthCard extends StatelessWidget {
                     .textTheme
                     .titleMedium
                     ?.copyWith(
-                  color: Colors.red,
+                  color: TNColors.primary,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,
                 ),

@@ -50,6 +50,9 @@ class TNTextStrings {
   static const String continueText = "Continue";
   static const String format = "Format";
   static const String saved = "Saved";
+  static const String logout = "LOG OUT";
+  static const String logOut = "Log out";
+
 
 
 
@@ -57,6 +60,7 @@ class TNTextStrings {
   static const String somethingWentWrong = "Something went wrong!";
   static const String noInternetConnection = "No internet connection.";
   static const String emailNotVerified = "Please verify your email first.";
+  static const String logOutWoarningMessage = "Are you sure you want to log out?";
 
   /// Dashboard
   static const String dashboard = "Dashboard";
@@ -65,7 +69,6 @@ class TNTextStrings {
 
   /// Profile
   static const String profile = "Profile";
-  static const String logout = "Logout";
   static const String settings = "Settings";
   static const String editProfile = "Edit Profile";
 

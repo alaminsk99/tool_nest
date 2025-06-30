@@ -14,7 +14,7 @@ import 'firebase_options.dart';
 void main()async{
   /// Widgets Binding
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+ // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   /// Load environment variables before app starts
   //await dotenv.load(fileName: '.env');
 

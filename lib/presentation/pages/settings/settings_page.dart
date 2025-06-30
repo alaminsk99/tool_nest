@@ -10,11 +10,14 @@ import 'package:tool_nest/application/blocs/auth/auth_event.dart';
 import 'package:tool_nest/application/blocs/auth/auth_state.dart';
 import 'package:tool_nest/config/router/route_paths.dart';
 import 'package:tool_nest/core/constants/api_constants.dart';
+import 'package:tool_nest/core/constants/colors.dart';
 import 'package:tool_nest/core/constants/sizes.dart';
 import 'package:tool_nest/core/constants/text_strings.dart';
 import 'package:tool_nest/domain/models/common/webview_model.dart';
 import 'package:tool_nest/presentation/pages/profile/auth/login/login_page.dart';
 import 'package:tool_nest/presentation/pages/profile/widgets/login_card.dart';
+import 'package:tool_nest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:tool_nest/presentation/widgets/dialogs/custom_dialog_with_cancel_button.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -32,6 +35,7 @@ class SettingsPage extends StatelessWidget {
             final user = isAuthenticated ? (state as Authenticated).user : null;
 
             return ListView(
+
               children: [
                 AuthCard(
                   onTap: () {
@@ -57,11 +61,30 @@ class SettingsPage extends StatelessWidget {
                 const Gap(TNSizes.spaceBetweenItems),
                 const Divider(),
                 if (isAuthenticated)
-                  TextButton(
-                    onPressed: () {
-                      authBloc.add(SignOutRequested());
-                    },
-                    child: const Text("Logout"),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: TNPaddingStyle.onlyHorizontalSMPadding,
+                        child: TextButton.icon(
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(TNColors.transparent),
+                            foregroundColor: WidgetStatePropertyAll(Colors.red),
+                          ),
+                          onPressed: () {
+                            CustomDialogWithCancelButton(
+                              onPressed:  () => authBloc.add(SignOutRequested()),
+                              confirmText: TNTextStrings.logOut,
+                              message: TNTextStrings.logOutWoarningMessage,
+                            );
+
+                          },
+                          icon: Icon(LucideIcons.logOut),
+                          label:  const Text(TNTextStrings.logout,style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ],
                   ),
                 const Gap(TNSizes.spaceBetweenSections),
                 _buildAppVersionInfo(),
