@@ -20,8 +20,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<UpdateFileStatusEvent>(_onUpdateFileStatus);
   }
 
-  Future<void> _onLoadRecentFiles(
-      LoadRecentFilesEvent event, Emitter<HomePageState> emit) async {
+  Future<void> _onLoadRecentFiles(LoadRecentFilesEvent event, Emitter<HomePageState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('recentFiles') ?? [];
 
@@ -32,25 +31,17 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (!file.existsSync()) return false;
       final modified = file.lastModifiedSync();
       return now.difference(modified).inDays <= expiryDays;
-    }).toList();
+    }).toList()
+      ..sort((a, b) => File(b.path).lastModifiedSync().compareTo(File(a.path).lastModifiedSync()));
 
     final processedFiles = validFiles
         .where((f) => f.tab == RecentTabs.processed)
         .take(10)
         .toList();
 
-    final downloadedFiles = await PdfService().getDownloadedPDFs();
-    final freshDownloaded = downloadedFiles.map((file) {
-      return RecentFileModel(
-        path: file.path,
-        name: file.path.split('/').last,
-        fileType: RecentFileType.pdf,
-        status: FileStatus.opened,
-        tab: RecentTabs.downloads,
-      );
-    }).take(10).toList();
+    final recentDownloads = await _getRecentDownloads();
 
-    final allFiles = [...processedFiles, ...freshDownloaded];
+    final allFiles = [...processedFiles, ...recentDownloads];
     await _saveFiles(processedFiles);
 
     emit(HomeLoaded(
@@ -64,33 +55,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final current = state as HomeLoaded;
 
       if (event.tab == RecentTabs.downloads) {
-        //  Only refresh downloads if not already loaded
         final alreadyLoadedDownloads = current.recentFiles
             .where((f) => f.tab == RecentTabs.downloads)
             .toList();
 
         if (alreadyLoadedDownloads.isNotEmpty) {
-          // Use existing files
           emit(HomeLoaded(
             recentFiles: current.recentFiles,
             activeTab: event.tab,
           ));
         } else {
-          // First-time load
-          final downloadedFiles = await PdfService().getDownloadedPDFs();
-          final freshDownloaded = downloadedFiles.map((file) {
-            return RecentFileModel(
-              path: file.path,
-              name: file.path.split('/').last,
-              fileType: RecentFileType.pdf,
-              status: FileStatus.opened,
-              tab: RecentTabs.downloads,
-            );
-          }).take(10).toList();
+          final recentDownloads = await _getRecentDownloads();
 
           final combined = [
             ...current.recentFiles.where((f) => f.tab == RecentTabs.processed),
-            ...freshDownloaded,
+            ...recentDownloads,
           ];
 
           emit(HomeLoaded(
@@ -99,7 +78,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           ));
         }
       } else {
-        // Processed tab
         emit(HomeLoaded(
           recentFiles: current.recentFiles,
           activeTab: event.tab,
@@ -108,10 +86,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
   }
 
-
-
-  Future<void> _onAddRecentFile(
-      AddRecentFileEvent event, Emitter<HomePageState> emit) async {
+  Future<void> _onAddRecentFile(AddRecentFileEvent event, Emitter<HomePageState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getStringList('recentFiles') ?? [];
 
@@ -125,11 +100,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }).toList();
 
     final updatedProcessed = [event.file, ...existing]
+      ..sort((a, b) => File(b.path).lastModifiedSync().compareTo(File(a.path).lastModifiedSync()));
+
+    final filteredProcessed = updatedProcessed
         .where((f) => f.tab == RecentTabs.processed)
         .take(10)
         .toList();
 
-    await _saveFiles(updatedProcessed);
+    await _saveFiles(filteredProcessed);
 
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
@@ -137,19 +115,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           .where((f) => f.tab == RecentTabs.downloads)
           .toList();
 
-      final combined = [...updatedProcessed, ...downloads];
+      final combined = [...filteredProcessed, ...downloads];
 
       emit(HomeLoaded(recentFiles: combined, activeTab: current.activeTab));
     } else {
       emit(HomeLoaded(
-        recentFiles: updatedProcessed,
-        activeTab: RecentTabs.downloads,
+        recentFiles: filteredProcessed,
+        activeTab: RecentTabs.processed,
       ));
     }
   }
 
-  Future<void> _onUpdateFileStatus(
-      UpdateFileStatusEvent event, Emitter<HomePageState> emit) async {
+  Future<void> _onUpdateFileStatus(UpdateFileStatusEvent event, Emitter<HomePageState> emit) async {
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
       final updated = current.recentFiles.map((file) {
@@ -170,23 +147,26 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Future<void> addRecentFile(RecentFileModel file) async {
-    final prefs = await SharedPreferences.getInstance();
-    final stored = prefs.getStringList('recentFiles') ?? [];
+    add(AddRecentFileEvent(file));
+  }
 
-    final now = DateTime.now();
-    final files = stored
-        .map((e) => RecentFileModel.fromJson(jsonDecode(e)))
-        .where((f) {
-      final fileObj = File(f.path);
-      if (!fileObj.existsSync()) return false;
-      final modified = fileObj.lastModifiedSync();
-      return now.difference(modified).inDays <= expiryDays && f.path != file.path;
-    })
-        .toList();
+  Future<List<RecentFileModel>> _getRecentDownloads() async {
+    final files = await PdfService().getDownloadedPDFs();
 
-    final updated = [file, ...files].take(10).toList();
-    final updatedString = updated.map((e) => jsonEncode(e.toJson())).toList();
-    await prefs.setStringList('recentFiles', updatedString);
-    add(LoadRecentFilesEvent());
+    final validFiles = files
+        .whereType<File>()
+        .where((file) => file.existsSync())
+        .toList()
+      ..sort((a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()));
+
+    final recentModels = validFiles.map((file) => RecentFileModel(
+      path: file.path,
+      name: file.path.split('/').last,
+      fileType: RecentFileType.pdf,
+      status: FileStatus.opened,
+      tab: RecentTabs.downloads,
+    )).take(10).toList();
+
+    return recentModels;
   }
 }
