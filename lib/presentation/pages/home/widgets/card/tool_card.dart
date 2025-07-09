@@ -9,13 +9,14 @@ class ToolCard extends StatelessWidget {
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
+  final String? subtitle;
 
   const ToolCard({
     super.key,
     required this.title,
     required this.icon,
     required this.color,
-    required this.onTap,
+    required this.onTap, this.subtitle,
   });
 
   @override
@@ -23,17 +24,13 @@ class ToolCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: 130,
+        width: 100,
         padding: TNPaddingStyle.allPaddingXS,
         decoration: BoxDecoration(
-          color: TNColors.white,
+          color: color.withOpacity(0.02),
           borderRadius: BorderRadius.circular(TNSizes.borderRadiusMD),
-          boxShadow: [
-            BoxShadow(
-              color: TNColors.black.withOpacity(0.06),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          border: Border.all(color: color,width: 0.5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,13 +39,13 @@ class ToolCard extends StatelessWidget {
             Container(
               padding: TNPaddingStyle.allPaddingSM,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color,
                 borderRadius: BorderRadius.circular(TNSizes.borderRadiusSM),
               ),
               child: Icon(
                 icon,
-                color: color,
-                size: 24,
+                color: TNColors.white,
+                size: TNSizes.iconSizeMD,
               ),
             ),
             Gap(TNSizes.spaceBetweenItems),
@@ -60,6 +57,8 @@ class ToolCard extends StatelessWidget {
                 color: TNColors.textPrimary,
               ),
             ),
+            Gap(TNSizes.spaceXS),
+            if(subtitle !=null)Text(subtitle!,style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TNColors.textSecondary),textAlign: TextAlign.center,),
           ],
         ),
       ),

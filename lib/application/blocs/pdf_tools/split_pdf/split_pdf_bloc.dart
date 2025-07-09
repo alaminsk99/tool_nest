@@ -62,12 +62,15 @@ class SplitPdfBloc extends Bloc<SplitPdfEvent, SplitPdfState> {
       if (splitFiles.isNotEmpty) {
         final firstSplit = splitFiles.first;
 
+        final aspectRatio = await PdfService().detectAspectRatio(firstSplit.path,  RecentFileType.pdf);
+
         final recentFile = RecentFileModel(
           path: firstSplit.path,
           name: firstSplit.path.split('/').last,
           fileType: RecentFileType.pdf,
           status: FileStatus.completed,
           tab: RecentTabs.processed,
+          aspectRatio: aspectRatio,
         );
 
         event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentFile));

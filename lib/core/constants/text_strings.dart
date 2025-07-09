@@ -36,6 +36,7 @@ class TNTextStrings {
   static const String homeTitle = "Explore Tools";
   static const String searchHint = "Search tools...";
   static const String pageSelection = "Page Selection";
+  static const String featured = "Featured";
 
   /// General Labels
   static const String ok = "OK";

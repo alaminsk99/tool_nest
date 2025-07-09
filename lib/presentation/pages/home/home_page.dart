@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       body: Stack(
         children: [
           const BackgroundContainer(),
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               Expanded(
                 child: SingleChildScrollView(
                   padding: TNPaddingStyle.allPadding,
-                  physics:const PageScrollPhysics(),
+                  physics: const PageScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -72,7 +72,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         padding: TNPaddingStyle.onlyLeftMD,
                         child: Text(
                           TNTextStrings.recentFiles,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: TNColors.textPrimary,
                           ),
@@ -90,29 +94,47 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       RecentFilesScroll(),
 
 
-                      Gap(TNSizes.spaceBetweenSections *1.3),
+                      Gap(TNSizes.spaceBetweenSections * 1.3),
 
+                      ///
+                      StaticContainer(),
+                      Gap(TNSizes.spaceBetweenSections),
                       /// Image Tools Section
-                      _sectionTitle(TNTextStrings.imageTools, context),
-                      Gap(TNSizes.spaceXS),
-                      _toolGrid([
-                        ToolCard(title: TNTextStrings.compressImage, icon: LucideIcons.image, color: Colors.orange, onTap:() => context.goNamed(AppRoutes.imageCompressor),),
-                        ToolCard(title: TNTextStrings.imageResizer, icon: LucideIcons.minimize, color: Colors.teal, onTap: () => context.goNamed(AppRoutes.imageResize)),
-                        ToolCard(title: TNTextStrings.imageToPDF, icon: LucideIcons.fileImage, color: Colors.yellow.shade800, onTap: () => context.goNamed(AppRoutes.imageToPdf)),
-                        ToolCard(title: TNTextStrings.formatConverter, icon: LucideIcons.arrowRightLeft, color: Colors.purple, onTap: () => context.goNamed(AppRoutes.imageFormatConverter)),
-                      ]),
+                      _sectionTitle(TNTextStrings.featured, context),
+                      Gap(TNSizes.spaceBetweenItems),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
 
-                      Gap(TNSizes.spaceBetweenSections*1.3 ),
+                        clipBehavior: Clip.antiAlias,
+                        children: [
+                          ToolCard(
+                            title: TNTextStrings.pdfToImage,
+                            icon: LucideIcons.image,
+                            color: Colors.orange,
+                            onTap: () => context.goNamed(AppRoutes.pdfToImage),
+                            subtitle: 'Convert PDFs',
+                          ),
+                          ToolCard(
+                            title: TNTextStrings.imageResizer,
+                            icon: LucideIcons.minimize,
+                            color: Colors.teal,
+                            onTap: () =>
+                                context.goNamed(AppRoutes.imageResize),
+                            subtitle: 'Adjust dimensions',
+                          ),
+                          ToolCard(
+                            title: TNTextStrings.mergePDFs,
+                            icon: LucideIcons.arrowRightLeft,
+                            color: Colors.purple,
+                            onTap: () => context.goNamed(AppRoutes.mergePdf),
+                            subtitle: 'Combine PDFs',
+                          ),
+                        ],
+                      ),
+                      Gap(TNSizes.spaceBetweenSections * 1.3),
 
                       /// PDF Tools Section
-                      _sectionTitle(TNTextStrings.pdfTools, context),
-                      Gap(TNSizes.spaceXS),
-                      _toolGrid([
-                        ToolCard(title: TNTextStrings.pdfToImage, icon: LucideIcons.image, color: Colors.blue, onTap: ()=> context.goNamed(AppRoutes.pdfToImage)),
-                        ToolCard(title: TNTextStrings.mergePDFs, icon: LucideIcons.merge, color: Colors.green, onTap: ()=> context.goNamed(AppRoutes.mergePdf)),
-                        ToolCard(title: TNTextStrings.splitPDF, icon: LucideIcons.split, color: Colors.red, onTap: ()=> context.goNamed(AppRoutes.splitPdf)),
-                        ToolCard(title: TNTextStrings.compressPDF, icon: LucideIcons.fileAxis3d, color: Colors.indigo, onTap: ()=> context.goNamed(AppRoutes.compressPdf)),
-                      ]),
                     ],
                   ),
                 ),
@@ -122,29 +144,83 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ],
       ),
     );
-
   }
 
   Widget _sectionTitle(String title, BuildContext context) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+      style: Theme
+          .of(context)
+          .textTheme
+          .titleLarge
+          ?.copyWith(
         fontWeight: FontWeight.bold,
         color: TNColors.textPrimary,
       ),
     );
   }
 
-  Widget _toolGrid(List<Widget> children) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 3,
-      mainAxisSpacing: TNSizes.spaceSM,
-      crossAxisSpacing: TNSizes.spaceSM,
-      childAspectRatio: 0.8,
-      children: children,
+
+}
+
+class StaticContainer extends StatelessWidget {
+  const StaticContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: TNPaddingStyle.allPaddingLG,
+      decoration: BoxDecoration(
+        border: Border.all(color: TNColors.specialGreenColor),
+        borderRadius: BorderRadius.circular(TNSizes.borderRadiusMD),
+        gradient:TNColors.specialGreenGradientVeriasion,
+
+      ),
+      child:  Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('Activity',style: Theme
+              .of(context)
+              .textTheme
+              .titleLarge
+              ?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: TNColors.textPrimary,
+            fontSize: 25,
+          ),),
+          Gap(TNSizes.spaceBetweenItems),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  color: TNColors.grey,
+                  shape: BoxShape.circle,
+                    border: Border.all(color: TNColors.white.withOpacity(0.7)),
+                ),
+                child: Center(child: Text('8',style: Theme.of(context).textTheme.headlineLarge?.copyWith(),)),
+              ),
+
+              Text('File Processed today',style: Theme.of(context).textTheme.bodyMedium,),
+
+              Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: TNColors.grey.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: TNColors.cusClipperBack.withOpacity(0.7))
+                  ),
+                  child: Center(child: Icon(LucideIcons.file,size: 30,color: TNColors.textWhite,))),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
-

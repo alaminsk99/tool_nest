@@ -14,7 +14,7 @@ import 'firebase_options.dart';
 void main()async{
   /// Widgets Binding
   final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
- // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   /// Load environment variables before app starts
   //await dotenv.load(fileName: '.env');
 
@@ -22,25 +22,26 @@ void main()async{
   //await GetStorage.init();
   final prefs = await SharedPreferences.getInstance();
   final imageService = ImageService(prefs);
-  /// Theme changer
-  ///  Get.put(ThemeController());
-
-  /// Await Native Splash
-  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  /// Initialize Firebase & Authentication
-
+  // /// Theme changer
+  // ///  Get.put(ThemeController());
+  //
+  // /// Await Native Splash
+  // //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  //
+  // /// Initialize Firebase & Authentication
+  //
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
-  runApp(MultiRepositoryProvider(
+  runApp(
+    MultiRepositoryProvider(
     providers: [
       RepositoryProvider(
         create: (context) => AuthRepository(),
       ),
     ],
     child: const App(),
-  ),);
+    ),
+  );
 }
