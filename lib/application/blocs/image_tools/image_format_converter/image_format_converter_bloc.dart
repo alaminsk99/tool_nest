@@ -5,6 +5,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toolest/application/blocs/home/home_page_bloc.dart';
+import 'package:toolest/core/utils/file_services/pdf_service.dart';
 import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_format_converter_event.dart';
@@ -83,6 +84,7 @@ class ImageFormatConverterBloc extends Bloc<ImageFormatConverterEvent, ImageForm
           final file = File(filePath);
           await file.writeAsBytes(convertedBytes);
 
+          final ratio = await PdfService().detectAspectRatio(file.path, RecentFileType.image);
           // Add to recent files (processed tab)
           final recent = RecentFileModel(
             path: file.path,
@@ -90,6 +92,7 @@ class ImageFormatConverterBloc extends Bloc<ImageFormatConverterEvent, ImageForm
             fileType: RecentFileType.image,
             status: FileStatus.completed,
             tab: RecentTabs.processed,
+            aspectRatio: ratio,
           );
           event.context.read<HomePageBloc>().add(AddRecentFileEvent(recent));
         } else {

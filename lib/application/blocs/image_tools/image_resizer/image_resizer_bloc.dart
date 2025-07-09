@@ -5,6 +5,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toolest/application/blocs/home/home_page_bloc.dart';
+import 'package:toolest/core/utils/file_services/pdf_service.dart';
 import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 
@@ -99,6 +100,8 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
         width: current.width,
         height: current.height,
       ));
+
+      final aspectRatio = await PdfService().detectAspectRatio(file.path, RecentFileType.image);
       // Add to recent processed files
       final recentImage = RecentFileModel(
         path: file.path,
@@ -106,6 +109,7 @@ class ImageResizeBloc extends Bloc<ImageResizeEvent, ImageResizeState> {
         fileType: RecentFileType.image,
         status: FileStatus.completed,
         tab: RecentTabs.processed,
+        aspectRatio: aspectRatio,
       );
 
       event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentImage));

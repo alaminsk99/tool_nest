@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/domain/models/pdf_tools/pdf_merge_model/pdf_file_model.dart';
 
 
@@ -106,6 +107,33 @@ class PdfService {
 
     return files;
   }
+
+
+  Future<double?> detectAspectRatio(String path, RecentFileType fileType) async {
+    if (!File(path).existsSync()) return null;
+
+    try {
+      if (fileType == RecentFileType.image) {
+        final bytes = await File(path).readAsBytes();
+        final codec = await instantiateImageCodec(bytes);
+        final frame = await codec.getNextFrame();
+        final image = frame.image;
+        return image.width / image.height;
+      } else if (fileType == RecentFileType.pdf) {
+        final bytes = await File(path).readAsBytes();
+        final doc = PdfDocument(inputBytes: bytes);
+        final page = doc.pages[0]; // first page
+        final ratio = page.size.width / page.size.height;
+        doc.dispose();
+        return ratio;
+      }
+    } catch (_) {
+      return null;
+    }
+
+    return null;
+  }
+
 
 
 

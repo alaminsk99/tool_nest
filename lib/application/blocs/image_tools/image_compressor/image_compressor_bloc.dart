@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:toolest/application/blocs/home/home_page_bloc.dart';
 import 'package:toolest/core/constants/text_strings.dart';
 import 'package:toolest/core/utils/file_core_helper/file_core_helper.dart';
+import 'package:toolest/core/utils/file_services/pdf_service.dart';
 import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_compressor_event.dart';
@@ -122,6 +123,8 @@ class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorStat
         resolution: state.resolution,
         compressedFile: compressedFile,
       ));
+
+      final ratio = await PdfService().detectAspectRatio(compressedFile.path, RecentFileType.image);
       // Optional: Add to recent files
       final recentImage = RecentFileModel(
         path: compressedFile.path,
@@ -129,6 +132,7 @@ class ImageCompressorBloc extends Bloc<ImageCompressorEvent, ImageCompressorStat
         fileType: RecentFileType.image,
         status: FileStatus.completed,
         tab: RecentTabs.processed,
+        aspectRatio: ratio,
       );
 
       /// Dispatch to HomePageBloc

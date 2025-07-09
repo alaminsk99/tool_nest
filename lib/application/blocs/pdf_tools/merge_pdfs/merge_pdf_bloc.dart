@@ -46,6 +46,8 @@ class MergePdfBloc extends Bloc<MergePdfEvent, MergePdfState> {
     try {
       final merged = await _service.mergePdfs(_files);
       emit(MergedSuccess(merged));
+
+      final aspectRatio = await PdfService().detectAspectRatio(merged.path, RecentFileType.pdf);
       ///  Add merged PDF to recent processed files
       final recentFile = RecentFileModel(
         path: merged.path,
@@ -53,6 +55,7 @@ class MergePdfBloc extends Bloc<MergePdfEvent, MergePdfState> {
         fileType: RecentFileType.pdf,
         status: FileStatus.completed,
         tab: RecentTabs.processed,
+        aspectRatio: aspectRatio,
       );
 
       event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentFile));

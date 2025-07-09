@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:toolest/application/blocs/home/home_page_bloc.dart';
+import 'package:toolest/core/utils/file_services/pdf_service.dart';
 import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/domain/models/pdf_tools/compress_pdf_model/compress_pdf_model.dart';
 import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
@@ -84,6 +85,7 @@ class CompressPdfBloc extends Bloc<CompressPdfEvent, CompressPdfState> {
         ),
       ));
 
+      final aspectRatio = await PdfService().detectAspectRatio(compressedFile.path, RecentFileType.pdf);
       /// Add compressed PDF to recent processed files
       final recentFile = RecentFileModel(
         path: compressedFile.path,
@@ -91,6 +93,7 @@ class CompressPdfBloc extends Bloc<CompressPdfEvent, CompressPdfState> {
         fileType: RecentFileType.pdf,
         status: FileStatus.completed,
         tab: RecentTabs.processed,
+        aspectRatio: aspectRatio,
       );
 
       event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentFile));

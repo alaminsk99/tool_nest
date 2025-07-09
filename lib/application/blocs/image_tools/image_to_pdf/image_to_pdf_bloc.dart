@@ -6,6 +6,7 @@ import 'package:pdf/pdf.dart';
 import 'package:toolest/application/blocs/home/home_page_bloc.dart';
 import 'package:toolest/core/constants/text_strings.dart';
 import 'package:toolest/core/utils/file_core_helper/file_core_helper.dart';
+import 'package:toolest/core/utils/file_services/pdf_service.dart';
 import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/presentation/pages/home/widgets/tabbar/recent_tabs.dart';
 import 'image_to_pdf_event.dart';
@@ -157,6 +158,8 @@ class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
         pdfPath: pdfPath,
       ));
 
+      final ratio = await PdfService().detectAspectRatio(file.path, RecentFileType.pdf);
+
       //  Add to recent processed files
       final recentPdf = RecentFileModel(
         path: file.path,
@@ -164,6 +167,7 @@ class ImageToPdfBloc extends Bloc<ImageToPdfEvent, ImageToPdfState> {
         fileType: RecentFileType.pdf,
         status: FileStatus.completed,
         tab: RecentTabs.processed,
+        aspectRatio: ratio,
       );
       event.context.read<HomePageBloc>().add(AddRecentFileEvent(recentPdf));
 

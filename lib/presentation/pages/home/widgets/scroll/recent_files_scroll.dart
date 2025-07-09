@@ -10,6 +10,7 @@ import 'package:toolest/core/constants/colors.dart';
 import 'package:toolest/core/constants/sizes.dart';
 import 'package:toolest/domain/models/home/recent_file_model.dart';
 import 'package:toolest/presentation/styles/spacing_style/padding_style.dart';
+import 'package:toolest/presentation/widgets/loader/progress_indicator_for_all.dart';
 
 class RecentFilesScroll extends StatelessWidget {
   const RecentFilesScroll({super.key});
@@ -62,23 +63,31 @@ class RecentFileCard extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 110,
-          height: 130,
-          padding: TNPaddingStyle.allPaddingXS,
-          decoration: BoxDecoration(
-            color: TNColors.white,
-            borderRadius: BorderRadius.circular(TNSizes.borderRadiusMD),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                spreadRadius: 1,
-                offset: const Offset(0, 6),
+        LayoutBuilder(
+          builder: (context,constraints) {
+            final height = 130.0;
+            final aspectRatio = _getAspectRatio(file); // You will define this function
+            final width = height * aspectRatio;
+            return Container(
+              width: width,
+              height: height,
+              padding: TNPaddingStyle.allPaddingXS,
+              decoration: BoxDecoration(
+                color: TNColors.white,
+                borderRadius: BorderRadius.circular(TNSizes.borderRadiusMD),
+                border: Border.all(color: TNColors.white.withOpacity(0.5)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    spreadRadius: 1,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: _buildFilePreview(context, exists),
+              child: _buildFilePreview(context, exists),
+            );
+          }
         ),
         const Gap(TNSizes.spaceSM),
         _buildFileName(context),
@@ -88,8 +97,11 @@ class RecentFileCard extends StatelessWidget {
   }
 
   Widget _buildFilePreview(BuildContext context, bool exists) {
-    const previewWidth = 150;
-    const previewHeight = 200;
+    const double previewHeight = 130.0;
+    final aspectRatio = _getAspectRatio(file);
+    final width = previewHeight * aspectRatio;
+
+
 
     if (!exists) {
       return Center(child: Icon(LucideIcons.fileWarning, color: Colors.red));
@@ -121,7 +133,7 @@ class RecentFileCard extends StatelessWidget {
             return FutureBuilder<PdfPageImage>(
               future: document.getPage(1).then((page) async {
                 final image = await page.render(
-                  width: previewWidth.toDouble(),
+                  width: width.toDouble(),
                   height: previewHeight.toDouble(),
                   format: PdfPageImageFormat.png,
                 );
@@ -131,7 +143,7 @@ class RecentFileCard extends StatelessWidget {
               }),
               builder: (context, imageSnapshot) {
                 if (imageSnapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                  return const Center(child: ProgressIndicatorForAll());
                 }
 
                 if (imageSnapshot.hasError || imageSnapshot.data == null) {
@@ -181,4 +193,22 @@ class RecentFileCard extends StatelessWidget {
       ),
     );
   }
+  double _getAspectRatio(RecentFileModel file) {
+    // If the actual aspectRatio is available (e.g. from PdfService), use it
+    if (file.aspectRatio != null && file.aspectRatio! > 0) {
+      return file.aspectRatio!;
+    }
+
+    // Fallback estimates based on file type
+    if (file.fileType == RecentFileType.image) {
+      return 3 / 4; // Common portrait photo size
+    } else if (file.fileType == RecentFileType.pdf) {
+      return 8.5 / 11; // Standard A4 aspect ratio
+    }
+
+    // Default fallback ratio
+    return 1.0;
+  }
+
+
 }

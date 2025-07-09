@@ -159,13 +159,18 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         .toList()
       ..sort((a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()));
 
-    final recentModels = validFiles.map((file) => RecentFileModel(
-      path: file.path,
-      name: file.path.split('/').last,
-      fileType: RecentFileType.pdf,
-      status: FileStatus.opened,
-      tab: RecentTabs.downloads,
-    )).take(10).toList();
+    final recentModels = await Future.wait(validFiles.map((file) async {
+      final ratio = await PdfService().detectAspectRatio(file.path, RecentFileType.pdf);
+      return RecentFileModel(
+        path: file.path,
+        name: file.path.split('/').last,
+        fileType: RecentFileType.pdf,
+        status: FileStatus.opened,
+        tab: RecentTabs.downloads,
+        aspectRatio: ratio,
+      );
+    })).then((list) => list.take(10).toList());
+
 
     return recentModels;
   }

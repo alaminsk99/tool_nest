@@ -9,6 +9,7 @@ class RecentFileModel {
   final RecentFileType fileType;
   final FileStatus status;
   final String tab;
+  final double? aspectRatio; // <-- NEW
 
   const RecentFileModel({
     required this.path,
@@ -16,6 +17,7 @@ class RecentFileModel {
     required this.fileType,
     required this.status,
     required this.tab,
+    this.aspectRatio,
   });
 
   Map<String, dynamic> toJson() => {
@@ -24,6 +26,7 @@ class RecentFileModel {
     'fileType': fileType.name,
     'status': status.name,
     'tab': tab,
+    'aspectRatio': aspectRatio,
   };
 
   factory RecentFileModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +42,7 @@ class RecentFileModel {
         orElse: () => FileStatus.completed,
       ),
       tab: json['tab'] ?? RecentTabs.downloads,
+      aspectRatio: (json['aspectRatio'] as num?)?.toDouble(), // <- handled safely
     );
   }
 
@@ -48,6 +52,7 @@ class RecentFileModel {
     RecentFileType? fileType,
     FileStatus? status,
     String? tab,
+    double? aspectRatio, // <-- NEW
   }) {
     return RecentFileModel(
       path: path ?? this.path,
@@ -55,6 +60,7 @@ class RecentFileModel {
       fileType: fileType ?? this.fileType,
       status: status ?? this.status,
       tab: tab ?? this.tab,
+      aspectRatio: aspectRatio ?? this.aspectRatio,
     );
   }
 }
